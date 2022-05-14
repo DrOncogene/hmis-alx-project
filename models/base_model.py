@@ -6,14 +6,13 @@ Contains the Base class for the AirBnB clone console.
 import uuid
 from datetime import datetime
 from models import storage
-from models import users
 
 
 class BaseModel:
 
     """Class for base model of object hierarchy."""
 
-    def __init__(self, users_id, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         """Initialization of a Base instance.
         Args:
             - *args: list of arguments
@@ -33,9 +32,9 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
-            self.created_by = users_id
+            #self.created_by = staff.id
             self.updated_at = datetime.now()
-            self.updated_by = users_id
+            #self.updated_by = staff.id
             storage.new(self)
 
     def __str__(self):
@@ -45,11 +44,12 @@ class BaseModel:
         return "[{}] ({}) {}".\
             format(type(self).__name__, self.id, self.__dict__)
 
-    def save(self):
+    def save(self, users_id):
         """Updates the updated_at attribute
         with the current datetime."""
 
         self.updated_at = datetime.now()
+        self.updated_by = users_id
         storage.save()
 
     def to_dict(self):

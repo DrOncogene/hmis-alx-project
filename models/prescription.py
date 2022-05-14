@@ -15,4 +15,4 @@ class Prescription(BaseModel):
     duration = ""
     period = ""
     route = ""
-    dispensed by = 0
+    dispensed_by = 0

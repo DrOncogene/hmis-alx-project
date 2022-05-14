@@ -12,9 +12,10 @@ class Patient(BaseModel):
     hospital_number = ""
     gender = ""
     email = ""
-    date_of_birth = date(0, 0, 0)
+    date_of_birth = 0
     marital_status = ""
     address = ""
+    telephone_number = 0
     kinfirst_name = ""
     kinlast_name = ""
     consult_id = []

@@ -12,5 +12,5 @@ class Drug(BaseModel):
     route = ""
     brand = ""
     formulation = ""
-    expiry_date = date(0, 0, 0)
-    stock_date = date(0, 0, 0)
+    expiry_date = 0
+    stock_date = 0
