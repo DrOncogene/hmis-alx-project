@@ -13,7 +13,7 @@ class BaseModel:
 
     """Class for base model of object hierarchy."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, users_id, *args, **kwargs):
         """Initialization of a Base instance.
         Args:
             - *args: list of arguments
@@ -33,9 +33,9 @@ class BaseModel:
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
-            self.created_by = staff_id
+            self.created_by = users_id
             self.updated_at = datetime.now()
-            self.updated_by = staff_id
+            self.updated_by = users_id
             storage.new(self)
 
     def __str__(self):
