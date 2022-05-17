@@ -5,7 +5,7 @@ import readline
 import sys
 import json
 import re
-from storage import storage
+from storage import storage, hospital_numbers, staff_ids
 from models.doctor import Doctor
 from models.nurse import Nurse
 from models.pharmacist import Pharmacist
