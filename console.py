@@ -5,7 +5,7 @@ import readline
 import sys
 import json
 import re
-from models import storage
+from storage import storage
 from models.doctor import Doctor
 from models.nurse import Nurse
 from models.pharmacist import Pharmacist
@@ -16,6 +16,7 @@ from models.notes.prescription import Prescription
 from models.notes.vitals import VitalSign
 from models.notes.nursesnote import NursesNote
 from models.drug import Drug
+
 
 class HMIS(cmd.Cmd):
     """class the defines the console object"""
@@ -71,7 +72,7 @@ class HMIS(cmd.Cmd):
 
     def do_create(self, arg: str) -> None:
         """creates a new instance of a class passed as argument.
-        USAGE: create <class_name>"""
+        USAGE: <class_name>.create()"""
         args = parse_args(arg)
         if validate_args(args, 1) == -1:
             return
