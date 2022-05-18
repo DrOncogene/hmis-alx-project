@@ -1,12 +1,12 @@
 #!usr/bin/pyhton3
-""" A class Staff that inherits from BaseModel """
+""" A class Staff that inherits from BaseUser """
 
 
-from models.base_model import BaseModel
-from models import storage
+from models.base_user import BaseUser
+from datetime import date
 
 
-class Staff(BaseModel):
+class Staff(BaseUser):
     """ Simple Staff class model """
 
     __number_staffs = 0
@@ -18,12 +18,5 @@ class Staff(BaseModel):
             self.__number_staffs += 1
             self.id = self.__number_staffs
         self.id = str(self.id + 1)"""
-    first_name = ""
-    last_name = ""
-    gender = ""
-    email = ""
-    date_of_birth = 0
-    marital_status = ""
-    address = ""
-    telephone_number = 0
+    staff_id = 0
     job_title = ""

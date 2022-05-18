@@ -1,6 +1,6 @@
 #!/usr/bin/python3
-"""Module for Base class
-Contains the Base class for the HMIS console.
+"""Module for Permissions class
+Contains the Permissions class for the HMIS console.
 """
 
 import uuid
@@ -8,12 +8,12 @@ from datetime import datetime
 from models import storage
 
 
-class BaseModel:
+class Permissions:
 
-    """Class for base model of object hierarchy."""
+    """Class for permissions of object hierarchy."""
 
     def __init__(self, *args, **kwargs):
-        """Initialization of a Base instance.
+        """Initialization of a Permissions instance.
         Args:
             - *args: list of arguments
             - **kwargs: dict of key-values arguments
@@ -35,6 +35,11 @@ class BaseModel:
             self.created_by = ""
             self.updated_at = datetime.now()
             self.updated_by = ""
+            items = []
+            create = ""
+            edit = ""
+            delete = ""
+            view = ""
             storage.new(self)
 
     def __str__(self):
