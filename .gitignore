@@ -1,4 +1,5 @@
 authorsgen.sh
+file.json
 led / optimized / DLL files
 __pycache__/
 *.py[cod]
