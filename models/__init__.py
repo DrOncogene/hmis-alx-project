@@ -15,3 +15,11 @@ else:
     from models.engine.file_storage import FileStorage
     storage = FileStorage()
 storage.reload()
+all_objects = storage.all()
+staff_ids = []
+patient_ids = []
+for key, value in all_objects.items():
+    if key.split(".")[0] == "Staff":
+        staff_ids.append(value.id)
+    if key.split(".")[0] == "Patient":
+        patient_ids.append(value.id)

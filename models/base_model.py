@@ -33,7 +33,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.created_by = ""
-            self.updated_at = datetime.now()
+            self.updated_at = self.created_at
             self.updated_by = ""
             storage.new(self)
 
@@ -41,16 +41,24 @@ class BaseModel:
         """Returns a human-readable string representation
         of an instance."""
 
-        return "[{}] ({}) {}".\
-            format(type(self).__name__, self.id, self.__dict__)
+        return "[{}] {}".\
+            format(type(self).__name__, self.__dict__)
 
-    def save(self, users_id):
+    def save(self):
         """Updates the updated_at attribute
         with the current datetime."""
 
         self.updated_at = datetime.now()
-        self.updated_by = users_id
+        self.updated_by = ""
         storage.save()
+
+    def delete(self):
+        """Deletes an object and updates the updated_at attribute
+        with the current datetime."""
+
+        self.updated_at = datetime.now()
+        self.updated_by = ""
+        storage.delete()
 
     def to_dict(self):
         """Returns a dictionary representation of an instance."""

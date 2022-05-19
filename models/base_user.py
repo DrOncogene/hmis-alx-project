@@ -14,7 +14,7 @@ class BaseUser(BaseModel):
     date_of_birth = 0
     marital_status = ""
     address = ""
-    telephone_number = 0
+    telephone_number = ""
     kinfirst_name = ""
     kinlast_name = ""
     kincontact_address = ""

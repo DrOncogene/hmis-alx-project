@@ -11,8 +11,8 @@ class Consult(BaseModel):
     vitals_id = []
     pc = ""
     hpc = ""
-    pohx = None
-    pghx = None
-    pmhx = None
-    prov_diag = None
-    plan = None
+    pohx = ""
+    pghx = ""
+    pmhx = ""
+    prov_diag = ""
+    plan = ""

@@ -8,10 +8,10 @@ class Vitals(BaseModel):
     """Class representing Vital signs."""
     patient_id = ""
     consult_id = ""
-    pr = None
-    rr = None
-    bp = None
-    temp = None
-    spo2 = None
-    height = None
-    weight = None
+    pr = ""
+    rr = ""
+    bp = ""
+    temp = ""
+    spo2 = ""
+    height = ""
+    weight = ""

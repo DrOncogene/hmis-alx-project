@@ -47,3 +47,6 @@ venv.bak/
 
 # Cython debug symbols
 cython_debug/
+
+console.py
+models/engine/file_storage.py
