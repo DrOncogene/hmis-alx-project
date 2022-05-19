@@ -4,6 +4,7 @@ Contains the FileStorage class
 """
 
 import json
+from models.patient import Patient
 from models.doctor import Doctor
 from models.nurse import Nurse
 from models.pharmacist import Pharmacist
@@ -12,10 +13,11 @@ from models.admin import Admin
 from models.notes.consult import Consultation
 from models.notes.prescription import Prescription
 from models.notes.vitals import VitalSign
-from models.notes.nursesnote import NursesNote
+from models.notes.nurse_note import NurseNote
 from models.drug import Drug
 
 classes = {
+    "Patient": Patient,
     "Doctor": Doctor,
     "Nurse": Nurse,
     "Pharmacist": Pharmacist,
@@ -24,7 +26,7 @@ classes = {
     "Consultation": Consultation,
     "Prescription": Prescription,
     "VitalSign": VitalSign,
-    "NursesNote": NursesNote,
+    "NursesNote": NurseNote,
     "Drug": Drug
 }
 

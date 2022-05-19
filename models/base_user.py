@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Module for BaseUser class."""
+"""Module for BaseUser class"""
 
 from models.base_model import BaseModel
 from datetime import date

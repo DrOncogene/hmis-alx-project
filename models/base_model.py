@@ -5,11 +5,10 @@ Contains the Base class for the HMIS console.
 
 import uuid
 from datetime import datetime
-from models import storage
+import storage
 
 
 class BaseModel:
-
     """Class for base model of object hierarchy."""
 
     def __init__(self, *args, **kwargs):
@@ -35,7 +34,7 @@ class BaseModel:
             self.created_by = ""
             self.updated_at = datetime.now()
             self.updated_by = ""
-            storage.new(self)
+            storage.storage.new(self)
 
     def __str__(self):
         """Returns a human-readable string representation
@@ -44,15 +43,15 @@ class BaseModel:
         return "[{}] ({}) {}".\
             format(type(self).__name__, self.id, self.__dict__)
 
-    def save(self, users_id):
+    def save(self, users_id=""):
         """Updates the updated_at attribute
         with the current datetime."""
 
         self.updated_at = datetime.now()
         self.updated_by = users_id
-        storage.save()
+        storage.storage.save()
 
-    def to_dict(self):
+    def to_dict(self, save=False):
         """Returns a dictionary representation of an instance."""
 
         my_dict = self.__dict__.copy()

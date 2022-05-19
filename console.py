@@ -7,6 +7,7 @@ import json
 import re
 from storage import storage
 # from models import hospital_numbers, staff_ids
+from models.patient import Patient
 from models.doctor import Doctor
 from models.nurse import Nurse
 from models.pharmacist import Pharmacist
@@ -15,7 +16,7 @@ from models.admin import Admin
 from models.notes.consult import Consultation
 from models.notes.prescription import Prescription
 from models.notes.vitals import VitalSign
-from models.notes.nurse_note import NursesNote
+from models.notes.nurse_note import NurseNote
 from models.drug import Drug
 
 
@@ -23,6 +24,7 @@ class HMIS(cmd.Cmd):
     """class the defines the console object"""
     prompt = "(hmis) "
     _classes = {
+        "Patient": Patient,
         "Doctor": Doctor,
         "Nurse": Nurse,
         "Pharmacist": Pharmacist,
@@ -31,7 +33,7 @@ class HMIS(cmd.Cmd):
         "Consultation": Consultation,
         "Prescription": Prescription,
         "VitalSign": VitalSign,
-        "NursesNote": NursesNote,
+        "NurseNote": NurseNote,
         "Drug": Drug
     }
 

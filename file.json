@@ -1,0 +1,47 @@
+{
+  "Doctor.a5985cfe-62ca-4869-8487-22105346a92a": {
+    "id": "a5985cfe-62ca-4869-8487-22105346a92a",
+    "created_at": "2022-05-19T11:48:17.122646",
+    "created_by": "",
+    "updated_at": "2022-05-19T11:48:17.122659",
+    "updated_by": "",
+    "staff_id": "DOC0000",
+    "__class__": "Doctor"
+  },
+  "Patient.6f9d9e30-e0f4-40c3-a88a-92ef3de6d548": {
+    "id": "6f9d9e30-e0f4-40c3-a88a-92ef3de6d548",
+    "created_at": "2022-05-19T11:49:19.212630",
+    "created_by": "",
+    "updated_at": "2022-05-19T11:49:19.212644",
+    "updated_by": "",
+    "pid": "0000000000",
+    "__class__": "Patient"
+  },
+  "Doctor.635c514d-895b-4a31-9aea-bf765045560c": {
+    "id": "635c514d-895b-4a31-9aea-bf765045560c",
+    "created_at": "2022-05-19T12:49:41.873961",
+    "created_by": "",
+    "updated_at": "2022-05-19T12:49:41.873970",
+    "updated_by": "",
+    "staff_id": "DOC0001",
+    "__class__": "Doctor"
+  },
+  "Doctor.7f5cc83f-b19b-4e2e-b03b-1faae59edece": {
+    "id": "7f5cc83f-b19b-4e2e-b03b-1faae59edece",
+    "created_at": "2022-05-19T12:49:46.736558",
+    "created_by": "",
+    "updated_at": "2022-05-19T12:49:46.736565",
+    "updated_by": "",
+    "staff_id": "DOC0002",
+    "__class__": "Doctor"
+  },
+  "Patient.73bd022c-d58a-471b-8a09-7aedf67bab08": {
+    "id": "73bd022c-d58a-471b-8a09-7aedf67bab08",
+    "created_at": "2022-05-19T12:50:44.590739",
+    "created_by": "",
+    "updated_at": "2022-05-19T12:50:44.590749",
+    "updated_by": "",
+    "pid": "0000000001",
+    "__class__": "Patient"
+  }
+}

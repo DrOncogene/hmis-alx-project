@@ -4,7 +4,7 @@
 from models.base_model import BaseModel
 
 
-class Consult(BaseModel):
+class Consultation(BaseModel):
     """Class representing a Consultation"""
     patient_id = ""
     prescription_id = []
