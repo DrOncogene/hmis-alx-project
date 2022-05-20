@@ -4,29 +4,6 @@ Contains the FileStorage class
 """
 
 import json
-from models.doctor import Doctor
-from models.nurse import Nurse
-from models.pharmacist import Pharmacist
-from models.record import RecordOfficer
-from models.admin import Admin
-from models.notes.consult import Consultation
-from models.notes.prescription import Prescription
-from models.notes.vitals import VitalSign
-from models.notes.nursesnote import NursesNote
-from models.drug import Drug
-
-classes = {
-    "Doctor": Doctor,
-    "Nurse": Nurse,
-    "Pharmacist": Pharmacist,
-    "RecordOfficer": RecordOfficer,
-    "Admin": Admin,
-    "Consultation": Consultation,
-    "Prescription": Prescription,
-    "VitalSign": VitalSign,
-    "NursesNote": NursesNote,
-    "Drug": Drug
-}
 
 
 class FileStorage:
@@ -63,6 +40,7 @@ class FileStorage:
 
     def reload(self):
         """deserializes the JSON file to __objects"""
+        classes = import_models()
         try:
             with open(self.__file_path, 'r') as f:
                 jo = json.load(f)
@@ -90,3 +68,31 @@ class FileStorage:
     def count(self, cls=None):
         """ count the number of objs in storage of cls, if given"""
         return len(self.all(cls))
+
+
+def import_models():
+    from models.patient import Patient
+    from models.doctor import Doctor
+    from models.nurse import Nurse
+    from models.pharmacist import Pharmacist
+    from models.record import RecordOfficer
+    from models.admin import Admin
+    from models.notes.consult import Consultation
+    from models.notes.prescription import Prescription
+    from models.notes.vitals import VitalSign
+    from models.notes.nurse_note import NurseNote
+    from models.drug import Drug
+
+    return {
+        "Patient": Patient,
+        "Doctor": Doctor,
+        "Nurse": Nurse,
+        "Pharmacist": Pharmacist,
+        "RecordOfficer": RecordOfficer,
+        "Admin": Admin,
+        "Consultation": Consultation,
+        "Prescription": Prescription,
+        "VitalSign": VitalSign,
+        "NursesNote": NurseNote,
+        "Drug": Drug
+    }
