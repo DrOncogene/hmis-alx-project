@@ -7,7 +7,7 @@ from datetime import date
 
 class Patient(BaseUser):
     """Class representing a Patient."""
-    hospital_number = ""
+    pid = ""
     consult_id = []
     prescription_id = []
     vitals_id = []

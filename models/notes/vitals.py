@@ -4,10 +4,10 @@
 from models.base_model import BaseModel
 
 
-class Vitals(BaseModel):
+class VitalSign(BaseModel):
     """Class representing Vital signs."""
-    patient_id = ""
-    consult_id = ""
+    pid = ""
+    consultation_id = ""
     pr = ""
     rr = ""
     bp = ""

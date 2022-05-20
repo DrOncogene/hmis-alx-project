@@ -3,10 +3,11 @@
 
 
 from models.base_user import BaseUser
+from models.permissions import Permissions
 from datetime import date
 
 
-class Staff(BaseUser):
+class Staff(BaseUser, Permissions):
     """ Simple Staff class model """
 
     __number_staffs = 0

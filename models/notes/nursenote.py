@@ -6,6 +6,6 @@ from models.base_model import BaseModel
 
 class NurseNote(BaseModel):
     """Class representing a Nurse Note"""
-    patient_id = ""
-    vitals_id = []
+    pid = ""
+    vitals_ids = []
     note = ""

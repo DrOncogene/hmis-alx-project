@@ -11,7 +11,7 @@ class BaseUser(BaseModel):
     last_name = ""
     gender = ""
     email = ""
-    date_of_birth = 0
+    dob = ""
     marital_status = ""
     address = ""
     telephone_number = ""

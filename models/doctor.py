@@ -6,6 +6,6 @@ from models.staff import Staff
 from datetime import date
 
 
-class Doctor(Staff, Permissions):
+class Doctor(Staff):
     """ Simple Doctor class model """
     pass

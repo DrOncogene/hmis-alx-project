@@ -5,7 +5,7 @@ Contains the Base class for the HMIS console.
 
 import uuid
 from datetime import datetime
-from models import storage
+from storage import storage
 
 
 class BaseModel:

@@ -5,10 +5,10 @@ Contains the TestBasePrescriptionDocs classes
 
 from datetime import datetime
 import inspect
-import models
-from models import prescription
+from models.notes import prescription
 from models.base_model import BaseModel
 import pep8
+import storage
 import unittest
 Prescription = prescription.Prescription
 
@@ -22,17 +22,17 @@ class TestPrescriptionDocs(unittest.TestCase):
                                                 inspect.isfunction)
 
     def test_pep8_conformance_prescription(self):
-        """Test that models/prescription.py conforms to PEP8."""
+        """Test that models/notes/prescription.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
-        result = pep8s.check_files(['models/prescription.py'])
+        result = pep8s.check_files(['models/notes/prescription.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
     def test_pep8_conformance_test_prescription(self):
-        """Test that tests/test_models/test_prescription.py
+        """Test that tests/test_models/test_models_notes/test_prescription.py
         conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
-        result = pep8s.check_files(['tests/test_models/test_prescription.py'])
+        result = pep8s.check_files(['tests/test_models/test_models_notes/test_prescription.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
@@ -71,32 +71,32 @@ class TestPrescription(unittest.TestCase):
         self.assertTrue(hasattr(prescription, "updated_at"))
         self.assertTrue(hasattr(prescription, "updated_by"))
 
-    def test_patient_id_attr(self):
-        """Test that Prescription has attr patient_id,
+    def test_pid_attr(self):
+        """Test that Prescription has attr pid,
         and it's an empty string"""
         prescription = Prescription()
-        self.assertTrue(hasattr(prescription, "patient_id"))
-        if models.storage_t == 'db':
-            self.assertEqual(prescription.patient_id, None)
+        self.assertTrue(hasattr(prescription, "pid"))
+        if storage.storage_t == 'db':
+            self.assertEqual(prescription.pid, None)
         else:
-            self.assertEqual(prescription.patient_id, "")
+            self.assertEqual(prescription.pid, "")
 
-    def test_consult_id_attr(self):
-        """Test that Prescription has attr consult_id,
+    def test_consultation_id_attr(self):
+        """Test that Prescription has attr consultation_id,
         and it's an empty string"""
         prescription = Prescription()
-        self.assertTrue(hasattr(prescription, "consult_id"))
-        if models.storage_t == 'db':
-            self.assertEqual(prescription.consult_id, None)
+        self.assertTrue(hasattr(prescription, "consultation_id"))
+        if storage.storage_t == 'db':
+            self.assertEqual(prescription.consultation_id, None)
         else:
-            self.assertEqual(prescription.consult_id, "")
+            self.assertEqual(prescription.consultation_id, "")
 
     def test_drug_id_attr(self):
         """Test that Prescription has attr drug_id,
         and it's an empty string"""
         prescription = Prescription()
         self.assertTrue(hasattr(prescription, "drug_id"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(prescription.drug_id, None)
         else:
             self.assertEqual(prescription.drug_id, "")
@@ -106,7 +106,7 @@ class TestPrescription(unittest.TestCase):
         and it's an empty string"""
         prescription = Prescription()
         self.assertTrue(hasattr(prescription, "dose"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(prescription.dose, None)
         else:
             self.assertEqual(prescription.dose, 0)
@@ -116,7 +116,7 @@ class TestPrescription(unittest.TestCase):
         and it's an empty string"""
         prescription = Prescription()
         self.assertTrue(hasattr(prescription, "unit"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(prescription.unit, None)
         else:
             self.assertEqual(prescription.unit, "")
@@ -126,7 +126,7 @@ class TestPrescription(unittest.TestCase):
             and it's an empty string"""
             prescription = Prescription()
             self.assertTrue(hasattr(prescription, "frequency"))
-            if models.storage_t == 'db':
+            if storage.storage_t == 'db':
                 self.assertEqual(prescription.frequency, None)
             else:
                 self.assertEqual(prescription.frequency, "")
@@ -136,7 +136,7 @@ class TestPrescription(unittest.TestCase):
         and it's an empty string"""
         prescription = Prescription()
         self.assertTrue(hasattr(prescription, "duration"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(prescription.duration, None)
         else:
             self.assertEqual(prescription.duration, "")
@@ -146,7 +146,7 @@ class TestPrescription(unittest.TestCase):
         and it's an empty string"""
         prescription = Prescription()
         self.assertTrue(hasattr(prescription, "period"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(prescription.period, None)
         else:
             self.assertEqual(prescription.period, "")
@@ -156,7 +156,7 @@ class TestPrescription(unittest.TestCase):
         and it's an empty string"""
         prescription = Prescription()
         self.assertTrue(hasattr(prescription, "route"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(prescription.route, None)
         else:
             self.assertEqual(prescription.route, "")
@@ -166,7 +166,7 @@ class TestPrescription(unittest.TestCase):
         and it's an empty string"""
         prescription = Prescription()
         self.assertTrue(hasattr(prescription, "dispensed_by"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(prescription.dispensed_by, None)
         else:
             self.assertEqual(prescription.dispensed_by, "")

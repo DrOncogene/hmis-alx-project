@@ -5,10 +5,10 @@ Contains the TestBaseVitalsDocs classes
 
 from datetime import datetime
 import inspect
-import models
-from models import vitals
+from models.notes import vitals
 from models.base_model import BaseModel
 import pep8
+import storage
 import unittest
 Vitals = vitals.Vitals
 
@@ -21,16 +21,16 @@ class TestVitalsDocs(unittest.TestCase):
         cls.vitals_f = inspect.getmembers(Vitals, inspect.isfunction)
 
     def test_pep8_conformance_vitals(self):
-        """Test that models/vitals.py conforms to PEP8."""
+        """Test that models/notes/vitals.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
         result = pep8s.check_files(['models/vitals.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
     def test_pep8_conformance_test_vitals(self):
-        """Test that tests/test_models/test_vitals.py conforms to PEP8."""
+        """Test that tests/test_models/test_models_notes/test_vitals.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
-        result = pep8s.check_files(['tests/test_models/test_vitals.py'])
+        result = pep8s.check_files(['tests/test_models/test_models_notes/test_vitals.py'])
         self.assertEqual(result.total_errors, 0,
                          "Found code style errors (and warnings).")
 
@@ -69,29 +69,29 @@ class TestVitals(unittest.TestCase):
         self.assertTrue(hasattr(vitals, "updated_at"))
         self.assertTrue(hasattr(vitals, "updated_by"))
 
-    def test_patient_id_attr(self):
-        """Test that Vitals has attr patient_id, and it's an empty string"""
+    def test_pid_attr(self):
+        """Test that Vitals has attr pid, and it's an empty string"""
         vitals = Vitals()
-        self.assertTrue(hasattr(vitals, "patient_id"))
-        if models.storage_t == 'db':
-            self.assertEqual(vitals.patient_id, None)
+        self.assertTrue(hasattr(vitals, "pid"))
+        if storage.storage_t == 'db':
+            self.assertEqual(vitals.pid, None)
         else:
-            self.assertEqual(vitals.patient_id, "")
+            self.assertEqual(vitals.pid, "")
 
-    def test_consult_id_attr(self):
-        """Test that Vitals has attr consult_id, and it's an empty string"""
+    def test_consultation_id_attr(self):
+        """Test that Vitals has attr consultation_id, and it's an empty string"""
         vitals = Vitals()
-        self.assertTrue(hasattr(vitals, "consult_id"))
-        if models.storage_t == 'db':
-            self.assertEqual(vitals.consult_id, None)
+        self.assertTrue(hasattr(vitals, "consultation_id"))
+        if storage.storage_t == 'db':
+            self.assertEqual(vitals.consultation_id, None)
         else:
-            self.assertEqual(vitals.consult_id, "")
+            self.assertEqual(vitals.consultation_id, "")
 
     def test_pr_attr(self):
         """Test that Vitals has attr pr, and it's an empty string"""
         vitals = Vitals()
         self.assertTrue(hasattr(vitals, "pr"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(vitals.pr, None)
         else:
             self.assertEqual(vitals.pr, "")
@@ -100,7 +100,7 @@ class TestVitals(unittest.TestCase):
         """Test that Vitals has attr rr, and it's an empty string"""
         vitals = Vitals()
         self.assertTrue(hasattr(vitals, "rr"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(vitals.rr, None)
         else:
             self.assertEqual(vitals.rr, "")
@@ -109,7 +109,7 @@ class TestVitals(unittest.TestCase):
         """Test that Vitals has attr bp, and it's an empty string"""
         vitals = Vitals()
         self.assertTrue(hasattr(vitals, "bp"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(vitals.bp, None)
         else:
             self.assertEqual(vitals.bp, "")
@@ -118,7 +118,7 @@ class TestVitals(unittest.TestCase):
         """Test that Vitals has attr temp, and it's an empty string"""
         vitals = Vitals()
         self.assertTrue(hasattr(vitals, "temp"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(vitals.temp, None)
         else:
             self.assertEqual(vitals.temp, "")
@@ -127,7 +127,7 @@ class TestVitals(unittest.TestCase):
             """Test that Vitals has attr spo2, and it's an empty string"""
             vitals = Vitals()
             self.assertTrue(hasattr(vitals, "spo2"))
-            if models.storage_t == 'db':
+            if storage.storage_t == 'db':
                 self.assertEqual(vitals.spo2, None)
             else:
                 self.assertEqual(vitals.spo2, "")
@@ -136,7 +136,7 @@ class TestVitals(unittest.TestCase):
         """Test that Vitals has attr height, and it's an empty string"""
         vitals = Vitals()
         self.assertTrue(hasattr(vitals, "height"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(vitals.height, None)
         else:
             self.assertEqual(vitals.height, "")
@@ -145,7 +145,7 @@ class TestVitals(unittest.TestCase):
         """Test that Vitals has attr weight, and it's an empty string"""
         vitals = Vitals()
         self.assertTrue(hasattr(vitals, "weight"))
-        if models.storage_t == 'db':
+        if storage.storage_t == 'db':
             self.assertEqual(vitals.weight, None)
         else:
             self.assertEqual(vitals.weight, "")
