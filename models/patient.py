@@ -24,10 +24,10 @@ class Patient(BaseUser):
             pids = [int(num) for num in storage.pids]
             # sort them and grab the last one
             last = sorted(pids)[-1]
-            # set current pid to last + 1 in 10 digits
-            self.pid = "{:010}".format(last + 1)
+            # set current pid to last + 1 in 8 digits
+            self.pid = "{:08}".format(last + 1)
         except IndexError:
-            # if no existing pids, set to 0 in 10 digits
-            self.pid = "{:010}".format(0)
+            # if no existing pids, set to 0 in 8 digits
+            self.pid = "{:08}".format(0)
         # add the new pid to the pids store
         storage.pids.append(self.pid)

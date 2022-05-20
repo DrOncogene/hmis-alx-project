@@ -5,7 +5,7 @@ Contains the Base class for the HMIS console.
 
 import uuid
 from datetime import datetime
-import storage
+from storage import storage
 
 
 class BaseModel:
@@ -34,7 +34,7 @@ class BaseModel:
             self.created_by = ""
             self.updated_at = datetime.now()
             self.updated_by = ""
-            storage.storage.new(self)
+            storage.new(self)
 
     def __str__(self):
         """Returns a human-readable string representation
@@ -49,7 +49,7 @@ class BaseModel:
 
         self.updated_at = datetime.now()
         self.updated_by = users_id
-        storage.storage.save()
+        storage.save()
 
     def to_dict(self, save=False):
         """Returns a dictionary representation of an instance."""
