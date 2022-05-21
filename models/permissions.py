@@ -1,16 +1,13 @@
 #!/usr/bin/python3
-"""Module for Permissions class"""
+"""Module for Permissions class."""
+
+from models.base_model import BaseModel
 
 
-class Permission:
-    """Class for permissions of object hierarchy."""
-
-    def __init__(self, *args, **kwargs):
-        """Initialization of a Permissions instance"""
-
-        def __init__(self, create, edit, delete, view):
-            self.create = create
-            self.edit = edit
-            self.delete = delete
-            self.view = view
-            
+class Permission(BaseModel):
+    """Class representing a Permissions."""
+    __items = []
+    __create = ""
+    __edit = ""
+    __delete = ""
+    __view = ""

@@ -1,12 +1,12 @@
-#!/usr/bin/python3
-"""Defines the Pharmacist class"""
+#!usr/bin/pyhton3
+""" A class Pharmacist that inherits from Staff """
+
 from models.staff import Staff
 
 
 class Pharmacist(Staff):
-    """Defines a pharmacist object"""
+    """ Simple Pharmacist class model """
     job_title = "Pharmacist"
-    permissions = ""
 
     def __init__(self, **kwargs):
         if kwargs:

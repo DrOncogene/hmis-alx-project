@@ -6,13 +6,13 @@ from models.base_model import BaseModel
 
 class Consultation(BaseModel):
     """Class representing a Consultation"""
-    patient_id = ""
-    prescription_id = []
-    vitals_id = []
+    pid = ""
+    prescription_ids = []
+    vitals_ids = []
     pc = ""
     hpc = ""
-    pohx = None
-    pghx = None
-    pmhx = None
-    prov_diag = None
-    plan = None
+    pohx = ""
+    pghx = ""
+    pmhx = ""
+    prov_diag = ""
+    plan = ""

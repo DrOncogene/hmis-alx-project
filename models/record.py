@@ -1,12 +1,12 @@
-#!/usr/bin/python3
-"""Defines the RecordOfficer class"""
+#!usr/bin/pyhton3
+""" A class Records that inherits from Staff """
+
 from models.staff import Staff
 
 
 class RecordOfficer(Staff):
-    """Defines a record officer object"""
+    """ Simple RecordOfficer class model """
     job_title = "RecordOfficer"
-    permissions = ""
 
     def __init__(self, **kwargs):
         if kwargs:

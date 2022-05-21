@@ -1,17 +1,20 @@
 #!usr/bin/pyhton3
 """ A class Staff that inherits from BaseUser """
 from models.base_user import BaseUser
+from models.permissions import Permission
 import storage
 
 
-class Staff(BaseUser):
+class Staff(BaseUser, Permission):
     """ Simple Staff class model """
     job_title = ""
 
     def set_staff_id(self):
         """method to generate staff_id of a new staff in
         the format <TITLE><4-DIGITSERIAL_NUM> e.g. DOC0001"""
+
         titles = {
+            "Admin": "ADM",
             "Doctor": "DOC",
             "Nurse": "NRS",
             "Pharmacist": "PHM",

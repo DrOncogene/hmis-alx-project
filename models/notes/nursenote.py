@@ -1,9 +1,11 @@
 #!/usr/bin/python3
-"""Module for NursesNote class."""
+"""Module for Nurse Note class."""
 
 from models.base_model import BaseModel
 
 
 class NurseNote(BaseModel):
-    """Class representing a nurse note."""
-    text = ""
+    """Class representing a Nurse Note"""
+    pid = ""
+    vitals_ids = []
+    note = ""

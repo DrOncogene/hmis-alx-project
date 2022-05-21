@@ -6,13 +6,13 @@ from models.base_model import BaseModel
 
 class Prescription(BaseModel):
     """Class representing a Prescription."""
-    patient_id = ""
-    consult_id = ""
+    pid = ""
+    consultation_id = ""
     drug_id = ""
-    dose = 0
+    dose = ""
     unit = ""
     frequency = ""
     duration = ""
     period = ""
     route = ""
-    dispensed_by = 0
+    dispensed_by = ""

@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-"""Module for BaseUser class"""
+"""Module for BaseUser class."""
+
 from models.base_model import BaseModel
 from datetime import date
 
@@ -10,10 +11,10 @@ class BaseUser(BaseModel):
     last_name = ""
     gender = ""
     email = ""
-    date_of_birth = 0
+    dob = ""
     marital_status = ""
     address = ""
-    telephone_number = 0
+    telephone_number = ""
     kinfirst_name = ""
     kinlast_name = ""
     kincontact_address = ""

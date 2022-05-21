@@ -6,12 +6,12 @@ from models.base_model import BaseModel
 
 class VitalSign(BaseModel):
     """Class representing Vital signs."""
-    patient_id = ""
-    consult_id = ""
-    pr = None
-    rr = None
-    bp = None
-    temp = None
-    spo2 = None
-    height = None
-    weight = None
+    pid = ""
+    consultation_id = ""
+    pr = ""
+    rr = ""
+    bp = ""
+    temp = ""
+    spo2 = ""
+    height = ""
+    weight = ""

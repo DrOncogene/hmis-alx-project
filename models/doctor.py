@@ -1,18 +1,12 @@
-#!/usr/bin/python3
-"""Defines the Doctor class"""
+#!usr/bin/pyhton3
+""" A class Doctor that inherits from Staff """
+
 from models.staff import Staff
-from models.permissions import Permission
 
 
 class Doctor(Staff):
-    """Defines a doctor object"""
+    """ Simple Doctor class model """
     job_title = "Doctor"
-    permissions = Permission(
-        create = ('consultation', 'prescription'),
-        edit = ('consultation', 'prescription'),
-        delete = ('consultation', 'prescription'),
-        view = ('consultation', 'prescription', 'efolder')
-    )
 
     def __init__(self, **kwargs):
         if kwargs:
