@@ -3,11 +3,10 @@
 Contains the Permissions class for the HMIS console.
 """
 
-from datetime import datetime
 from models.base_model import BaseModel
 
 
-class Permissions(BaseModel):
+class Permission(BaseModel):
     """Class for permissions of object hierarchy."""
 
     def __init__(self, *args, **kwargs):
