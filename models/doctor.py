@@ -1,12 +1,18 @@
 #!/usr/bin/python3
 """Defines the Doctor class"""
 from models.staff import Staff
+from models.permissions import Permission
 
 
 class Doctor(Staff):
     """Defines a doctor object"""
     job_title = "Doctor"
-    permissions = ""
+    permissions = Permission(
+        create = ('consultation', 'prescription'),
+        edit = ('consultation', 'prescription'),
+        delete = ('consultation', 'prescription'),
+        view = ('consultation', 'prescription', 'efolder')
+    )
 
     def __init__(self, **kwargs):
         if kwargs:

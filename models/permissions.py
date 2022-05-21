@@ -1,21 +1,16 @@
 #!/usr/bin/python3
-"""Module for Permissions class
-Contains the Permissions class for the HMIS console.
-"""
-from models.base_model import BaseModel
+"""Module for Permissions class"""
 
 
-class Permission(BaseModel):
+class Permission:
     """Class for permissions of object hierarchy."""
 
     def __init__(self, *args, **kwargs):
         """Initialization of a Permissions instance"""
-        if kwargs:
-            super().__init__(**kwargs)
-        else:
-            super().__init__()
-        __items = []
-        __create = ""
-        __edit = ""
-        __delete = ""
-        __view = ""
+
+        def __init__(self, create, edit, delete, view):
+            self.create = create
+            self.edit = edit
+            self.delete = delete
+            self.view = view
+            
