@@ -3,9 +3,16 @@
 
 
 from models.staff import Staff
-from datetime import date
 
 
-class Doctor(Staff):
+class Doctor(Staff, Permission):
     """ Simple Doctor class model """
-    pass
+    job_title = "Doctor"
+
+    def __init__(self, **kwargs):
+        if kwargs:
+            super().__init__(**kwargs)
+        else:
+            super().__init__()
+            # if it's a new instantiation, generate a staff_id
+            super().set_staff_id()

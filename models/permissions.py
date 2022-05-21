@@ -2,10 +2,9 @@
 """Module for Permissions class."""
 
 from models.base_model import BaseModel
-from datetime import date
 
 
-class Permissions(BaseModel):
+class Permission(BaseModel):
     """Class representing a Permissions."""
     __items = []
     __create = ""

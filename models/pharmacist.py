@@ -1,11 +1,16 @@
 #!usr/bin/pyhton3
 """ A class Pharmacist that inherits from Staff """
 
-
 from models.staff import Staff
-from datetime import date
 
 
-class Pharmacist(Staff, Permissions):
+class Pharmacist(Staff, Permission):
     """ Simple Pharmacist class model """
-    pass
+    job_title = "Pharmacist"
+
+    def __init__(self, **kwargs):
+        if kwargs:
+            super().__init__(**kwargs)
+        else:
+            super().__init__()
+            super().set_staff_id()
