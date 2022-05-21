@@ -80,7 +80,7 @@ def import_models():
     from models.notes.consult import Consultation
     from models.notes.prescription import Prescription
     from models.notes.vitals import VitalSign
-    from models.notes.nurse_note import NurseNote
+    from models.notes.nursenote import NurseNote
     from models.drug import Drug
 
     return {
