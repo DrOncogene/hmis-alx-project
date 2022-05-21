@@ -2,7 +2,6 @@
 """Module for Base class
 Contains the Base class for the HMIS console.
 """
-
 import uuid
 from datetime import datetime
 from storage import storage
@@ -41,8 +40,8 @@ class BaseModel:
         """Returns a human-readable string representation
         of an instance."""
 
-        return "[{}] {}".\
-            format(type(self).__name__, self.__dict__)
+        return "[{}] ({}) {}".\
+            format(type(self).__name__, self.id, self.__dict__)
 
     def save(self):
         """Updates the updated_at attribute
@@ -56,9 +55,7 @@ class BaseModel:
         """Deletes an object and updates the updated_at attribute
         with the current datetime."""
 
-        self.updated_at = datetime.now()
-        self.updated_by = ""
-        storage.delete()
+        storage.delete(self)
 
     def to_dict(self):
         """Returns a dictionary representation of an instance."""
