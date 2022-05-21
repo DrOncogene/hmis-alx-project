@@ -14,4 +14,3 @@ class Admin(Staff):
         else:
             super().__init__()
             super().set_staff_id()
-

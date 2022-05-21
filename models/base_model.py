@@ -8,6 +8,7 @@ from storage import storage
 
 
 class BaseModel:
+
     """Class for base model of object hierarchy."""
 
     def __init__(self, *args, **kwargs):
