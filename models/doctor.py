@@ -1,11 +1,10 @@
 #!usr/bin/pyhton3
 """ A class Doctor that inherits from Staff """
 
-
 from models.staff import Staff
 
 
-class Doctor(Staff, Permission):
+class Doctor(Staff):
     """ Simple Doctor class model """
     job_title = "Doctor"
 

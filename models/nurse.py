@@ -4,7 +4,7 @@
 from models.staff import Staff
 
 
-class Nurse(Staff, Permission):
+class Nurse(Staff):
     """ Simple Nurse class model """
     job_title = "Nurse"
 

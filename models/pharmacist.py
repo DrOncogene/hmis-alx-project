@@ -4,7 +4,7 @@
 from models.staff import Staff
 
 
-class Pharmacist(Staff, Permission):
+class Pharmacist(Staff):
     """ Simple Pharmacist class model """
     job_title = "Pharmacist"
 
