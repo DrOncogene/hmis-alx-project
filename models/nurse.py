@@ -1,11 +1,16 @@
 #!usr/bin/pyhton3
 """ A class Nurse that inherits from Staff """
 
-
 from models.staff import Staff
-from datetime import date
 
 
-class Nurse(Staff, Permissions):
+class Nurse(Staff):
     """ Simple Nurse class model """
-    pass
+    job_title = "Nurse"
+
+    def __init__(self, **kwargs):
+        if kwargs:
+            super().__init__(**kwargs)
+        else:
+            super().__init__()
+            super().set_staff_id()

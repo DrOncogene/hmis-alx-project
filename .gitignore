@@ -1,3 +1,5 @@
+file.json
+authorsgen.sh
 led / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -47,6 +49,3 @@ venv.bak/
 
 # Cython debug symbols
 cython_debug/
-
-console.py
-models/engine/file_storage.py
