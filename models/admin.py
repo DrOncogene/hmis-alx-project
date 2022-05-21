@@ -4,6 +4,6 @@
 from models.staff import Staff
 
 
-class Admin(Staff, Permissions):
+class Admin(Staff):
     """ Simple Admin class model """
     pass
