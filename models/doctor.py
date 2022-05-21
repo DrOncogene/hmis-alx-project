@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Defines the Doctor class"""
-
 from models.staff import Staff
 
 

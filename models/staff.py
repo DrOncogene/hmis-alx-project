@@ -1,7 +1,5 @@
 #!usr/bin/pyhton3
 """ A class Staff that inherits from BaseUser """
-
-
 from models.base_user import BaseUser
 import storage
 

@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Defines the RecordOfficer class"""
-
 from models.staff import Staff
 
 

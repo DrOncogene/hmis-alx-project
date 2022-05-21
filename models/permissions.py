@@ -2,7 +2,6 @@
 """Module for Permissions class
 Contains the Permissions class for the HMIS console.
 """
-
 from models.base_model import BaseModel
 
 

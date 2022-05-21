@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Defines the Pharmacist class"""
-
 from models.staff import Staff
 
 

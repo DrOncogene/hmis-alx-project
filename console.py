@@ -6,7 +6,6 @@ import sys
 import json
 import re
 from storage import storage
-# from models import hospital_numbers, staff_ids
 from models.patient import Patient
 from models.doctor import Doctor
 from models.nurse import Nurse
@@ -16,7 +15,7 @@ from models.admin import Admin
 from models.notes.consult import Consultation
 from models.notes.prescription import Prescription
 from models.notes.vitals import VitalSign
-from models.notes.nurse_note import NurseNote
+from models.notes.nursenote import NurseNote
 from models.drug import Drug
 
 

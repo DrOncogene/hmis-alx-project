@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Defines the Nurse class"""
-
 from models.staff import Staff
 
 
