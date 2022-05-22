@@ -4,7 +4,6 @@ Contains the Base class for the HMIS console.
 """
 import uuid
 from datetime import datetime
-from storage import storage
 
 
 class BaseModel:
@@ -29,6 +28,7 @@ class BaseModel:
                 else:
                     self.__dict__[key] = kwargs[key]
         else:
+            from storage import storage
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
             self.created_by = ""
@@ -46,7 +46,7 @@ class BaseModel:
     def save(self):
         """Updates the updated_at attribute
         with the current datetime."""
-
+        from storage import storage
         self.updated_at = datetime.now()
         self.updated_by = ""
         storage.save()
@@ -54,7 +54,7 @@ class BaseModel:
     def delete(self):
         """Deletes an object and updates the updated_at attribute
         with the current datetime."""
-
+        from storage import storage
         storage.delete(self)
 
     def to_dict(self):
