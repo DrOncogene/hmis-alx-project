@@ -1,13 +1,27 @@
 #!/usr/bin/python3
-"""Module for Permissions class."""
-
-from models.base_model import BaseModel
+"""Module for Permission class."""
 
 
-class Permission(BaseModel):
+class Permission:
     """Class representing a Permissions."""
-    __items = []
-    __create = ""
-    __edit = ""
-    __delete = ""
-    __view = ""
+    def __init__(self, create, edit, delete, view):
+        self.__create = create
+        self.__edit = edit
+        self.__delete = delete
+        self.__view = view
+
+    @property
+    def create(self):
+        return self.__create
+
+    @property
+    def edit(self):
+        return self.__edit
+
+    @property
+    def delete(self):
+        return self.__delete
+
+    @property
+    def view(self):
+        return self.__view

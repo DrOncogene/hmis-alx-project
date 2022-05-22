@@ -1,18 +1,15 @@
 #!usr/bin/pyhton3
 """ A class Staff that inherits from BaseUser """
 from models.base_user import BaseUser
-from models.permissions import Permission
-import storage
 
 
-class Staff(BaseUser, Permission):
+class Staff(BaseUser):
     """ Simple Staff class model """
-    job_title = ""
 
     def set_staff_id(self):
         """method to generate staff_id of a new staff in
         the format <TITLE><4-DIGITSERIAL_NUM> e.g. DOC0001"""
-
+        from storage import staff_ids
         titles = {
             "Admin": "ADM",
             "Doctor": "DOC",
@@ -26,7 +23,7 @@ class Staff(BaseUser, Permission):
         try:
             # retrieve all staff ids from the id store in storage
             # and filter by the current title
-            cls_ids = [staff_id for staff_id in storage.staff_ids
+            cls_ids = [staff_id for staff_id in staff_ids
                        if title in staff_id]
             # slice out the titles from the staff_ids to get only
             # the numbers
@@ -40,4 +37,4 @@ class Staff(BaseUser, Permission):
             # set staff_id to title + 0000
             self.staff_id = "{}{:04}".format(title, 0)
         # add the new staff_id to the staff_ids store
-        storage.staff_ids.append(self.staff_id)
+        staff_ids.append(self.staff_id)
