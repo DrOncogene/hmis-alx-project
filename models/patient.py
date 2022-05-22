@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """Module for Patient class."""
-
 from models.base_user import BaseUser
-import storage
 
 
 class Patient(BaseUser):
@@ -13,6 +11,7 @@ class Patient(BaseUser):
     vitals_ids = []
 
     def __init__(self, **kwargs):
+        from storage import pids as pid_store
         if (kwargs):
             super().__init__(**kwargs)
         else:
@@ -20,7 +19,7 @@ class Patient(BaseUser):
 
         try:
             # grab all the pids in the store and convert to numbers
-            pids = [int(num) for num in storage.pids]
+            pids = [int(num) for num in pid_store]
             # sort them and grab the last one
             last = sorted(pids)[-1]
             # set current pid to last + 1 in 8 digits
@@ -29,4 +28,4 @@ class Patient(BaseUser):
             # if no existing pids, set to 0 in 8 digits
             self.pid = "{:08}".format(0)
         # add the new pid to the pids store
-        storage.pids.append(self.pid)
+        pid_store.append(self.pid)
