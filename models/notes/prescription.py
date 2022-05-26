@@ -9,6 +9,7 @@ class Prescription(BaseModel):
     pid = ""
     consultation_id = ""
     drug_id = ""
+    drug_name = ""
     dose = ""
     unit = ""
     frequency = ""

@@ -8,8 +8,10 @@ class Drug(BaseModel):
     """Class representing a Drug."""
     name = ""
     dose = ""
+    unit = ""
     route = ""
     brand = ""
     formulation = ""
-    expiry_date = 0
-    stock_date = 0
+    #Difficulty with deciding how to manage the dispensary system for the drugs shelf life
+    #expiry_date = ""
+    #stock_date = ""
