@@ -1,10 +1,16 @@
 #!usr/bin/pyhton3
 """ A class Staff that inherits from BaseUser """
+from os import getenv as osgetenv
+from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy import Column, Integer, String, ForeignKey
 from models.base_user import BaseUser
 
 
 class Staff(BaseUser):
     """ Simple Staff class model """
+    staff_id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String(128), unique=True, nullable=False)
+    password = Column(String(128), nullable=False)
 
     def set_staff_id(self):
         """method to generate staff_id of a new staff in
@@ -38,3 +44,9 @@ class Staff(BaseUser):
             self.staff_id = "{}{:04}".format(title, 0)
         # add the new staff_id to the staff_ids store
         staff_ids.append(self.staff_id)
+
+    def set_password(self, password):
+        self.password = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
