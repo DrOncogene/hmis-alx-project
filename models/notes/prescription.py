@@ -16,7 +16,8 @@ class Prescription(BaseModel, Base):
                      nullable=False)
         consultation_id = Column(String(60),
                                  ForeignKey('consultations.id',
-                                            ondelete='CASCADE'))
+                                            ondelete='CASCADE'),
+                                 nullable=False)
         dispensed_by = Column(Integer, ForeignKey('pharmacists.staff_id'))
         patient = relationship('Patient', back_populates='prescriptions')
         consultation = relationship('Consultation', backref='prescriptions')

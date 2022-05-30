@@ -27,28 +27,23 @@ class BaseModel:
 
     def __init__(self, *args, **kwargs):
         """Initialization of a BaseModel instance"""
-        if kwargs is not None and kwargs != {}:
-            for key in kwargs:
-                if key == "created_at":
-                    self.__dict__["created_at"] = datetime.strptime(
-                        kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                elif key == "updated_at":
-                    self.__dict__["updated_at"] = datetime.strptime(
-                        kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
-                else:
-                    self.__dict__[key] = kwargs[key]
+        if 'created_at' not in kwargs:
+            from storage import storage
+            self.id = str(uuid.uuid4())
+            self.created_at = self.updated_at = datetime.now()
+            self.created_by = ""
+            self.updated_by = ""
+            storage.new(self)
+        else:
+            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
+            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
+                                                     '%Y-%m-%dT%H:%M:%S.%f')
             try:
                 del kwargs['__class__']
             except KeyError:
                 pass
-        else:
-            from storage import storage
-            self.id = str(uuid.uuid4())
-            self.created_at = datetime.now()
-            self.created_by = ""
-            self.updated_at = self.created_at
-            self.updated_by = ""
-            storage.new(self)
+        self.__dict__.update(kwargs)
 
     def __str__(self):
         """Returns a human-readable string representation

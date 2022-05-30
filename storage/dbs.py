@@ -58,6 +58,14 @@ class DBStorage:
 
         return obj_dict
 
+    def get(self, cls, id):
+        """returns a single obj of cls with id"""
+        return self.__session.query(cls).filter_by(id=id)
+
+    def count(self, cls=None):
+        """ count the number of objs in storage of cls, if given"""
+        return len(self.all(cls))
+
     def new(self, obj):
         """ adds a new obj to the db session"""
         self.__session.add(obj)

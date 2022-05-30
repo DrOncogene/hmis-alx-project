@@ -13,8 +13,6 @@ class Doctor(Staff, Base):
 
     if osgetenv('STORAGE_TYPE') == 'db':
         job_title = Column(String(16), nullable=False, default="Doctor")
-        password = Column(String(128), nullable=False)
-        staff_id = Column(Integer, primary_key=True, autoincrement=True)
         permissions = Column(String(60), ForeignKey('permissions.id'))
     else:
         job_title = "Doctor"
