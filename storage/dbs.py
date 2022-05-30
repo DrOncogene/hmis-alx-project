@@ -60,7 +60,10 @@ class DBStorage:
 
     def get(self, cls, id):
         """returns a single obj of cls with id"""
-        return self.__session.query(cls).filter_by(id=id)
+        try:
+            return self.__session.query(cls).filter_by(id=id).all()[0]
+        except Exception:
+            return
 
     def count(self, cls=None):
         """ count the number of objs in storage of cls, if given"""
