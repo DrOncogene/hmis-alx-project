@@ -6,21 +6,45 @@ from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
-#the get request for consultation has the ids for vitals, i believe this is redundant
-@app_views.route('/patients/<pid>/<consultation_id>/<vitals_id>',
+
+@app_views.route('/patients/<pid>/vitals',
                  methods=['GET'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultation_id/get_vitals.yml')
-def get_vitals(vitals_id):
-    """ Retrieves the a specific vitals object for a specific consultation """
-    vitals = storage.get(VitalSign, vitals_id)
-    if not vitals:
+@swag_from('documentation/patient/patient_id/get_vitals.yml')
+def get_vitals(pid):
+    """ Retrieves the all VitalSign object for a specific patient """
+    all_vitals = storage.all(VitalSign).values()
+    list_vitals = []
+    for vital in all_vitals:
+        if vital.pid == pid:
+            list_vitals.append(vital.to_dict())
+    return jsonify(list_vitals)
+
+@app_views.route('/patients/<pid>/consultations/<consultation_id>/vitals',
+                 methods=['GET'], strict_slashes=False)
+@swag_from('documentation/patients/patient_id/consultations/consultation_id/get_vital.yml')
+def get_vital(consultation_id):
+    """ Retrieves the all vital object for a specific consultation """
+    all_vitals = storage.all(VitalSign).values()
+    list_vitals = []
+    for vital in all_vitals:
+        if vital.consultation_id == consultation_id:
+            list_vitals.append(vital.to_dict())
+    return jsonify(list_vitals)
+
+@app_views.route('/patients/<pid>/consultations/<consultation_id>/vitals/<vital_id>',
+                 methods=['GET'], strict_slashes=False)
+@swag_from('documentation/patients/patient_id/consultations/consultation_id/vitals/get_vital.yml')
+def get_vital(vital_id):
+    """ Retrieves the a specific vital object for a specific consultation """
+    vital = storage.get(VitalSign, vital_id)
+    if not vital:
         abort(404)
 
-    return jsonify(vitals.to_dict())
+    return jsonify(vital.to_dict())
 
-@app_views.route('/patients/<pid>/<consultation_id>/<vitals_id>',
+@app_views.route('/patients/<pid>/consultations/<consultation_id>/vitals/<vitals_id>',
                  methods=['DELETE'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/delete_vitals.yml',
+@swag_from('documentation/patients/patient_id/consultation/consultation_id/vitals/delete_vitals.yml',
            methods=['DELETE'])
 
 def delete_vitals(vitals_id):

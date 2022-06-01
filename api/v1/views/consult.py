@@ -7,9 +7,22 @@ from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
 
-@app_views.route('/patients/<pid>/<consultation_id>', methods=['GET'],
+@app_views.route('/patients/<pid>/consultations', methods=['GET'],
                  strict_slashes=False)
-@swag_from('documentation/patient/patient_id/get_consultation.yml')
+@swag_from('documentation/patient/patient_id/get_consultations.yml')
+def get_consultations(pid):
+    """ Retrieves the all consultation object for a specific patient """
+    all_consultations = storage.all(Consulation).values()
+    list_consultations = []
+    for consultation in all_consultations:
+        if consulation.pid == pid:
+            list_consultations.append(consultation.to_dict())
+    return jsonify(list_consultations)
+
+
+@app_views.route('/patients/<pid>/consultations/<consultation_id>', methods=['GET'],
+                 strict_slashes=False)
+@swag_from('documentation/patient/patient_id/consultations/get_consultation.yml')
 def get_consultation(consulation_id):
     """ Retrieves the a specific consultation object for a specific patient """
     consultation = storage.get(Consultation, consultation_id)
@@ -18,9 +31,9 @@ def get_consultation(consulation_id):
 
     return jsonify(consultation.to_dict())
 
-@app_views.route('/patients/<pid>/<consultation_id>', methods=['DELETE'],
+@app_views.route('/patients/<pid>/consutations/<consultation_id>', methods=['DELETE'],
                  strict_slashes=False)
-@swag_from('documentation/patient/patient_id/delete_consulation.yml',
+@swag_from('documentation/patient/patient_id/consultations/delete_consulation.yml',
            methods=['DELETE'])
 
 def delete_consulation(consulation_id):
@@ -39,8 +52,8 @@ def delete_consulation(consulation_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/patients/<pid>', methods=['POST'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/post_consultation.yml', methods=['POST'])
+@app_views.route('/patients/<pid>/consultations', methods=['POST'], strict_slashes=False)
+@swag_from('documentation/patient/patient_id/consultations/post_consultation.yml', methods=['POST'])
 def post_consultation(pid):
     """
     Creates a new consultation for a specific patient
@@ -64,9 +77,9 @@ def post_consultation(pid):
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/patients/<pid>/<consultation_id>', methods=['PUT'],
+@app_views.route('/patients/<pid>/consultations/<consultation_id>', methods=['PUT'],
                  strict_slashes=False)
-@swag_from('documentation/patient/patient_id/put_consultation.yml', methods=['PUT'])
+@swag_from('documentation/patient/patient_id/consultations/put_consultation.yml', methods=['PUT'])
 def put_consultation(consulation_id):
     """
     Updates a consultation for a specific patient

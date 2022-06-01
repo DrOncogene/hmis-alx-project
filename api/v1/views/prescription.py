@@ -6,10 +6,34 @@ from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
-#the get request for consultation has the ids for prescription, i believe this is redundant
-@app_views.route('/patients/<pid>/<consultation_id>/<prescription_id>',
+
+@app_views.route('/patients/<pid>/prescriptions',
                  methods=['GET'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultation_id/get_prescription.yml')
+@swag_from('documentation/patients/patient_id/get_prescriptions.yml')
+def get_prescriptions(pid):
+    """ Retrieves the all prescription object for a specific patient """
+    all_prescriptions = storage.all(Prescription).values()
+    list_prescriptions = []
+    for prescription in all_prescriptions:
+        if prescription.pid == pid:
+            list_prescriptions.append(prescription.to_dict())
+    return jsonify(list_prescriptions)
+
+@app_views.route('/patients/<pid>/consultations/<consultation_id>/prescriptions',
+                 methods=['GET'], strict_slashes=False)
+@swag_from('documentation/patient/patient_id/consultations/consultation_id/get_prescription.yml')
+def get_prescriptions(consultation_id):
+    """ Retrieves the all prescription object for a specific consultation """
+    all_prescriptions = storage.all(Prescription).values()
+    list_prescriptions = []
+    for prescription in all_prescriptions:
+        if prescription.consultation_id == consultation_id:
+            list_prescriptions.append(prescription.to_dict())
+    return jsonify(list_prescriptions)
+
+@app_views.route('/patients/<pid>/consultations/<consultation_id>/prescriptions/<prescription_id>',
+                 methods=['GET'], strict_slashes=False)
+@swag_from('documentation/patients/patient_id/consultations/consultation_id/prescriptions/get_prescription.yml')
 def get_prescription(prescription_id):
     """ Retrieves the a specific prescription object for a specific consultation """
     prescription = storage.get(Prescription, prescription_id)
@@ -18,9 +42,9 @@ def get_prescription(prescription_id):
 
     return jsonify(prescription.to_dict())
 
-@app_views.route('/patients/<pid>/<consultation_id>/<prescription_id>',
+@app_views.route('/patients/<pid>/consultations/<consultation_id>/prescriptions/<prescription_id>',
                  methods=['DELETE'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/delete_prescription.yml',
+@swag_from('documentation/patients/patient_id/consultations/consultation_id>/prescriptions/delete_prescription.yml',
            methods=['DELETE'])
 
 def delete_prescription(prescription_id):
@@ -39,10 +63,10 @@ def delete_prescription(prescription_id):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/patients/<pid>/<consultation_id>',
+@app_views.route('/patients/<pid>/consultations/<consultation_id>/prescriptions',
                  methods=['POST'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultation_id/post_prescription.yml', methods=['POST'])
-def post_prescription(pid, consulation_id):
+@swag_from('documentation/patient/patient_id/consultations/consultation_id/post_prescription.yml', methods=['POST'])
+def post_prescription(pid, consultation_id):
     """
     Creates a new prescription for a specific consultation
     """
@@ -50,8 +74,8 @@ def post_prescription(pid, consulation_id):
         abort(400, description="Not a JSON")
 
     pid = pid
-    consulation_id = consulation_id
-    if 'drug_name' not in request.get_json():
+    consultation_id = consultation_id
+    if 'drug_id' not in request.get_json():
         abort(400, description="Missing drug")
     if 'dose' not in request.get_json():
         abort(400, description="Missing dose")
@@ -69,9 +93,9 @@ def post_prescription(pid, consulation_id):
     instance.save()
     return make_response(jsonify(instance.to_dict()), 201)
 
-@app_views.route('/patients/<pid>/<consultation_id>/<prescription_id>', methods=['PUT'],
+@app_views.route('/patients/<pid>/consultations/<consultation_id>/prescriptions/<prescription_id>', methods=['PUT'],
                  strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultation_id/put_prescription.yml',
+@swag_from('documentation/patient/patient_id/consultations/consultation_id/prescriptions/put_prescription.yml',
            methods=['PUT'])
 def put_prescription(prescription_id):
     """

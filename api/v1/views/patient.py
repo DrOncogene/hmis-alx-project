@@ -80,8 +80,8 @@ def post_patient():
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/patients/<patient_id>', methods=['PUT'], strict_slashes=False)
-@swag_from('documentation/patient/put_patient.yml', methods=['PUT'])
+@app_views.route('/patients/<pid>', methods=['PUT'], strict_slashes=False)
+@swag_from('documentation/patients/put_patient.yml', methods=['PUT'])
 def put_patient(pid):
     """
     Updates a patient

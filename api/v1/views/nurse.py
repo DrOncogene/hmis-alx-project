@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ objects that handle all default RestFul API actions for Nurses """
 from models.notes.vitals import VitalSign
+from models.notes.nursenote import NurseNote
 from storage import storage
 from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
@@ -17,3 +18,15 @@ def get_vitals(staff_id):
         if vitals.created_by == staff_id:
             nurse_vitals.append(vitals.to_dict())
     return jsonify(nurse_vitals)
+
+
+@app_views.route('/staffs/nurse/<staff_id>/nursenotes', methods=['GET'], strict_slashes=False)
+@swag_from('documentation/staffs/nurse/staff_id/get_nursenotes.yml')
+def get_nursenotes(staff_id):
+    """ Retrieves the list of a nurses nursenotes """
+    all_nursenotes = storage.all(NurseNote).values()
+    nurse_nursenotes = []
+    for nursenotes in all_nursenotes:
+        if nursenotes.created_by == staff_id:
+            nurse_nursenotes.append(nursenotes.to_dict())
+    return jsonify(nurse_nursenotes)

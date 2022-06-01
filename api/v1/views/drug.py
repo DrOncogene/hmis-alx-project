@@ -7,6 +7,24 @@ from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
 
+@app_views.route('/patients/<pid>/consultations/<consultation_id>/drugs',
+                 methods=['GET'], strict_slashes=False)
+@swag_from('documentation/patient/patient_id/consultations/consultation_id/get_drugs.yml')
+def get_drugs(consultation_id):
+    """ Retrieves the all drug object for a specific consultation """
+    all_prescriptions = storage.all(Prescription).values()
+    all_drugs = storage.all(Drug).values()
+    list_drugs = []
+    list_prescriptions = []
+    for prescription in all_prescriptions:
+        if prescription.consultation_id == consultation_id:
+            list_prescriptions.append(prescription.drug_id)
+    for drug in all_drugs:
+        for drug_id in list_drugs:
+            if drug.id == drug_id:
+                list_drugs.append(drug.to_dict())
+    return jsonify(list_drugs)
+
 @app_views.route('/drugs', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/drugs/all_drugs.yml')
 def get_drugs():
