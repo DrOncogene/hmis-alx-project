@@ -28,13 +28,13 @@ class Patient(BaseUser, Base):
         vitals_ids = []
 
     def __init__(self, **kwargs):
-        from storage import pids as pid_store
         if (kwargs):
             super().__init__(**kwargs)
         else:
             super().__init__()
 
         if osgetenv('STORAGE_TYPE') != 'db':
+            from storage import pids as pid_store
             try:
                 # grab all the pids in the store and convert to numbers
                 pids = [int(pid) for pid in pid_store]

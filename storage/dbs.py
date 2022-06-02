@@ -58,12 +58,22 @@ class DBStorage:
 
         return obj_dict
 
-    def get(self, cls, id):
+    def get(self, cls, attr, val):
         """returns a single obj of cls with id"""
-        try:
-            return self.__session.query(cls).filter_by(id=id).all()[0]
-        except Exception:
-            return
+        if attr == 'staff_id':
+            return self.__session.query(cls).filter_by(staff_id=val).first()
+        elif attr == 'pid':
+            return self.__session.query(cls).filter_by(pid=val).first()
+        elif attr == 'email':
+            return self.__session.query(cls).filter_by(email=val).first()
+        else:
+            return self.__session.query(cls).filter_by(id=val).first()
+
+    def query(self, *args):
+        res = []
+        for cls in args:
+            res.append(self.__session.query(cls).all())
+        return res
 
     def count(self, cls=None):
         """ count the number of objs in storage of cls, if given"""
@@ -75,7 +85,11 @@ class DBStorage:
 
     def save(self):
         """ commits all changes to db"""
-        self.__session.commit()
+        try:
+            self.__session.commit()
+        except Exception as err:
+            self.__session.rollback()
+            print(err)
 
     def delete(self, obj=None):
         """ deletes obj from the current session"""
