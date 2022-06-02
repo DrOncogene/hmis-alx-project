@@ -9,6 +9,7 @@ from models.base_user import BaseUser
 class Staff(BaseUser):
     """ Simple Staff class model """
     staff_id = Column(Integer, primary_key=True, autoincrement=True)
+    username = Column(String(128), unique=True, nullable=False)
     email = Column(String(128), unique=True, nullable=False)
     password = Column(String(128), nullable=False)
 
