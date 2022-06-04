@@ -81,7 +81,6 @@ class HMIS(cmd.Cmd):
         if args[0] in HMIS._classes:
             new_obj = HMIS._classes[args[0]]()
             storage.new(new_obj)
-            storage.save()
             print(new_obj.id)
 
     def do_show(self, arg: str) -> None:
@@ -127,6 +126,13 @@ class HMIS(cmd.Cmd):
         for obj in storage.all().values():
             obj_list.append(str(obj))
         print(obj_list)
+
+    def do_save(self, arg: str):
+        """persist the current objects to storage esp in DBStorage.
+        Gives time to update mandatory attributes that would not
+        be created automatically before persisting to the db"""
+        storage.save()
+        storage.close()
 
     def do_update(self, arg: str) -> None:
         """update the given attribute of a given object.
