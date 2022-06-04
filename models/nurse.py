@@ -1,17 +1,18 @@
 #!usr/bin/pyhton3
 """ A class Nurse that inherits from Staff """
 from os import getenv as osgetenv
-from sqlalchemy import Column, String, ForeignKey
-from models.base_model import Base
+from sqlalchemy import Column, Integer, String, ForeignKey
 from models.staff import Staff
 from models.permissions import Permission
 
 
-class Nurse(Staff, Base):
+class Nurse(Staff):
     """ Simple Nurse class model """
     __tablename__ = "nurses"
 
     if osgetenv('STORAGE_TYPE') == 'db':
+        staff_id = Column(Integer, ForeignKey("staffs.staff_id"),
+                          primary_key=True)
         job_title = Column(String(16), nullable=False, default="Nurse")
         permissions = Column(String(60), ForeignKey('permissions.id'))
     else:
@@ -22,6 +23,10 @@ class Nurse(Staff, Base):
             delete=('vitals', 'nursenote'),
             view=('all')
         )
+
+    __mapper_args__ = {
+        "polymorphic_identity": "nurse"
+    }
 
     def __init__(self, **kwargs):
         if kwargs:
