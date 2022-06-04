@@ -44,14 +44,8 @@ class DBStorage:
         if cls is None:
             for obj_cls in self._classes:
                 obj_list.extend(session.query(obj_cls).all())
-            for obj in obj_list:
-                key = "{}.{}".format(obj.__class__.__name__, obj.id)
-                obj_dict.update({key: obj})
-            return obj_dict
-        for obj_cls in self._classes:
-            if obj_cls == cls:
-                obj_list.extend(session.query(obj_cls).all())
-                break
+        else:
+            obj_list = session.query(cls).all()
         for obj in obj_list:
             key = "{}.{}".format(obj.__class__.__name__, obj.id)
             obj_dict.update({key: obj})
@@ -64,16 +58,12 @@ class DBStorage:
             return self.__session.query(cls).filter_by(staff_id=val).first()
         elif attr == 'pid':
             return self.__session.query(cls).filter_by(pid=val).first()
+        elif attr == 'username':
+            return self.__session.query(cls).filter_by(username=val).first()
         elif attr == 'email':
             return self.__session.query(cls).filter_by(email=val).first()
         else:
             return self.__session.query(cls).filter_by(id=val).first()
-
-    def query(self, *args):
-        res = []
-        for cls in args:
-            res.append(self.__session.query(cls).all())
-        return res
 
     def count(self, cls=None):
         """ count the number of objs in storage of cls, if given"""
