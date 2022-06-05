@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Module for Prescription class."""
-from os import getenv as osgetenv
 from sqlalchemy import Column, String, Integer, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base_model import BaseModel, Base
@@ -10,43 +9,31 @@ class Prescription(BaseModel, Base):
     """Class representing a Prescription."""
     __tablename__ = 'prescriptions'
 
-    if osgetenv('STORAGE_TYPE') == 'db':
-        pid = Column(Integer,
-                     ForeignKey('patients.pid', ondelete='CASCADE'),
-                     nullable=False)
-        consultation_id = Column(String(60),
-                                 ForeignKey('consultations.id',
-                                            ondelete='CASCADE'),
-                                 nullable=False)
-        dispensed_by = Column(Integer, ForeignKey('pharmacists.staff_id'))
-        patient = relationship('Patient', back_populates='prescriptions')
-        consultation = relationship('Consultation', backref='prescriptions')
-    else:
-        pid = ""
-        consultation_id = ""
-        dispensed_by = ""
+    pid = Column(Integer,
+                 ForeignKey('patients.pid', ondelete='CASCADE'),
+                 nullable=False)
+    consultation_id = Column(String(60),
+                             ForeignKey('consultations.id',
+                                        ondelete='CASCADE'),
+                             nullable=False)
+    dispensed_by = Column(Integer, ForeignKey('pharmacists.staff_id'))
+    patient = relationship('Patient', back_populates='prescriptions')
+    consultation = relationship('Consultation', backref='prescriptions')
 
 
 class DrugPrescription(BaseModel, Base):
     """class representing individual drugs prescribed"""
     __tablename__ = 'drug_prescriptions'
 
-    if osgetenv('STORAGE_TYPE') == 'db':
-        drug_id = Column(String(60),
-                         ForeignKey('drugs.id', ondelete='CASCADE'),
-                         nullable=False)
-        prescription_id = Column(String(60),
-                                 ForeignKey('prescriptions.id',
-                                            ondelete='CASCADE'),
-                                 nullable=False)
-        dose = Column(String(16))
-        frequency = Column(String(16))
-        duration = Column(String(16))
-        route = Column(String(16))
-        prescription = relationship('Prescription', backref='drugs')
-    else:
-        drug_id = ""
-        dose = ""
-        frequency = ""
-        duration = ""
-        route = ""
+    drug_id = Column(String(60),
+                     ForeignKey('drugs.id', ondelete='CASCADE'),
+                     nullable=False)
+    prescription_id = Column(String(60),
+                             ForeignKey('prescriptions.id',
+                                        ondelete='CASCADE'),
+                             nullable=False)
+    dose = Column(String(16))
+    frequency = Column(String(16))
+    duration = Column(String(16))
+    route = Column(String(16))
+    prescription = relationship('Prescription', backref='drugs')

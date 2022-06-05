@@ -11,16 +11,10 @@ class Permission(Base):
 
     id = Column(String(60), primary_key=True, default=uuid4())
     name = Column(String(32), nullable=False, unique=True)
-    create = Column(String(128), nullable=False)
-    edit = Column(String(128), nullable=False)
-    delete = Column(String(128), nullable=False)
-    view = Column(String(128), nullable=False)
-
-    def __init__(self, create, edit, delete, view):
-        self.__create = create
-        self.__edit = edit
-        self.__delete = delete
-        self.__view = view
+    __create = Column(String(128), nullable=False)
+    __edit = Column(String(128), nullable=False)
+    __delete = Column(String(128), nullable=False)
+    __view = Column(String(128), nullable=False)
 
     @property
     def create(self):

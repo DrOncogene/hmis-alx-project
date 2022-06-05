@@ -2,7 +2,6 @@
 """Module for Base class
 Contains the Base class for the HMIS console.
 """
-from os import getenv as osgetenv
 import uuid
 from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
@@ -49,7 +48,7 @@ class BaseModel:
         """Returns a human-readable string representation
         of an instance."""
         obj_dict = self.__dict__.copy()
-        if osgetenv('STORAGE_TYPE') == 'db' and hasattr(self, 'staff_id'):
+        if hasattr(self, 'staff_id'):
             titles = {
                 "Admin": "ADM",
                 "Doctor": "DOC",
