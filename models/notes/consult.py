@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """Module for Consultation class."""
-
 from models.base_model import BaseModel
 
 
