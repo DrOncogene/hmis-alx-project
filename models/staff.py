@@ -26,3 +26,14 @@ class Staff(BaseUser, Base):
 
     def check_password(self, password):
         return check_password_hash(self.password, password)
+
+    def format_staff_id(self):
+        titles = {
+                "Admin": "ADM",
+                "Doctor": "DOC",
+                "Nurse": "NRS",
+                "Pharmacist": "PHM",
+                "RecordOfficer": "REC"
+            }
+        title = title = titles[self.__class__.__name__]
+        return f'{title}{self.staff_id:04d}'
