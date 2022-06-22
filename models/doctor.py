@@ -19,4 +19,5 @@ class Doctor(Staff):
     }
 
     def __init__(self, **kwargs):
+        """init method"""
         super().__init__(**kwargs)

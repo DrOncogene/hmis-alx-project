@@ -18,4 +18,5 @@ class Nurse(Staff):
     }
 
     def __init__(self, **kwargs):
+        """call the super"""
         super().__init__(**kwargs)
