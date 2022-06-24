@@ -18,7 +18,9 @@ class Prescription(BaseModel, Base):
                              nullable=False)
     dispensed_by = Column(Integer, ForeignKey('pharmacists.staff_id'))
     patient = relationship('Patient', back_populates='prescriptions')
-    consultation = relationship('Consultation', backref='prescriptions')
+    consultation = relationship('Consultation', back_populates='prescriptions')
+    drugs = relationship('DrugPrescription', cascade='all, delete',
+                         back_populates='prescription')
 
 
 class DrugPrescription(BaseModel, Base):
@@ -36,4 +38,4 @@ class DrugPrescription(BaseModel, Base):
     frequency = Column(String(16))
     duration = Column(String(16))
     route = Column(String(16))
-    prescription = relationship('Prescription', backref='drugs')
+    prescription = relationship('Prescription', back_populates='drugs')

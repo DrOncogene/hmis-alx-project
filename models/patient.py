@@ -19,7 +19,3 @@ class Patient(BaseUser, Base):
                           back_populates='patient')
     nursenotes = relationship('NurseNote', cascade='all, delete',
                               back_populates='patient')
-
-    def __init__(self, **kwargs):
-        """calls the super"""
-        super().__init__(**kwargs)

@@ -16,6 +16,3 @@ class RecordOfficer(Staff):
     __mapper_args__ = {
         "polymorphic_identity": "recordofficer"
     }
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
