@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """Module for Patient class."""
-from sqlalchemy import Column, String, Integer
+from sqlalchemy import Column, Integer
 from sqlalchemy.orm import relationship
 from models.base_user import BaseUser
 from models.base_model import Base
@@ -19,6 +19,3 @@ class Patient(BaseUser, Base):
                           back_populates='patient')
     nursenotes = relationship('NurseNote', cascade='all, delete',
                               back_populates='patient')
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)

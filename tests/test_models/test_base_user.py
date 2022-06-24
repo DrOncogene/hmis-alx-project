@@ -5,11 +5,13 @@ Contains the TestBaseUserDocs classes
 
 from datetime import datetime
 import inspect
+import unittest
+
+import pep8
 from models import base_user
 from models.base_model import BaseModel
-import pep8
-import storage
-import unittest
+from models.staff import Staff
+
 BaseUser = base_user.BaseUser
 
 
@@ -59,147 +61,85 @@ class TestBaseUserDocs(unittest.TestCase):
 
 class TestBaseUser(unittest.TestCase):
     """Test the BaseUser class"""
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        if cls is not TestBaseUser:
+            cls.is_base = False
+        else:
+            cls.is_base = True
+
+    def setUp(self) -> None:
+        if self.is_base:
+            self.skipTest("Not testing baseuser")
+        self.setUpBase()
+
+    def tearDown(self) -> None:
+        self.tearDownBase()
+
     def test_is_subclass(self):
         """Test that BaseUser is a subclass of BaseModel"""
-        user = BaseUser()
-        self.assertIsInstance(user, BaseModel)
-        self.assertTrue(hasattr(user, "id"))
-        self.assertTrue(hasattr(user, "created_at"))
-        self.assertTrue(hasattr(user, "created_by"))
-        self.assertTrue(hasattr(user, "updated_at"))
-        self.assertTrue(hasattr(user, "updated_by"))
+        self.assertIsInstance(self.user, BaseModel)
+        self.assertTrue(hasattr(self.user, "id"))
+        self.assertTrue(hasattr(self.user, "created_at"))
+        self.assertTrue(hasattr(self.user, "created_by"))
+        self.assertTrue(hasattr(self.user, "updated_at"))
+        self.assertTrue(hasattr(self.user, "updated_by"))
 
     def test_first_name_attr(self):
         """Test that BaseUser has attr first_name, and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "first_name"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.first_name, None)
-        else:
-            self.assertEqual(user.first_name, "")
+        self.assertTrue(hasattr(self.user, "first_name"))
+        self.assertEqual(self.user.first_name, None)
 
     def test_last_name_attr(self):
         """Test that BaseUser has attr last_name, and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "last_name"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.last_name, None)
-        else:
-            self.assertEqual(user.last_name, "")
+        self.assertTrue(hasattr(self.user, "last_name"))
+        self.assertEqual(self.user.last_name, None)
 
     def test_gender_attr(self):
         """Test that BaseUser has attr gender, and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "gender"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.gender, None)
-        else:
-            self.assertEqual(user.gender, "")
+        self.assertTrue(hasattr(self.user, "gender"))
+        self.assertEqual(self.user.gender, None)
 
     def test_email_attr(self):
         """Test that BaseUser has attr email, and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "email"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.email, None)
-        else:
-            self.assertEqual(user.email, "")
+        self.assertTrue(hasattr(self.user, "email"))
+        self.assertEqual(self.user.email, "email")
 
     def test_dob_attr(self):
-        """Test that BaseUser has attr dob, and it's 0"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "dob"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.dob, None)
-        else:
-            self.assertEqual(user.dob, "")
+        """Test that BaseUser has attr dob, and it's empty"""
+        self.assertTrue(hasattr(self.user, "dob"))
+        self.assertEqual(self.user.dob, None)
 
     def test_marital_status_attr(self):
         """Test that BaseUser has attr marital_status,
         and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "marital_status"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.marital_status, None)
-        else:
-            self.assertEqual(user.marital_status, "")
+        self.assertTrue(hasattr(self.user, "marital_status"))
+        self.assertEqual(self.user.marital_status, None)
 
     def test_address_attr(self):
         """Test that BaseUser has attr address, and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "address"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.address, None)
-        else:
-            self.assertEqual(user.address, "")
+        self.assertTrue(hasattr(self.user, "address"))
+        self.assertEqual(self.user.address, None)
 
-    def test_telephone_number_attr(self):
+    def test_phone_number_attr(self):
         """Test that BaseUser has attr telephone_number,
         and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "telephone_number"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.telephone_number, None)
-        else:
-            self.assertEqual(user.telephone_number, "")
+        self.assertTrue(hasattr(self.user, "phone_number"))
+        self.assertEqual(self.user.phone_number, None)
 
-    def test_kinfirst_name_attr(self):
-        """Test that BaseUser has attr kinfirst_name,
+    def test_next_of_kin_attr(self):
+        """Test that BaseUser has attr next_of_kin,
         and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "kinfirst_name"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.kinfirst_name, None)
-        else:
-            self.assertEqual(user.kinfirst_name, "")
+        self.assertTrue(hasattr(self.user, "next_of_kin"))
+        self.assertEqual(self.user.next_of_kin, None)
 
-    def test_kinlast_name_attr(self):
-        """Test that BaseUser has attr kinlast_name,
+    def test_kin_address_attr(self):
+        """Test that BaseUser has attr kin_address,
         and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "kinlast_name"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.kinlast_name, None)
-        else:
-            self.assertEqual(user.kinlast_name, "")
+        self.assertTrue(hasattr(self.user, "kin_address"))
+        self.assertEqual(self.user.kin_address, None)
 
-    def test_kincontact_address_attr(self):
-        """Test that BaseUser has attr kincontact_address,
-        and it's an empty string"""
-        user = BaseUser()
-        self.assertTrue(hasattr(user, "kincontact_address"))
-        if storage.storage_t == 'db':
-            self.assertEqual(user.kincontact_address, None)
-        else:
-            self.assertEqual(user.kincontact_address, "")
-
-    def test_to_dict_creates_dict(self):
-        """test to_dict method creates a dictionary with proper attrs"""
-        u = BaseUser()
-        new_d = u.to_dict()
-        self.assertEqual(type(new_d), dict)
-        self.assertFalse("_sa_instance_state" in new_d)
-        for attr in u.__dict__:
-            if attr != "_sa_instance_state":
-                self.assertTrue(attr in new_d)
-        self.assertTrue("__class__" in new_d)
-
-    def test_to_dict_values(self):
-        """test that values in dict returned from to_dict are correct"""
-        t_format = "%Y-%m-%dT%H:%M:%S.%f"
-        u = BaseUser()
-        new_d = u.to_dict()
-        self.assertEqual(new_d["__class__"], "BaseUser")
-        self.assertEqual(type(new_d["created_at"]), str)
-        self.assertEqual(type(new_d["updated_at"]), str)
-        self.assertEqual(new_d["created_at"], u.created_at.strftime(t_format))
-        self.assertEqual(new_d["updated_at"], u.updated_at.strftime(t_format))
-
-    def test_str(self):
-        """test that the str method has the correct output"""
-        user = BaseUser()
-        string = "[BaseUser] {}".format(user.__dict__)
-        self.assertEqual(string, str(user))
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,15 +3,19 @@
 Contains the TestStaffDocs classes
 """
 
-from datetime import datetime
 import inspect
+import unittest
+from datetime import datetime
+import time
+
+import pep8
 from models import staff
 from models.base_model import BaseModel
-from models.permissions import Permissions
 from models.base_user import BaseUser
-import pep8
-import storage
-import unittest
+from tests.test_models.test_base_user import TestBaseUser
+from tests.test_models.test_base_model import TestBaseModel
+from storage import storage
+
 Staff = staff.Staff
 
 
@@ -61,79 +65,54 @@ class TestStaffDocs(unittest.TestCase):
 
 class TestStaff(unittest.TestCase):
     """Test the Staff class"""
-    def test_is_subclass(self):
-        """Test that Staff is a subclass of BaseModel"""
-        staff = Staff()
-        self.assertIsInstance(staff, BaseModel)
-        self.assertTrue(hasattr(staff, "id"))
-        self.assertTrue(hasattr(staff, "created_at"))
-        self.assertTrue(hasattr(staff, "created_by"))
-        self.assertTrue(hasattr(staff, "updated_at"))
-        self.assertTrue(hasattr(staff, "updated_by"))
+    @classmethod
+    def setUpClass(cls) -> None:
+        if cls is not TestStaff:
+            cls.is_base = False
+        else:
+            cls.is_base = True
 
-    def test_is_subclass(self):
+    def setUp(self) -> None:
+        if self.is_base:
+            self.skipTest("Not testing baseuser")
+        self.setUpBase()
+
+    def tearDown(self) -> None:
+        if self.is_base:
+            self.skipTest("Not testing baseuser")
+        self.tearDownBase()
+
+    def test_is_subclass_baseuser(self):
         """Test that Staff is a subclass of BaseUser"""
-        staff = Staff()
+        staff = self.staff
         self.assertIsInstance(staff, BaseUser)
         self.assertTrue(hasattr(staff, "first_name"))
         self.assertTrue(hasattr(staff, "last_name"))
         self.assertTrue(hasattr(staff, "gender"))
         self.assertTrue(hasattr(staff, "dob"))
+        self.assertTrue(hasattr(staff, "email"))
         self.assertTrue(hasattr(staff, "marital_status"))
         self.assertTrue(hasattr(staff, "address"))
-        self.assertTrue(hasattr(staff, "telephone_number"))
-        self.assertTrue(hasattr(staff, "kinfirst_name"))
-        self.assertTrue(hasattr(staff, "kinlast_name"))
-        self.assertTrue(hasattr(staff, "kincontact_address"))
+        self.assertTrue(hasattr(staff, "phone_number"))
+        self.assertTrue(hasattr(staff, "next_of_kin"))
+        self.assertTrue(hasattr(staff, "kin_address"))
 
-    def test_is_subclass(self):
-        """Test that Staff is a subclass of Permissions"""
-        staff = Staff()
-        self.assertIsInstance(staff, Permissions)
-        self.assertTrue(hasattr(staff, "items"))
-        self.assertTrue(hasattr(staff, "create"))
-        self.assertTrue(hasattr(staff, "delete"))
-        self.assertTrue(hasattr(staff, "view"))
-        self.assertTrue(hasattr(staff, "edit"))
+    def test_staff_has_attr(self):
+        """checks if staff object have correct attrs"""
+        staff = self.staff
+        self.assertTrue(hasattr(staff, "username"))
+        self.assertTrue(hasattr(staff, "password"))
+        self.assertTrue(hasattr(staff, "staff_id"))
+        self.assertTrue(hasattr(staff, "staff_type"))
+        self.assertTrue(hasattr(staff, "check_password"))
+        self.assertTrue(hasattr(staff, "set_password"))
 
-    def test_job_title_attr(self):
-        """Test that BaseUser has attr job_title, and it's an empty string"""
-        staff = Staff()
-        self.assertTrue(hasattr(staff, "job_title"))
-        if storage.storage_t == 'db':
-            self.assertEqual(staff.job_title, None)
-        else:
-            self.assertEqual(staff.job_title, "")
+    def test_format_staff_id(self):
+        """tests the format_staff_id method"""
+        string = f"STF{self.staff.staff_id:04}"
+        staff_id = self.staff.format_staff_id()
+        self.assertEqual(string, staff_id)
 
-    """def test_set_staff_id(self):
-        """Test that staff id is correctly created"""
-        staff = Staff()
-        self.assertIs(type(staff), Staff)
-        attrs_types = {
-            "id": str,
-            "created_at": datetime,
-            "created_by": str,
-            "updated_at": datetime,
-            "updated_by": str
-        }
-        for attr, typ in attrs_types.items():
-            with self.subTest(attr=attr, typ=typ):
-                self.assertIn(attr, inst.__dict__)
-                self.assertIs(type(inst.__dict__[attr]), typ)
-    
-    @mock.patch('storage.storage')
-    def test_set_staff_id(self, mock_storage):
-        """Test that set_staff_id method `"""
-        inst = BaseModel()
-        old_created_at = inst.created_at
-        old_updated_at = inst.updated_at
-        inst.save()
-        new_created_at = inst.created_at
-        new_updated_at = inst.updated_at
-        self.assertNotEqual(old_updated_at, new_updated_at)
-        self.assertEqual(old_created_at, new_created_at)
-        self.assertTrue(mock_storage.new.assert_called)
-        self.assertTrue(mock_storage.save.assert_called)"""
 
 if __name__ == '__main__':
     unittest.main()

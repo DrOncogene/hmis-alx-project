@@ -21,3 +21,5 @@ class Consultation(BaseModel, Base):
     plan = Column(Text)
     patient = relationship('Patient', back_populates='consultations')
     vitals = relationship('VitalSign', back_populates='consultation')
+    prescriptions = relationship('Prescription', cascade='all, delete',
+                                 back_populates='consultation')

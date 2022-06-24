@@ -17,6 +17,3 @@ class Doctor(Staff):
     __mapper_args__ = {
         "polymorphic_identity": "doctor"
     }
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
