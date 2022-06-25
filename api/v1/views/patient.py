@@ -11,36 +11,30 @@ from flasgger.utils import swag_from
 @swag_from('documentation/patients/all_patients.yml')
 def get_patients():
     """ Retrieves the list of all patient object or a specific patient """
-    all_patients = storage.all(Patient).values()
-    list_patients = []
-    for patient in all_patients:
-        list_patients.append(patient.to_dict())
-    return jsonify(list_patients)
+    all_patients = storage.all(Patient)
+    return jsonify(all_patients)
 
 
 @app_views.route('/patients/<pid>', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/patients/get_patients.yml', methods=['GET'])
 def get_patient(pid):
     """ Retrieves an patient """
-    patient = storage.get(Patient, pid)
+    patient = storage.get(Patient, 'pid', pid)
     if not patient:
-        abort(404)
+        abort(404, description="Patient not found")
 
     return jsonify(patient.to_dict())
 
 
-@app_views.route('/patients/<pid>', methods=['DELETE'],
-                 strict_slashes=False)
+@app_views.route('/patients/<pid>', methods=['DELETE'], strict_slashes=False)
 @swag_from('documentation/patients/delete_patient.yml', methods=['DELETE'])
 def delete_patient(pid):
     """
     Deletes a patient Object
     """
-
-    patient = storage.get(Patient, pid)
-    
+    patient = storage.get(Patient, 'pid', pid)
     if not patient:
-        abort(404)
+        abort(404, description="Patient not found")
 
     storage.delete(patient)
     storage.save()
@@ -65,14 +59,16 @@ def post_patient():
         abort(400, description="Missing gender")
     if 'dob' not in request.get_json():
         abort(400, description="Missing date of birth")
+    if 'marital_status' not in request.get_json():
+        abort(400, description="Missing marital status")
     if 'address' not in request.get_json():
         abort(400, description="Missing address")
-    if 'kinfirst_name' not in request.get_json():
-        abort(400, description="Missing next of kin first name")
-    if 'kinlast_name' not in request.get_json():
-        abort(400, description="Missing next of kin last name")
-    if 'kintelephone_number' not in request.get_json():
-        abort(400, description="Missing next of kin contact address")
+    if 'phone_number' not in request.get_json():
+        abort(400, description="Missing phone number")
+    if 'next_of_kin' not in request.get_json():
+        abort(400, description="Missing next of kin")
+    if 'kin_address' not in request.get_json():
+        abort(400, description="Missing next of kin address")
 
     data = request.get_json()
     instance = Patient(**data)
@@ -86,15 +82,15 @@ def put_patient(pid):
     """
     Updates a patient
     """
-    patient = storage.get(Patient, pid)
+    patient = storage.get(Patient, 'pid', pid)
 
     if not patient:
-        abort(404)
+        abort(404, description="Patient not found")
 
     if not request.get_json():
         abort(400, description="Not a JSON")
 
-    ignore = ['id', 'created_at', 'created_by']
+    ignore = ['id', 'pid', 'created_at', 'created_by']
 
     data = request.get_json()
     for key, value in data.items():
