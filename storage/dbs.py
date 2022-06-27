@@ -1,10 +1,9 @@
 #!/usr/bin/python3
 """ module that defines the db storage engine"""
 from os import getenv as osgetenv
-from requests import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.exc import OperationalError, IntegrityError
+
 from models.base_model import Base
 from models.patient import Patient
 from models.doctor import Doctor
@@ -24,8 +23,19 @@ class DBStorage:
     __engine = None
     __sessionmaker = None
     __session = None
-    _classes = [Patient, Doctor, Nurse, Pharmacist, RecordOfficer, Admin,
-                Consultation, Prescription, VitalSign, NurseNote, Drug]
+    _classes = {
+        "Patient": Patient,
+        "Doctor": Doctor,
+        "Nurse": Nurse,
+        "Pharmacist": Pharmacist,
+        "RecordOfficer": RecordOfficer,
+        "Admin": Admin,
+        "Consultation": Consultation,
+        "Prescription": Prescription,
+        "VitalSign": VitalSign,
+        "NurseNote": NurseNote,
+        "Drug": Drug
+    }
 
     def __init__(self):
         user = osgetenv('DB_USER')
@@ -44,15 +54,18 @@ class DBStorage:
         session = self.__session
         obj_list = []
         if cls is None:
-            for obj_cls in self._classes:
+            for obj_cls in self._classes.values():
                 obj_list.extend(session.query(obj_cls).all())
         else:
             obj_list = session.query(cls).all()
 
         return obj_list
 
-    def get(self, cls: type, attr: str, val: str):
+    def get(self, cls, attr: str, val: str):
         """returns a single obj of cls with id"""
+        if isinstance(cls, str):
+            cls = self._classes[cls]
+
         if attr == 'staff_id':
             obj = self.__session.query(cls).filter_by(staff_id=val).first()
         elif attr == 'pid':
