@@ -2,11 +2,9 @@
 """Module for Base class
 Contains the Base class for the HMIS console.
 """
-import os
 import uuid
-from datetime import datetime
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, TIMESTAMP, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import declarative_mixin, declared_attr
 from sqlalchemy.sql import func
 # storage is imported within necessary methods
@@ -26,11 +24,13 @@ class BaseModel:
 
     @declared_attr
     def created_by(cls):
-        return Column(Integer, ForeignKey('staffs.staff_id'))
+        return Column(Integer,
+                      ForeignKey('staffs.staff_id', ondelete='SET NULL'))
 
     @declared_attr
     def updated_by(cls):
-        return Column(Integer, ForeignKey('staffs.staff_id'))
+        return Column(Integer,
+                      ForeignKey('staffs.staff_id', ondelete='SET NULL'))
 
     def __init__(self, *args, **kwargs):
         """Initialization of a BaseModel instance"""
@@ -60,12 +60,9 @@ class BaseModel:
             format(type(self).__name__, obj_dict)
 
     def save(self):
-        """Updates the updated_at attribute
-        with the current datetime."""
+        """saves the obj to db"""
         from storage import storage
-        self.updated_by = None
         storage.save()
-        storage.close()
 
     def delete(self):
         """Deletes an object and updates the updated_at attribute
