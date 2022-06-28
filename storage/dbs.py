@@ -1,8 +1,9 @@
 #!/usr/bin/python3
 """ module that defines the db storage engine"""
 from os import getenv as osgetenv
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+
 from models.base_model import Base
 from models.patient import Patient
 from models.doctor import Doctor
@@ -20,9 +21,21 @@ from models.drug import Drug
 class DBStorage:
     """ the db storage class"""
     __engine = None
+    __sessionmaker = None
     __session = None
-    _classes = [Patient, Doctor, Nurse, Pharmacist, RecordOfficer, Admin,
-                Consultation, Prescription, VitalSign, NurseNote, Drug]
+    _classes = {
+        "Patient": Patient,
+        "Doctor": Doctor,
+        "Nurse": Nurse,
+        "Pharmacist": Pharmacist,
+        "RecordOfficer": RecordOfficer,
+        "Admin": Admin,
+        "Consultation": Consultation,
+        "Prescription": Prescription,
+        "VitalSign": VitalSign,
+        "NurseNote": NurseNote,
+        "Drug": Drug
+    }
 
     def __init__(self):
         user = osgetenv('DB_USER')
@@ -40,30 +53,30 @@ class DBStorage:
         """ queries the db for all objects"""
         session = self.__session
         obj_list = []
-        obj_dict = {}
         if cls is None:
-            for obj_cls in self._classes:
+            for obj_cls in self._classes.values():
                 obj_list.extend(session.query(obj_cls).all())
         else:
             obj_list = session.query(cls).all()
-        for obj in obj_list:
-            key = "{}.{}".format(obj.__class__.__name__, obj.id)
-            obj_dict.update({key: obj})
 
-        return obj_dict
+        return obj_list
 
-    def get(self, cls, attr, val):
+    def get(self, cls, attr: str, val: str):
         """returns a single obj of cls with id"""
+        if isinstance(cls, str):
+            cls = self._classes[cls]
+
         if attr == 'staff_id':
-            return self.__session.query(cls).filter_by(staff_id=val).first()
+            obj = self.__session.query(cls).filter_by(staff_id=val).first()
         elif attr == 'pid':
-            return self.__session.query(cls).filter_by(pid=val).first()
+            obj = self.__session.query(cls).filter_by(pid=val).first()
         elif attr == 'username':
-            return self.__session.query(cls).filter_by(username=val).first()
+            obj = self.__session.query(cls).filter_by(username=val).first()
         elif attr == 'email':
-            return self.__session.query(cls).filter_by(email=val).first()
+            obj = self.__session.query(cls).filter_by(email=val).first()
         else:
-            return self.__session.query(cls).filter_by(id=val).first()
+            obj = self.__session.query(cls).filter_by(id=val).first()
+        return obj
 
     def count(self, cls=None):
         """ count the number of objs in storage of cls, if given"""

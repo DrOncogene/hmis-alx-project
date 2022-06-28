@@ -1,7 +1,7 @@
 #!usr/bin/pyhton3
 """ A class Staff that inherits from BaseUser """
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, Integer, String
 from models.base_user import BaseUser
 from models.base_model import Base
 
@@ -22,18 +22,22 @@ class Staff(BaseUser, Base):
     }
 
     def set_password(self, password):
+        """hashes the user password"""
         self.password = generate_password_hash(password)
 
     def check_password(self, password):
+        """verifies the password is correct"""
         return check_password_hash(self.password, password)
 
     def format_staff_id(self):
+        """formats the staff id by appending the job title"""
         titles = {
                 "Admin": "ADM",
                 "Doctor": "DOC",
                 "Nurse": "NRS",
                 "Pharmacist": "PHM",
-                "RecordOfficer": "REC"
+                "RecordOfficer": "REC",
+                "Staff": "STF"
             }
         title = title = titles[self.__class__.__name__]
         return f'{title}{self.staff_id:04d}'

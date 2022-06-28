@@ -16,6 +16,3 @@ class Admin(Staff):
     __mapper_args__ = {
         "polymorphic_identity": "admin"
     }
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)

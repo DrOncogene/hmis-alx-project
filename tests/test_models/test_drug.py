@@ -5,11 +5,14 @@ Contains the TestBaseDrugDocs classes
 
 from datetime import datetime
 import inspect
-import models
+import unittest
+
+import pep8
+from storage import storage
 from models import drug
 from models.base_model import BaseModel
-import pep8
-import unittest
+from tests.test_models.test_base_model import TestBaseModel
+
 Drug = drug.Drug
 
 
@@ -57,108 +60,97 @@ class TestDrugDocs(unittest.TestCase):
                             "{:s} method needs a docstring".format(func[0]))
 
 
-class TestDrug(unittest.TestCase):
+class TestDrug(TestBaseModel):
     """Test the Drug class"""
+
+    def setUp(self) -> None:
+        self.setUpBase()
+
+    def tearDown(self) -> None:
+        self.tearDownBase()
+
+    def setUpBase(self):
+        """sets up test object for parent test classes"""
+        self.drug = Drug()
+        self.drug.save()
+        self.tic = datetime.now()
+        self.inst1 = Drug(
+            email='email1',
+            username='username1',
+            password='password1'
+        )
+        self.inst1.save()
+        self.toc = datetime.now()
+        self.inst2 = Drug(
+            email='email2',
+            username='username2',
+            password='password2'
+        )
+        self.inst2.save()
+        self.drug = storage.get(Drug, 'id', self.drug.id)
+        self.inst1 = storage.get(Drug, 'id', self.inst1.id)
+        self.inst2 = storage.get(Drug, 'id', self.inst2.id)
+
+    def tearDownBase(self) -> None:
+        """tearDown for parent classes"""
+        self.drug.delete()
+        self.inst1.delete()
+        self.inst2.delete()
+        storage.save()
+
     def test_is_subclass(self):
         """Test that Drug is a subclass of BaseModel"""
-        drug = Drug()
-        self.assertIsInstance(drug, BaseModel)
-        self.assertTrue(hasattr(drug, "id"))
-        self.assertTrue(hasattr(drug, "created_at"))
-        self.assertTrue(hasattr(drug, "created_by"))
-        self.assertTrue(hasattr(drug, "updated_at"))
-        self.assertTrue(hasattr(drug, "updated_by"))
+        self.assertIsInstance(self.drug, BaseModel)
+        self.assertTrue(hasattr(self.drug, "id"))
+        self.assertTrue(hasattr(self.drug, "created_at"))
+        self.assertTrue(hasattr(self.drug, "created_by"))
+        self.assertTrue(hasattr(self.drug, "updated_at"))
+        self.assertTrue(hasattr(self.drug, "updated_by"))
 
     def test_name_attr(self):
         """Test that Drug has attr name, and it's an empty string"""
-        drug = Drug()
-        self.assertTrue(hasattr(drug, "name"))
-        if models.storage_t == 'db':
-            self.assertEqual(drug.name, None)
-        else:
-            self.assertEqual(drug.name, "")
+        self.assertTrue(hasattr(self.drug, "name"))
+        self.assertEqual(self.drug.name, None)
 
     def test_dose_attr(self):
         """Test that Drug has attr dose, and it's an empty string"""
-        drug = Drug()
-        self.assertTrue(hasattr(drug, "dose"))
-        if models.storage_t == 'db':
-            self.assertEqual(drug.dose, None)
-        else:
-            self.assertEqual(drug.dose, "")
+        self.assertTrue(hasattr(self.drug, "dose"))
+        self.assertEqual(self.drug.dose, None)
 
     def test_route_attr(self):
         """Test that Drug has attr route, and it's an empty string"""
-        drug = Drug()
-        self.assertTrue(hasattr(drug, "route"))
-        if models.storage_t == 'db':
-            self.assertEqual(drug.route, None)
-        else:
-            self.assertEqual(drug.route, "")
+        self.assertTrue(hasattr(self.drug, "route"))
+        self.assertEqual(self.drug.route, None)
 
     def test_brand_attr(self):
         """Test that Drug has attr brand, and it's an empty string"""
-        drug = Drug()
-        self.assertTrue(hasattr(drug, "brand"))
-        if models.storage_t == 'db':
-            self.assertEqual(drug.brand, None)
-        else:
-            self.assertEqual(drug.brand, "")
+        self.assertTrue(hasattr(self.drug, "brand"))
+        self.assertEqual(self.drug.brand, None)
 
     def test_formulation_attr(self):
         """Test that Drug has attr formulation, and it's an empty string"""
-        drug = Drug()
-        self.assertTrue(hasattr(drug, "formulation"))
-        if models.storage_t == 'db':
-            self.assertEqual(drug.formulation, None)
-        else:
-            self.assertEqual(drug.formulation, "")
+        self.assertTrue(hasattr(self.drug, "formulation"))
+        self.assertEqual(self.drug.formulation, None)
 
     def test_expiry_date_attr(self):
             """Test that Drug has attr expiry_date, and it's 0"""
-            drug = Drug()
-            self.assertTrue(hasattr(drug, "expiry_date"))
-            if models.storage_t == 'db':
-                self.assertEqual(drug.expiry_date, None)
-            else:
-                self.assertEqual(drug.expiry_date, 0)
+            self.assertTrue(hasattr(self.drug, "expiry_date"))
+            self.assertEqual(self.drug.expiry_date, None)
 
     def test_stock_date_attr(self):
         """Test that Drug has attr stock_date, and it's 0"""
-        drug = Drug()
-        self.assertTrue(hasattr(drug, "stock_date"))
-        if models.storage_t == 'db':
-            self.assertEqual(drug.stock_date, None)
-        else:
-            self.assertEqual(drug.stock_date, 0)
+        self.assertTrue(hasattr(self.drug, "stock_date"))
+        self.assertEqual(self.drug.stock_date, None)
 
     def test_to_dict_creates_dict(self):
         """test to_dict method creates a dictionary with proper attrs"""
-        u = Drug()
-        new_d = u.to_dict()
+        new_d = self.drug.to_dict()
         self.assertEqual(type(new_d), dict)
         self.assertFalse("_sa_instance_state" in new_d)
-        for attr in u.__dict__:
+        for attr in self.drug.__dict__:
             if attr != "_sa_instance_state":
                 self.assertTrue(attr in new_d)
         self.assertTrue("__class__" in new_d)
-
-    def test_to_dict_values(self):
-        """test that values in dict returned from to_dict are correct"""
-        t_format = "%Y-%m-%dT%H:%M:%S.%f"
-        u = Drug()
-        new_d = u.to_dict()
-        self.assertEqual(new_d["__class__"], "Drug")
-        self.assertEqual(type(new_d["created_at"]), str)
-        self.assertEqual(type(new_d["updated_at"]), str)
-        self.assertEqual(new_d["created_at"], u.created_at.strftime(t_format))
-        self.assertEqual(new_d["updated_at"], u.updated_at.strftime(t_format))
-
-    def test_str(self):
-        """test that the str method has the correct output"""
-        drug = Drug()
-        string = "[Drug] {}".format(drug.__dict__)
-        self.assertEqual(string, str(drug))
 
 
 if __name__ == '__main__':

@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """Module for Drug class."""
-from datetime import datetime
-from sqlalchemy import Column, String, TIMESTAMP, ForeignKey
+from sqlalchemy import Column, String, DateTime
 from models.base_model import Base
 from models.base_model import BaseModel
 
@@ -15,5 +14,5 @@ class Drug(BaseModel, Base):
     route = Column(String(16))
     brand = Column(String(60))
     formulation = Column(String(60))
-    expiry_date = Column(TIMESTAMP)
-    stock_date = Column(TIMESTAMP, default=datetime.now())
+    expiry_date = Column(DateTime(timezone=True))
+    stock_date = Column(DateTime(timezone=True))

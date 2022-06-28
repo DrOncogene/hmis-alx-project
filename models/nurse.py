@@ -1,6 +1,8 @@
 #!usr/bin/pyhton3
 """ A class Nurse that inherits from Staff """
-from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import relationship
+
 from models.staff import Staff
 
 
@@ -12,10 +14,9 @@ class Nurse(Staff):
                       primary_key=True)
     job_title = Column(String(16), nullable=False, default="Nurse")
     permissions = Column(String(60), ForeignKey('permissions.id'))
+    nursenotes = relationship("NurseNote", backref="nurse")
+    vitals = relationship("VitalSign", backref="nurse")
 
     __mapper_args__ = {
         "polymorphic_identity": "nurse"
     }
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
