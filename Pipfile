@@ -5,6 +5,8 @@ name = "pypi"
 
 [packages]
 flasgger = "*"
+flask = "*"
+sqlalchemy = "==1.4.37"
 
 [dev-packages]
 

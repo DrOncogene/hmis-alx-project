@@ -1,11 +1,16 @@
 #!/usr/bin/python3
 """Module for Nurse Note class."""
+from sqlalchemy import Column, Integer, Text, ForeignKey
+from sqlalchemy.orm import relationship
+from models.base_model import BaseModel, Base
 
-from models.base_model import BaseModel
 
-
-class NurseNote(BaseModel):
+class NurseNote(BaseModel, Base):
     """Class representing a Nurse Note"""
-    pid = ""
-    vitals_ids = []
-    note = ""
+    __tablename__ = 'nursenotes'
+
+    pid = Column(Integer,
+                 ForeignKey('patients.pid', ondelete='CASCADE'),
+                 nullable=False)
+    note = Column(Text)
+    patient = relationship('Patient', back_populates='nursenotes')
