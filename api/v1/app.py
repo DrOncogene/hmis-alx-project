@@ -1,12 +1,14 @@
 #!/usr/bin/python3
 """ Flask Application """
-from storage import storage
-from api.v1.views import app_views
 from os import environ
-from flask import Flask, make_response, jsonify
-from flask_cors import CORS
+
 from flasgger import Swagger
 from flasgger.utils import swag_from
+from flask import Flask, jsonify, make_response
+from flask_cors import CORS
+
+from storage import storage
+from api.v1.views import app_views
 
 app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
@@ -21,14 +23,14 @@ def close_db(error):
 
 
 @app.errorhandler(404)
-def not_found(error):
+def not_found(e):
     """ 404 Error
     ---
     responses:
       404:
         description: a resource was not found
     """
-    return make_response(jsonify({'error': "Not found"}), 404)
+    return make_response(jsonify(error=str(e)), 404)
 
 app.config['SWAGGER'] = {
     'title': 'HMIS Restful API',
@@ -39,11 +41,10 @@ Swagger(app)
 
 
 if __name__ == "__main__":
-    """ Main Function """
-    host = environ.get('HMIS_API_HOST')
-    port = environ.get('HMIS_API_PORT')
-    if not host:
-        host = '0.0.0.0'
-    if not port:
-        port = '5000'
-    app.run(host=host, port=port, threaded=True)
+    HOST = environ.get('HMIS_API_HOST')
+    PORT = environ.get('HMIS_API_PORT')
+    if not HOST:
+        HOST = '0.0.0.0'
+    if not PORT:
+        PORT = '5000'
+    app.run(host=HOST, port=PORT, threaded=True)

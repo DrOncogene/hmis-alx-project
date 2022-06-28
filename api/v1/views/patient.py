@@ -1,24 +1,30 @@
 #!/usr/bin/python3
 """ objects that handle all default RestFul API actions for Patients """
+from flask import abort, jsonify, make_response, request
+from flasgger.utils import swag_from
+
 from models.patient import Patient
 from storage import storage
 from api.v1.views import app_views
-from flask import abort, jsonify, make_response, request
-from flasgger.utils import swag_from
 
 
 @app_views.route('/patients', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/patients/all_patients.yml')
 def get_patients():
-    """ Retrieves the list of all patient object or a specific patient """
-    all_patients = storage.all(Patient)
+    """
+    Retrieves the list of all patient object or a specific patient
+    """
+    all_patients = [patient.to_dict() for patient
+                    in storage.all(Patient)]
     return jsonify(all_patients)
 
 
-@app_views.route('/patients/<pid>', methods=['GET'], strict_slashes=False)
+@app_views.route('/patients/<int:pid>', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/patients/get_patients.yml', methods=['GET'])
 def get_patient(pid):
-    """ Retrieves an patient """
+    """
+    Retrieves an patient
+    """
     patient = storage.get(Patient, 'pid', pid)
     if not patient:
         abort(404, description="Patient not found")
@@ -26,7 +32,7 @@ def get_patient(pid):
     return jsonify(patient.to_dict())
 
 
-@app_views.route('/patients/<pid>', methods=['DELETE'], strict_slashes=False)
+@app_views.route('/patients/<int:pid>', methods=['DELETE'], strict_slashes=False)
 @swag_from('documentation/patients/delete_patient.yml', methods=['DELETE'])
 def delete_patient(pid):
     """
@@ -76,7 +82,7 @@ def post_patient():
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/patients/<pid>', methods=['PUT'], strict_slashes=False)
+@app_views.route('/patients/<int:pid>', methods=['PUT'], strict_slashes=False)
 @swag_from('documentation/patients/put_patient.yml', methods=['PUT'])
 def put_patient(pid):
     """

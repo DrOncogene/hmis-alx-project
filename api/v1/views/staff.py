@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ objects that handle all default RestFul API actions for Prescriptions """
 from flask import jsonify, abort, make_response, request
+from flasgger.utils import swag_from
 
 from models.doctor import Doctor
 from models.nurse import Nurse
@@ -12,34 +13,34 @@ from api.v1.views import app_views
 
 
 @app_views.route('/staffs', methods=['GET'], strict_slashes=False)
-def number_objects():
+def staff_count():
     """ Retrieves the number of each objects by type """
     classes = [Doctor, Nurse, Pharmacist, RecordOfficer, Admin]
     names = ["doctor", "nurse", "pharmacist", "recordofficer", "admin"]
 
     num_objs = {}
-    for i in range(len(classes)):
-        num_objs[names[i]] = storage.count(classes[i])
+    for i, cls in enumerate(classes):
+        num_objs[names[i]] = storage.count(cls)
 
     return jsonify(num_objs)
 
 
 @app_views.route('/staffs/<string:job_title>', methods=['GET'], strict_slashes=False)
-def number_objects(job_title: str):
+def staff_by_type(job_title: str):
     """ Retrieves the number of a specific objects by type """
     titles = {
-            "admins": Admin,
-            "doctors": Doctor,
-            "nurses": Nurse,
-            "pharmacists": Pharmacist,
-            "recordOfficers": RecordOfficer
+        "admins": Admin,
+        "doctors": Doctor,
+        "nurses": Nurse,
+        "pharmacists": Pharmacist,
+        "recordOfficers": RecordOfficer
     }
 
     if not job_title in titles:
         abort(404, description="Not valid job title")
 
     all_staff_obj = storage.all(titles[job_title])
-    all_staff_type = [staff.to_dict() for staff in all_staff_obj]
+    all_staff_type = [staff.to_dict() for staff in all_staff_obj.values()]
 
     return jsonify(all_staff_type)
 
@@ -51,11 +52,11 @@ def get_staff(job_title, staff_id):
     """ Retrieves an staff """
 
     titles = {
-            "admins": Admin,
-            "doctors": Doctor,
-            "nurses": Nurse,
-            "pharmacists": Pharmacist,
-            "recordOfficers": RecordOfficer
+        "admins": Admin,
+        "doctors": Doctor,
+        "nurses": Nurse,
+        "pharmacists": Pharmacist,
+        "recordOfficers": RecordOfficer
     }
 
     staff_id = int(staff_id[3:])
@@ -75,11 +76,11 @@ def delete_staff(job_title, staff_id):
     """
 
     titles = {
-            "admins": Admin,
-            "doctors": Doctor,
-            "nurses": Nurse,
-            "pharmacists": Pharmacist,
-            "recordOfficers": RecordOfficer
+        "admins": Admin,
+        "doctors": Doctor,
+        "nurses": Nurse,
+        "pharmacists": Pharmacist,
+        "recordOfficers": RecordOfficer
     }
 
     staff_id = int(staff_id[3:])
@@ -105,11 +106,11 @@ def create_staff(job_title):
         abort(400, description="Not a JSON")
 
     titles: dict = {
-            "admins": Admin,
-            "doctors": Doctor,
-            "nurses": Nurse,
-            "pharmacists": Pharmacist,
-            "recordOfficers": RecordOfficer
+        "admins": Admin,
+        "doctors": Doctor,
+        "nurses": Nurse,
+        "pharmacists": Pharmacist,
+        "recordOfficers": RecordOfficer
     }
 
     if 'username' not in request.get_json():
@@ -155,11 +156,11 @@ def put_staff(job_title, staff_id):
         abort(400, description="Not a JSON")
 
     titles: dict = {
-            "admins": Admin,
-            "doctors": Doctor,
-            "nurses": Nurse,
-            "pharmacists": Pharmacist,
-            "recordOfficers": RecordOfficer
+        "admins": Admin,
+        "doctors": Doctor,
+        "nurses": Nurse,
+        "pharmacists": Pharmacist,
+        "recordOfficers": RecordOfficer
     }
 
     staff_id = int(staff_id[3:])

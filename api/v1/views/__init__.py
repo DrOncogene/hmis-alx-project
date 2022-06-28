@@ -8,7 +8,7 @@ from api.v1.views.index import *
 from api.v1.views.patient import *
 from api.v1.views.staff import *
 from api.v1.views.doctor import *
-from api.v1.views.nurses import *
+from api.v1.views.nurse import *
 from api.v1.views.pharmacist import *
 from api.v1.views.drug import *
 from api.v1.views.consult import *

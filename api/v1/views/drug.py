@@ -10,7 +10,7 @@ from flasgger.utils import swag_from
 @app_views.route('/patients/<pid>/consultations/<consultation_id>/drugs',
                  methods=['GET'], strict_slashes=False)
 @swag_from('documentation/patient/patient_id/consultations/consultation_id/get_drugs.yml')
-def get_drugs(consultation_id):
+def get_consult_drugs(consultation_id):
     """ Retrieves the all drug object for a specific consultation """
     all_prescriptions = storage.all(Prescription).values()
     all_drugs = storage.all(Drug).values()

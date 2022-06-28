@@ -1,58 +1,66 @@
 #!/usr/bin/python3
 """ objects that handle all default RestFul API actions for Consultations """
-from models.notes.consult import Consultation
-from storage import storage
-from api.v1.views import app_views
 from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
+from models.patient import Patient
+from storage import storage
+from api.v1.views import app_views
 
-@app_views.route('/patients/<pid>/consultations', methods=['GET'],
+
+@app_views.route('/patients/<int:pid>/consultations', methods=['GET'],
                  strict_slashes=False)
 @swag_from('documentation/patient/patient_id/get_consultations.yml')
 def get_consultations(pid):
-    """ Retrieves the all consultation object for a specific patient """
-    all_consultations = storage.all(Consulation).values()
-    list_consultations = []
-    for consultation in all_consultations:
-        if consulation.pid == pid:
-            list_consultations.append(consultation.to_dict())
-    return jsonify(list_consultations)
+    """
+    Retrieves the all consultation object for a specific patient
+    """
+    patient = storage.get('Patient', 'pid', pid)
+    if not patient:
+        abort(404, description="Patient not found")
+
+    consultations = [consult.to_dict() for consult in patient.consultations]
+    return jsonify(consultations)
 
 
-@app_views.route('/patients/<pid>/consultations/<consultation_id>', methods=['GET'],
-                 strict_slashes=False)
+@app_views.route('/patients/<int:pid>/consultations/<string:consultation_id>',
+                 methods=['GET'], strict_slashes=False)
 @swag_from('documentation/patient/patient_id/consultations/get_consultation.yml')
-def get_consultation(consulation_id):
-    """ Retrieves the a specific consultation object for a specific patient """
-    consultation = storage.get(Consultation, consultation_id)
-    if not consultation:
-        abort(404)
+def get_consultation(pid, consultation_id):
+    """
+    Retrieves the a specific consultation object for a specific patient
+    """
+    patient = storage.get('Patient', 'pid', pid)
+    if not patient:
+        abort(404, description="Patient not found")
+
+    consultation = storage.get('Consultation', 'id', consultation_id)
+    if (not consultation) or (consultation.pid != pid):
+        abort(404, description='Consultation does not exist')
 
     return jsonify(consultation.to_dict())
 
-@app_views.route('/patients/<pid>/consutations/<consultation_id>', methods=['DELETE'],
-                 strict_slashes=False)
+
+@app_views.route('/patients/<int:pid>/consutations/<string:consultation_id>',
+                 methods=['DELETE'], strict_slashes=False)
 @swag_from('documentation/patient/patient_id/consultations/delete_consulation.yml',
            methods=['DELETE'])
-
-def delete_consulation(consulation_id):
+def delete_consulation(pid, consultation_id):
     """
     Deletes a Consulation Object for a specific patient
     """
+    consultation = storage.get('Consultation', 'id', consultation_id)
+    if (not consultation) or (consultation.pid != pid):
+        abort(404, description='Consultation does not exist')
 
-    consultation = storage.get(Consultation, consultation_id)
-    
-    if not consulation:
-        abort(404)
-
-    storage.delete(consulation)
+    storage.delete(consultation)
     storage.save()
 
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/patients/<pid>/consultations', methods=['POST'], strict_slashes=False)
+@app_views.route('/patients/<int:pid>/consultations',
+                 methods=['POST'], strict_slashes=False)
 @swag_from('documentation/patient/patient_id/consultations/post_consultation.yml', methods=['POST'])
 def post_consultation(pid):
     """
@@ -61,33 +69,35 @@ def post_consultation(pid):
     if not request.get_json():
         abort(400, description="Not a JSON")
 
-    pid = pid
-    if 'pc' not in request.get_json():
-        abort(400, description="Missing presenting complaints")
-    if 'hpc' not in request.get_json():
-        abort(400, description="Missing history")
     if 'prov_diag' not in request.get_json():
         abort(400, description="Missing diagnosis")
-    if 'plan' not in request.get_json():
-        abort(400, description="Missing plan")
+
+    patient = storage.get(Patient, 'pid', pid)
+    if not patient:
+        abort(404, description="Patient not found")
 
     data = request.get_json()
-    instance = Consulation(**data)
+    data['pid'] = pid
+    instance = 'Consultation'(**data)
     instance.save()
+    instance = storage.get('Consultation', 'id', instance.id)
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/patients/<pid>/consultations/<consultation_id>', methods=['PUT'],
-                 strict_slashes=False)
+@app_views.route('/patients/<int:pid>/consultations/<string:consultation_id>',
+                 methods=['PUT'], strict_slashes=False)
 @swag_from('documentation/patient/patient_id/consultations/put_consultation.yml', methods=['PUT'])
-def put_consultation(consulation_id):
+def put_consultation(pid, consultation_id):
     """
     Updates a consultation for a specific patient
     """
-    consultation = storage.get(Consultation, consultation_id)
+    patient = storage.get('Patient', 'pid', pid)
+    if not patient:
+        abort(404, description="Patient not found")
 
-    if not consultation:
-        abort(404)
+    consultation = storage.get('Consultation', 'id', consultation_id)
+    if (not consultation) or (consultation.pid != pid):
+        abort(404, description='Consultation does not exist')
 
     if not request.get_json():
         abort(400, description="Not a JSON")
@@ -99,4 +109,5 @@ def put_consultation(consulation_id):
         if key not in ignore:
             setattr(consultation, key, value)
     storage.save()
+    consultation = storage.get('Consultation', 'id', consultation.id)
     return make_response(jsonify(consultation.to_dict()), 200)
