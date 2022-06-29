@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+flasgger = "*"
 flask = "*"
 sqlalchemy = "==1.4.37"
 
