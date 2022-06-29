@@ -18,11 +18,11 @@ class Prescription(BaseModel, Base):
     consultation_id = Column(String(60),
                              ForeignKey('consultations.id',
                                         ondelete='CASCADE'),
-                             nullable=False)
+                             nullable=False, unique=True)
     dispensed_by = Column(Integer, ForeignKey('pharmacists.staff_id'))
     prescriber = Column(String(128))
     patient = relationship('Patient', back_populates='prescriptions')
-    consultation = relationship('Consultation', back_populates='prescriptions')
+    consultation = relationship('Consultation', back_populates='prescription')
     drugs = relationship('DrugPrescription', cascade='all, delete',
                          back_populates='prescription')
 

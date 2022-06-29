@@ -2,6 +2,7 @@
 """Module for Consultation class."""
 from sqlalchemy import Column, Integer, Text, String, ForeignKey
 from sqlalchemy.orm import relationship
+
 from models.base_model import BaseModel, Base
 
 
@@ -24,8 +25,8 @@ class Consultation(BaseModel, Base):
     doctor_name = Column(String(60))
     patient = relationship('Patient', back_populates='consultations')
     vitals = relationship('VitalSign', back_populates='consultation')
-    prescriptions = relationship('Prescription', cascade='all, delete',
-                                 back_populates='consultation')
+    prescription = relationship('Prescription', cascade='all, delete',
+                                 back_populates='consultation', use_list=False)
 
     def __init__(self, *args, **kwargs):
         """calls the super init and set doctor_name"""
