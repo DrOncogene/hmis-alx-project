@@ -22,7 +22,7 @@ class NurseNote(BaseModel, Base):
     def __init__(self, *args, **kwargs):
         """call super and set nurse_name"""
         super().__init__(*args, **kwargs)
-        if self.created_by:
+        if self.created_by is not None:
             from storage import storage
             nurse = storage.get("Nurse", 'staff_id', self.created_by)
-            self.nurse_name = f"NRS {nurse.first_name} {nurse.last_name}"
+            self.nurse_name = f"Nrs {nurse.first_name} {nurse.last_name}"

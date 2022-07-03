@@ -24,14 +24,15 @@ class Consultation(BaseModel, Base):
     plan = Column(Text)
     doctor_name = Column(String(60))
     patient = relationship('Patient', back_populates='consultations')
-    vitals = relationship('VitalSign', back_populates='consultation')
+    vitals = relationship('VitalSign', back_populates='consultation',
+                          uselist=False)
     prescription = relationship('Prescription', cascade='all, delete',
-                                 back_populates='consultation', use_list=False)
+                                 back_populates='consultation', uselist=False)
 
     def __init__(self, *args, **kwargs):
         """calls the super init and set doctor_name"""
         super().__init__(*args, **kwargs)
-        if self.created_by:
+        if self.created_by is not None:
             from storage import storage
             doc = storage.get('Doctor', 'staff_id', self.created_by)
-            self.doctor_name = f"Dr. {doc.first_name} {doc.last_name}"
+            self.doctor_name = f"Dr {doc.first_name} {doc.last_name}"

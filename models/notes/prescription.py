@@ -19,7 +19,8 @@ class Prescription(BaseModel, Base):
                              ForeignKey('consultations.id',
                                         ondelete='CASCADE'),
                              nullable=False, unique=True)
-    dispensed_by = Column(Integer, ForeignKey('pharmacists.staff_id'))
+    dispensed_by = Column(Integer,
+                          ForeignKey('pharmacists.staff_id', ondelete='SET NULL'))
     prescriber = Column(String(128))
     patient = relationship('Patient', back_populates='prescriptions')
     consultation = relationship('Consultation', back_populates='prescription')
@@ -40,8 +41,7 @@ class DrugPrescription(BaseModel, Base):
     __tablename__ = 'drug_prescriptions'
 
     drug_id = Column(String(60),
-                     ForeignKey('drugs.id', ondelete='CASCADE'),
-                     nullable=False)
+                     ForeignKey('drugs.id', ondelete='SET NULL'))
     prescription_id = Column(String(60),
                              ForeignKey('prescriptions.id',
                                         ondelete='CASCADE'),
@@ -50,4 +50,13 @@ class DrugPrescription(BaseModel, Base):
     frequency = Column(String(16))
     duration = Column(String(16))
     route = Column(String(16))
+    drug_name = Column(String(32))
     prescription = relationship('Prescription', back_populates='drugs')
+
+    def __init__(self, *args, **kwargs):
+        """calls super and set the drug name"""
+        from storage import storage
+        super().__init__(*args, **kwargs)
+        drug = storage.get('Drug', 'id', self.drug_id)
+        if drug is not None:
+            self.drug_name = drug.name
