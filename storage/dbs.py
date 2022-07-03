@@ -5,6 +5,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 from models.base_model import Base
+from models.staff import Staff
 from models.patient import Patient
 from models.doctor import Doctor
 from models.nurse import Nurse
@@ -12,7 +13,7 @@ from models.pharmacist import Pharmacist
 from models.record import RecordOfficer
 from models.admin import Admin
 from models.notes.consult import Consultation
-from models.notes.prescription import Prescription
+from models.notes.prescription import Prescription, DrugPrescription
 from models.notes.vitals import VitalSign
 from models.notes.nursenote import NurseNote
 from models.drug import Drug
@@ -32,9 +33,11 @@ class DBStorage:
         "Admin": Admin,
         "Consultation": Consultation,
         "Prescription": Prescription,
+        "DrugPrescription": DrugPrescription,
         "VitalSign": VitalSign,
         "NurseNote": NurseNote,
-        "Drug": Drug
+        "Drug": Drug,
+        "Staff": Staff
     }
 
     def __init__(self):
@@ -102,7 +105,7 @@ class DBStorage:
     def reload(self):
         """ creates all db tables"""
         Base.metadata.create_all(self.__engine)
-        factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        factory = sessionmaker(bind=self.__engine, expire_on_commit=False, autoflush=False)
         self.__sessionmaker = scoped_session(factory)
         self.__session = self.__sessionmaker()
 
