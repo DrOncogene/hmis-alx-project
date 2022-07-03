@@ -23,7 +23,7 @@ def get_nurse_vitals(staff_id):
     return jsonify(nurse_vitals)
 
 
-@app_views.route('/staffs/nurses/<string:staff_id>/nursenotes',
+@app_views.route('/staffs/nurses/<string:staff_id>/notes',
                  methods=['GET'], strict_slashes=False)
 @swag_from('documentation/staffs/nurses/staff_id/get_nursenotes.yml')
 def get_nurse_nursenotes(staff_id):

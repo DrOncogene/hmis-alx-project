@@ -1,48 +1,30 @@
 #!/usr/bin/python3
 """ objects that handle all default RestFul API actions for Drugs """
+from api.v1.views import app_views
+from flasgger.utils import swag_from
+from flask import abort, jsonify, make_response, request
+
 from models.drug import Drug
 from storage import storage
-from api.v1.views import app_views
-from flask import abort, jsonify, make_response, request
-from flasgger.utils import swag_from
 
-
-@app_views.route('/patients/<pid>/consultations/<consultation_id>/drugs',
-                 methods=['GET'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/consultation_id/get_drugs.yml')
-def get_consult_drugs(consultation_id):
-    """ Retrieves the all drug object for a specific consultation """
-    all_prescriptions = storage.all(Prescription).values()
-    all_drugs = storage.all(Drug).values()
-    list_drugs = []
-    list_prescriptions = []
-    for prescription in all_prescriptions:
-        if prescription.consultation_id == consultation_id:
-            list_prescriptions.append(prescription.drug_id)
-    for drug in all_drugs:
-        for drug_id in list_drugs:
-            if drug.id == drug_id:
-                list_drugs.append(drug.to_dict())
-    return jsonify(list_drugs)
 
 @app_views.route('/drugs', methods=['GET'], strict_slashes=False)
-@swag_from('documentation/drugs/all_drugs.yml')
-def get_drugs():
-    """ Retrieves the list of all drug object or a specific drug """
-    all_drugs = storage.all(Drug).values()
-    list_drugs = []
-    for drug in all_drugs:
-        list_drugs.append(drug.to_dict())
-    return jsonify(list_drugs)
+@swag_from('documentation/patient/patient_id/consultations/consultation_id/get_drugs.yml')
+def get_consult_drugs():
+    """ Retrieves the all drug object for a specific consultation """
+    drugs = [drug.to_dict() for drug in storage.all(Drug)]
+
+    return jsonify(drugs)
 
 
-@app_views.route('/drugs/<drug_id>', methods=['GET'], strict_slashes=False)
+@app_views.route('/drugs/<string:drug_id>', methods=['GET'],
+                 strict_slashes=False)
 @swag_from('documentation/drugs/get_drugs.yml', methods=['GET'])
 def get_drug(drug_id):
     """ Retrieves an drug """
-    drug = storage.get(Drug, drug_id)
+    drug = storage.get(Drug, 'id', drug_id)
     if not drug:
-        abort(404)
+        abort(404, description="drug not found")
 
     return jsonify(drug.to_dict())
 
@@ -54,11 +36,9 @@ def delete_drug(drug_id):
     """
     Deletes a drug Object
     """
-
-    drug = storage.get(Drug, drug_id)
-    
+    drug = storage.get(Drug, 'id', drug_id)
     if not drug:
-        abort(404)
+        abort(404, description="drug not found")
 
     storage.delete(drug)
     storage.save()
@@ -78,9 +58,7 @@ def post_drug():
     if 'name' not in request.get_json():
         abort(400, description="Missing drug name")
     if 'dose' not in request.get_json():
-        abort(400, description="Missing drug")
-    if 'unit' not in request.get_json():
-        abort(400, description="Missing drug unit")
+        abort(400, description="Missing drug dose")
     if 'brand' not in request.get_json():
         abort(400, description="Missing drug brand")
     if 'formulation' not in request.get_json():
@@ -94,16 +72,16 @@ def post_drug():
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/drugs/<drug_id>', methods=['PUT'], strict_slashes=False)
+@app_views.route('/drugs/<drug_id>', methods=['PUT'],
+                 strict_slashes=False)
 @swag_from('documentation/drug/put_drug.yml', methods=['PUT'])
 def put_drug(drug_id):
     """
     Updates a drug
     """
-    drug = storage.get(Drug, drug_id)
-
+    drug = storage.get(Drug, 'id', drug_id)
     if not drug:
-        abort(404)
+        abort(404, description="drug not found")
 
     if not request.get_json():
         abort(400, description="Not a JSON")

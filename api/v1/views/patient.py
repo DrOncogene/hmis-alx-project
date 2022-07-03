@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 """ objects that handle all default RestFul API actions for Patients """
+from datetime import datetime
 from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
@@ -77,9 +78,11 @@ def post_patient():
         abort(400, description="Missing next of kin address")
 
     data = request.get_json()
-    instance = Patient(**data)
-    instance.save()
-    return make_response(jsonify(instance.to_dict()), 201)
+    data['dob'] = datetime.strptime(data['dob'], '%Y/%m/%d')
+    patient = Patient(**data)
+    patient.save()
+
+    return make_response(jsonify(patient.to_dict()), 201)
 
 
 @app_views.route('/patients/<int:pid>', methods=['PUT'], strict_slashes=False)

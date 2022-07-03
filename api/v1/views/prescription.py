@@ -23,14 +23,14 @@ def get_patient_prescriptions(pid):
 
     prescriptions = [[drug.to_dict() for drug in presc.drugs]
                      for presc in patient.prescriptions]
-    
+
     return jsonify(prescriptions)
 
 
-@app_views.route('/patients/<int:pid>/consultations/<consultation_id>/prescription',
+@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription',
                  methods=['GET'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/consultation_id/get_prescription.yml')
-def get_consult_prescriptions(pid, consultation_id):
+@swag_from('documentation/patient/patient_id/consultations/consultat_id/get_prescription.yml')
+def get_consult_prescriptions(pid, consult_id):
     """
     Retrieves the prescription object for a specific consultation
     """
@@ -38,23 +38,28 @@ def get_consult_prescriptions(pid, consultation_id):
     if not patient:
         abort(404, description="Patient not found")
 
-    consultation = storage.get('Consultation', 'id', consultation_id)
-    if (not consultation) or (consultation.pid != pid):
+    consult = storage.get('Consultation', 'id', consult_id)
+    if (not consult) or (consult.pid != pid):
         abort(404, description="Consultation not found")
 
-    prescriptions = [drug.to_dict() for drug in consultation.prescription.drugs]
-    return jsonify(prescriptions)
+    prescription = consult.prescription
+    if not prescription:
+        abort(404, description="No prescriptions for this consultation")
+    prescription = [drug.to_dict() for drug in prescription.drugs]
+
+    return jsonify(prescription)
 
 
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescriptions/<presc_id>/drugs/drugpresc_id',
-                 methods=['POST'], strict_slashes=False)
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescriptions/<prescription_id>',
+@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription/drugs/<drugpresc_id>',
+                 methods=['DELETE'], strict_slashes=False)
+@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription',
                  methods=['DELETE'], strict_slashes=False)
 @swag_from('documentation/patients/patient_id/consultations/consultation_id>/prescriptions/delete_prescription.yml',
            methods=['DELETE'])
-def delete_prescription(pid, consult_id, prescription_id, drugpresc_id=None):
+def delete_prescription(pid, consult_id, drugpresc_id=None):
     """
-    Deletes a Prescription Object for a specific consultation
+    Deletes the prescription for a consultation
+    or a drug from a prescription
     """
     patient = storage.get('Patient', 'pid', pid)
     if not patient:
@@ -65,9 +70,13 @@ def delete_prescription(pid, consult_id, prescription_id, drugpresc_id=None):
         abort(404, description="Consultation not found")
 
     if drugpresc_id is not None:
-        prescription = storage.get('DrugPrescription', 'id', drugpresc_id)
+        drug_presc = storage.get('DrugPrescription', 'id', drugpresc_id)
+        presc = consultation.prescription
+        if not (drug_presc or (drug_presc in presc.drugs)):
+            abort(404, description="No such drug prescription")
+        prescription = drug_presc
     else:
-        prescription = storage.get('Prescription', 'id', prescription_id)
+        prescription = consultation.prescription
 
     if not prescription:
         abort(404, description='No such prescription')
@@ -78,14 +87,15 @@ def delete_prescription(pid, consult_id, prescription_id, drugpresc_id=None):
     return make_response(jsonify({}), 200)
 
 
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescriptions/<presc_id>/drugs',
-                 methods=['POST'], strict_slashes=False)
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescriptions',
+@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription/drugs',
+                 methods=['POST'], defaults={'drugs': 'drugs'}, strict_slashes=False)
+@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription',
                  methods=['POST'], strict_slashes=False)
 @swag_from('documentation/patient/patient_id/consultations/consultation_id/post_prescription.yml', methods=['POST'])
-def post_prescription(pid, consult_id, presc_id=None):
+def post_prescription(pid, consult_id, drugs=None):
     """
     Creates a new prescription for a specific consultation
+    or adds a new drug to an existing prescription
     """
     if not request.get_json():
         abort(400, description="Not a JSON")
@@ -98,13 +108,11 @@ def post_prescription(pid, consult_id, presc_id=None):
     if (not consultation) or (consultation.pid != pid):
         abort(404, description="Consultation not found")
 
-    if presc_id is not None:
+    if drugs is not None:
         if 'drug_id' not in request.get_json():
             abort(400, description="Missing drug")
         if 'dose' not in request.get_json():
             abort(400, description="Missing dose")
-        if 'unit' not in request.get_json():
-            abort(400, description="Missing dose unit")
         if 'frequency' not in request.get_json():
             abort(400, description="Missing dose frequency")
         if 'duration' not in request.get_json():
@@ -115,7 +123,7 @@ def post_prescription(pid, consult_id, presc_id=None):
         data = request.get_json()
         data['pid'] = pid
         data['consultation_id'] = consult_id
-        data['prescription_id'] = presc_id
+        data['prescription_id'] = consultation.prescription.id
         instance = DrugPrescription(**data)
         instance.save()
         instance = storage.get('DrugPrescription', 'id', instance.id)
@@ -123,34 +131,39 @@ def post_prescription(pid, consult_id, presc_id=None):
 
     presc = Prescription(pid=pid, consultation_id=consult_id)
     presc.save()
-    presc = storage.get('Prescription', 'id', presc.id)
     return make_response(jsonify(presc.to_dict()), 201)
 
 
-# @app_views.route('/patients/<pid>/consultations/<consultation_id>/prescriptions/<prescription_id>', methods=['PUT'],
-#                  strict_slashes=False)
-# @swag_from('documentation/patient/patient_id/consultations/consultation_id/prescriptions/put_prescription.yml',
-#            methods=['PUT'])
-# def put_prescription(pid, consult_id, presc_id=None):
-#     """
-#     Updates a prescription for a specific consultation
-#     """
-#     if not request.get_json():
-#         abort(400, description="Not a JSON")
+@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription/drugs/<drugpresc_id>',
+                 methods=['PUT'], strict_slashes=False)
+@swag_from('documentation/prescription/put_prescription.yml',
+           methods=['PUT'])
+def put_prescription(pid, consult_id, drugpresc_id):
+    """
+    Updates a prescription for a specific consultation
+    """
+    if not request.get_json():
+        abort(400, description="Not a JSON")
 
-#     patient = storage.get('Patient', 'pid', pid)
-#     if not patient:
-#         abort(404, description="Patient not found")
+    patient = storage.get('Patient', 'pid', pid)
+    if not patient:
+        abort(404, description="Patient not found")
 
-#     consultation = storage.get('Consultation', 'id', consult_id)
-#     if (not consultation) or (consultation.pid != pid):
-#         abort(404, description="Consultation not found")
+    consultation = storage.get('Consultation', 'id', consult_id)
+    if (not consultation) or (consultation.pid != pid):
+        abort(404, description="Consultation not found")
 
-#     ignore = ['id', 'pid', 'consultation_id', 'created_at', 'created_by']
+    drug_presc = storage.get(DrugPrescription, 'id', drugpresc_id)
+    presc = consultation.prescription
+    if not (drug_presc or (drug_presc in presc.drugs)):
+        abort(404, description="No such drug prescription")
 
-#     data = request.get_json()
-#     for key, value in data.items():
-#         if key not in ignore:
-#             setattr(prescription, key, value)
-#     storage.save()
-#     return make_response(jsonify(prescription.to_dict()), 200)
+    ignore = ['id', 'drug_id', 'pid', 'prescription_id',
+              'created_at', 'created_by']
+
+    data = request.get_json()
+    for key, value in data.items():
+        if key not in ignore:
+            setattr(drug_presc, key, value)
+    storage.save()
+    return make_response(jsonify(drug_presc.to_dict()), 200)

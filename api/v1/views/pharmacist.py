@@ -8,7 +8,7 @@ from storage import storage
 from api.v1.views import app_views
 
 
-@app_views.route('/staffs/pharmacist/<string:staff_id>/prescriptions', methods=['GET'], strict_slashes=False)
+@app_views.route('/staffs/pharmacists/<string:staff_id>/prescriptions', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/staffs/pharmacist/staff_id/get_prescriptions.yml')
 def get_pharmacist_prescriptions(staff_id):
     """ Retrieves the list of a pharmacist dispensed prescriptions """

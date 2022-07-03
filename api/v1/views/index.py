@@ -9,6 +9,11 @@ from models.nurse import Nurse
 from models.patient import Patient
 from models.pharmacist import Pharmacist
 from models.record import RecordOfficer
+from models.drug import Drug
+from models.notes.consult import Consultation
+from models.notes.prescription import Prescription
+from models.notes.vitals import VitalSign
+from models.notes.nursenote import NurseNote
 from storage import storage
 
 
@@ -20,11 +25,22 @@ def status():
 @app_views.route('/stats', methods=['GET'], strict_slashes=False)
 def number_objects():
     """ Retrieves the number of each objects by type """
-    classes = [Patient, Doctor, Nurse, Pharmacist, RecordOfficer, Admin]
-    names = ["patient", "doctor", "nurse", "pharmacist", "recordofficer", "admin"]
+    classes = {
+       "patient": Patient,
+       "doctor": Doctor,
+       "nurse": Nurse,
+       "pharmacist": Pharmacist,
+       "recordofficer": RecordOfficer,
+       "admin": Admin,
+       "drug": Drug,
+       "consultation": Consultation,
+       "prescription": Prescription,
+       "vital": VitalSign,
+       "nursenote": NurseNote
+    }
 
     num_objs = {}
-    for i in range(len(classes)):
-        num_objs[names[i]] = storage.count(classes[i])
+    for name, cls in classes.items():
+        num_objs[name] = storage.count(cls)
 
     return jsonify(num_objs)

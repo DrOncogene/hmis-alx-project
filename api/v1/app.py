@@ -17,9 +17,21 @@ cors = CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
 
 @app.teardown_appcontext
-def close_db(error):
+def close_db(e):
     """ Close Storage """
     storage.close()
+
+
+@app.errorhandler(400)
+def bad_request(e):
+    """
+    400 error handler
+    ---
+    responses:
+      400:
+        description: invalid request
+    """
+    return make_response(jsonify(error=str(e)), 400)
 
 
 @app.errorhandler(404)

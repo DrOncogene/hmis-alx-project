@@ -4,6 +4,7 @@ from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
 
 from models.patient import Patient
+from models.notes.consult import Consultation
 from storage import storage
 from api.v1.views import app_views
 
@@ -41,7 +42,7 @@ def get_consultation(pid, consultation_id):
     return jsonify(consultation.to_dict())
 
 
-@app_views.route('/patients/<int:pid>/consutations/<string:consultation_id>',
+@app_views.route('/patients/<int:pid>/consultations/<string:consultation_id>',
                  methods=['DELETE'], strict_slashes=False)
 @swag_from('documentation/patient/patient_id/consultations/delete_consulation.yml',
            methods=['DELETE'])
@@ -78,7 +79,7 @@ def post_consultation(pid):
 
     data = request.get_json()
     data['pid'] = pid
-    instance = 'Consultation'(**data)
+    instance = Consultation(**data)
     instance.save()
     instance = storage.get('Consultation', 'id', instance.id)
     return make_response(jsonify(instance.to_dict()), 201)

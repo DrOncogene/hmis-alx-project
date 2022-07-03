@@ -19,12 +19,12 @@ def get_doctor_consultations(staff_id):
     if not doctor:
         abort(404, description="Staff does not exist")
 
-    consultations = [consult.to_dict() for consult in doctor.consultations]
-
+    consultations = [consult.to_dict() 
+                     for consult in doctor.consultations]
     return jsonify(consultations)
 
 
-@app_views.route('/staffs/doctor/<string:staff_id>/prescriptions',
+@app_views.route('/staffs/doctors/<string:staff_id>/prescriptions',
                  methods=['GET'], strict_slashes=False)
 @swag_from('documentation/staffs/doctors/staff_id/get_prescriptions.yml')
 def get_doctor_prescriptions(staff_id):
