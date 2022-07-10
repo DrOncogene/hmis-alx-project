@@ -1,12 +1,12 @@
-# HOSPITAL MANAGEMENT SOFTWARE PROJECT
+# HOSPITAL MANAGEMENT SOFTWARE (HMIS) PROJECT
 
 MVP Specifications available at [Google Document](https://docs.google.com/document/d/1sZ9LaJosq4_ykBt08-fWQ58337GblLefScGzUmMjH0U/edit#heading=h.z6ne0og04bp5)  
 Sample project to be deployed to (yet to be determined)
 
-## OVERVIEW
+## Overview
 Portfolio project done as part of the [ALX SE](www.alxafrica.com) foundation programme.  
 
-The software, in the long term, is aimed a near total management of a hospital's activity ranging from patient consultation and nursing activities to pharmacy drug management.  
+The software, in the long term, is aimed at near total management of a hospital's activity ranging from patient consultation and nursing activities to pharmacy drug management.  
 
 Technologies used in this project includes:  
 
@@ -22,7 +22,7 @@ Front-end:
   - ReactJS
   - etc.
 
-## COMPONENTS
+## Components
 1. Writing object models: BaseModel, BaseUser, Staff, Doctor, Nurse, Pharmacist, RecordOfficer, Consultation, Prescription, NurseNote, Vital, Drugs.
 2. Database storage using ORM (sqlalchemy) and MySQL database backend
 3. HMIS Console: command line utility written in python to manipulate objects
@@ -31,7 +31,7 @@ Front-end:
 6. Connect frontend to the backend
 7. Deployment pipline with fabric, nginx and gunicorn on AWS EC2 ubuntu 22.04 instance
 
-## THE CONSOLE
+## The HMIS Console
 Written with python's cmd module. Mainly for testing the models. Available commands are
 - **help**: list all commands and their usage
 - **quit**: exits the console
@@ -143,5 +143,5 @@ POST: create a new drug object
 GET: return the specified drug object  
 PUT: modify the given drug object
 
-## FRONTEND STATIC
+## Front-end static
 In progress
