@@ -81,7 +81,7 @@ class HMIS(cmd.Cmd):
 
     def do_create(self, arg: str) -> None:
         """creates a new instance of a class passed as argument.
-        USAGE: <class_name>.create()"""
+        USAGE: create <class> or <class_name>.create()"""
         args = parse_args(arg)
         if validate_args(args, 1) == -1:
             return
@@ -92,7 +92,7 @@ class HMIS(cmd.Cmd):
 
     def do_show(self, arg: str) -> None:
         """prints the str representation of an instance.
-        USAGE: <classname>.show(<id>)"""
+        USAGE: show <class> <id> or <classname>.show(<id>)"""
         args = parse_args(arg)
         if validate_args(args, 2) == -1:
             return
@@ -105,7 +105,7 @@ class HMIS(cmd.Cmd):
 
     def do_destroy(self, arg: str) -> None:
         """deletes a given instance from storage.
-        USAGE: <classname>.destroy(<id>)"""
+        USAGE: destroy <class> <id> or <classname>.destroy(<id>)"""
         args = parse_args(arg)
         if validate_args(args, 2) == -1:
             return
@@ -117,7 +117,7 @@ class HMIS(cmd.Cmd):
         storage.delete(obj)
 
     def do_all(self, arg: str, count=False):
-        """prints all instances. USAGE: <classname>.all() or all"""
+        """prints all instances. USAGE: <classname>.all() or all [class]"""
         args = parse_args(arg)
         obj_list = []
         if len(args) > 0:
@@ -135,7 +135,7 @@ class HMIS(cmd.Cmd):
         print(obj_list)
 
     def do_save(self, arg: str):
-        """persist the current objects to storage esp in DBStorage.
+        """persist the current objects to storage
         Gives time to update mandatory attributes that would not
         be created automatically before persisting to the db"""
         storage.save()
@@ -162,9 +162,9 @@ class HMIS(cmd.Cmd):
         attr, value = args[2], args[3]
         if attr in dir(obj):
             attr_type = type(getattr(obj, attr))
-            obj.__dict__[attr] = attr_type(value)
+            setattr(obj, attr, attr_type(value))
         else:
-            obj.__dict__[attr] = value
+            setattr(obj, attr, value)
 
     def dict_update(self, class_name: str, arg: str) -> None:
         """
@@ -184,7 +184,8 @@ class HMIS(cmd.Cmd):
             name = attr[0].strip(' "')
             value = ""
             if len(attr) > 1:
-                value = attr[1].strip(' "')
+                value = attr[1].strip(' ').replace('_', ' ')
+                print(value)
             self.onecmd(f"update {class_name} {id} {name} {value}")
 
 
