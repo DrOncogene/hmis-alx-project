@@ -1,7 +1,7 @@
 # HOSPITAL MANAGEMENT SOFTWARE PROJECT
 
-MVP Specifications available at [Google Document](www.g)  
-Sample project deployed to 
+MVP Specifications available at [Google Document](https://docs.google.com/document/d/1sZ9LaJosq4_ykBt08-fWQ58337GblLefScGzUmMjH0U/edit#heading=h.z6ne0og04bp5)  
+Sample project to be deployed to (yet to be determined)
 
 ## OVERVIEW
 Portfolio project done as part of the [ALX SE](www.alxafrica.com) foundation programme.  
@@ -29,7 +29,7 @@ Front-end:
 4. API using flask and flasgger
 5. Front-end with HTML, CSS and ReactJS
 6. Connect frontend to the backend
-7. Deployment pipline with fabric, nginx and gunicorn
+7. Deployment pipline with fabric, nginx and gunicorn on AWS EC2 ubuntu 22.04 instance
 
 ## THE CONSOLE
 Written with python's cmd module. Mainly for testing the models. Available commands are
