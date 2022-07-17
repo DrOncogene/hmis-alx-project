@@ -4,7 +4,7 @@ import inspect
 import time
 import unittest
 from datetime import datetime
-from unittest import mock
+from unittest.mock import patch
 
 import pep8 as pycodestyle
 from models import base_model
@@ -112,16 +112,13 @@ class TestBaseModel(unittest.TestCase):
                           "created_at",
                           "created_by",
                           "updated_at",
-                          "updated_by",
-                          "__class__"]
+                          "updated_by"]
         for attr in expected_attrs:
             self.assertIn(attr, inst_dict.keys())
-        self.assertEqual(inst_dict['__class__'], cls.__name__)
 
     def test_to_dict_values(self):
         """test that values in dict returned from to_dict are correct"""
         new_d = self.inst1.to_dict()
-        self.assertEqual(new_d["__class__"], type(self.inst1).__name__)
         self.assertEqual(type(new_d["created_at"]), datetime)
         self.assertEqual(type(new_d["updated_at"]), datetime)
         self.assertEqual(new_d["created_at"], self.inst1.created_at)
@@ -139,26 +136,26 @@ class TestBaseModel(unittest.TestCase):
         string = f"[{type(self.inst1).__name__}] {obj_dict}"
         self.assertEqual(string, str(self.inst1))
 
-    @mock.patch('storage.storage')
-    def test_save(self, mock_storage):
+    def test_save(self):
         """Test that save method updates `updated_at` and calls
         `storage.save`"""
         old_created_at = self.inst1.created_at
         old_updated_at = self.inst1.updated_at
+        time.sleep(1)
         self.inst1.email = "email10"
         self.inst1.name = "name"
         self.inst1.pr = 135
         self.inst1.pc = "Fever x 3/7"
         self.inst1.note = "New note"
-        time.sleep(1)
         self.inst1.save()
-        obj = storage.get(type(self.inst1), 'id', self.inst1.id)
-        new_created_at = obj.created_at
-        new_updated_at = obj.updated_at
+        new_created_at = self.inst1.created_at
+        new_updated_at = self.inst1.updated_at
         self.assertNotEqual(old_updated_at, new_updated_at)
         self.assertEqual(old_created_at, new_created_at)
-        self.assertTrue(mock_storage.new.assert_called)
-        self.assertTrue(mock_storage.save.assert_called)
+        with patch.object(storage, 'new') as mock_new:
+            self.assertTrue(mock_new.assert_called)
+        with patch.object(storage, 'save') as mock_save:
+            self.assertTrue(mock_save.assert_called)
 
 if __name__ == '__main__':
     unittest.main()

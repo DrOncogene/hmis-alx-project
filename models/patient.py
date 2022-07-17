@@ -11,7 +11,8 @@ class Patient(BaseUser, Base):
     __tablename__ = 'patients'
 
     created_by = Column(Integer,
-                        ForeignKey('record_officers.staff_id', ondelete='SET NULL'))
+                        ForeignKey('record_officers.staff_id',
+                                   ondelete='SET NULL'))
     pid = Column(Integer, primary_key=True, autoincrement=True)
     record_officer = Column(String(60))
     consultations = relationship('Consultation', cascade='all, delete',

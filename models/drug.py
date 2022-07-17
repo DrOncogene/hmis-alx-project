@@ -11,7 +11,8 @@ class Drug(BaseModel, Base):
     __tablename__ = "drugs"
 
     created_by = Column(Integer,
-                        ForeignKey('pharmacists.staff_id', ondelete='SET NULL'))
+                        ForeignKey('pharmacists.staff_id',
+                                   ondelete='SET NULL'))
     name = Column(String(60))
     dose = Column(String(60))
     route = Column(String(16))
@@ -22,6 +23,7 @@ class Drug(BaseModel, Base):
     pharmacist = Column(String(60))
 
     def __init__(self, *args, **kwargs):
+        """calls super and set pharmacist name"""
         super().__init__(*args, **kwargs)
         if self.created_by is not None:
             from storage import storage

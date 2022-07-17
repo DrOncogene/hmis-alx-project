@@ -71,7 +71,7 @@ class TestDrug(TestBaseModel):
 
     def setUpBase(self):
         """sets up test object for parent test classes"""
-        self.drug = Drug()
+        self.drug, self.stock_date = Drug(), datetime.now()
         self.drug.save()
         self.tic = datetime.now()
         self.inst1 = Drug(
@@ -138,19 +138,10 @@ class TestDrug(TestBaseModel):
             self.assertEqual(self.drug.expiry_date, None)
 
     def test_stock_date_attr(self):
-        """Test that Drug has attr stock_date, and it's 0"""
+        """Test that Drug has attr stock_date, and it's a datetime"""
         self.assertTrue(hasattr(self.drug, "stock_date"))
-        self.assertEqual(self.drug.stock_date, None)
-
-    def test_to_dict_creates_dict(self):
-        """test to_dict method creates a dictionary with proper attrs"""
-        new_d = self.drug.to_dict()
-        self.assertEqual(type(new_d), dict)
-        self.assertFalse("_sa_instance_state" in new_d)
-        for attr in self.drug.__dict__:
-            if attr != "_sa_instance_state":
-                self.assertTrue(attr in new_d)
-        self.assertTrue("__class__" in new_d)
+        self.assertEqual(self.drug.stock_date,
+                         self.stock_date.replace(microsecond=0))
 
 
 if __name__ == '__main__':

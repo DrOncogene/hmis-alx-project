@@ -11,7 +11,8 @@ class Prescription(BaseModel, Base):
     __tablename__ = 'prescriptions'
 
     created_by = Column(Integer,
-                        ForeignKey('doctors.staff_id', ondelete='SET NULL'))
+                        ForeignKey('doctors.staff_id',
+                                   ondelete='SET NULL'))
     pid = Column(Integer,
                  ForeignKey('patients.pid', ondelete='CASCADE'),
                  nullable=False)
@@ -20,7 +21,8 @@ class Prescription(BaseModel, Base):
                                         ondelete='CASCADE'),
                              nullable=False, unique=True)
     dispensed_by = Column(Integer,
-                          ForeignKey('pharmacists.staff_id', ondelete='SET NULL'))
+                          ForeignKey('pharmacists.staff_id',
+                                     ondelete='SET NULL'))
     prescriber = Column(String(128))
     patient = relationship('Patient', back_populates='prescriptions')
     consultation = relationship('Consultation', back_populates='prescription')

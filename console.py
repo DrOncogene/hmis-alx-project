@@ -162,7 +162,8 @@ class HMIS(cmd.Cmd):
         attr, value = args[2], args[3]
         if attr in dir(obj):
             attr_type = type(getattr(obj, attr))
-            setattr(obj, attr, attr_type(value))
+            if attr_type is not None:
+                setattr(obj, attr, attr_type(value))
         else:
             setattr(obj, attr, value)
 
