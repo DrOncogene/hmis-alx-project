@@ -11,7 +11,8 @@ class Consultation(BaseModel, Base):
     __tablename__ = "consultations"
 
     created_by = Column(Integer,
-                        ForeignKey("doctors.staff_id", ondelete='SET NULL'))
+                        ForeignKey("doctors.staff_id",
+                                   ondelete='SET NULL'))
     pid = Column(Integer,
                  ForeignKey('patients.pid', ondelete='CASCADE'),
                  nullable=False)
@@ -27,7 +28,7 @@ class Consultation(BaseModel, Base):
     vitals = relationship('VitalSign', back_populates='consultation',
                           uselist=False)
     prescription = relationship('Prescription', cascade='all, delete',
-                                 back_populates='consultation', uselist=False)
+                                back_populates='consultation', uselist=False)
 
     def __init__(self, *args, **kwargs):
         """calls the super init and set doctor_name"""

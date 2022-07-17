@@ -124,13 +124,13 @@ class TestConsultation(TestBaseModel):
 
     def test_prescriptions_attr(self):
         """Test that Consultation has attr prescription_ids, and it's a list"""
-        self.assertTrue(hasattr(self.consult, "prescriptions"))
-        self.assertEqual(self.consult.prescriptions, [self.prescription])
+        self.assertTrue(hasattr(self.consult, "prescription"))
+        self.assertEqual(self.consult.prescription, self.prescription)
 
     def test_vitals_attr(self):
         """Test that Consultation has attr vitals_id, and it's a list"""
         self.assertTrue(hasattr(self.consult, "vitals"))
-        self.assertEqual(self.consult.vitals, [self.vitals])
+        self.assertEqual(self.consult.vitals, self.vitals)
 
     def test_pc_attr(self):
         """Test that Consultation has attr pc, and it's an None"""

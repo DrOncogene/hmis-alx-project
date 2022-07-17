@@ -112,16 +112,13 @@ class TestBaseModel(unittest.TestCase):
                           "created_at",
                           "created_by",
                           "updated_at",
-                          "updated_by",
-                          "__class__"]
+                          "updated_by"]
         for attr in expected_attrs:
             self.assertIn(attr, inst_dict.keys())
-        self.assertEqual(inst_dict['__class__'], cls.__name__)
 
     def test_to_dict_values(self):
         """test that values in dict returned from to_dict are correct"""
         new_d = self.inst1.to_dict()
-        self.assertEqual(new_d["__class__"], type(self.inst1).__name__)
         self.assertEqual(type(new_d["created_at"]), datetime)
         self.assertEqual(type(new_d["updated_at"]), datetime)
         self.assertEqual(new_d["created_at"], self.inst1.created_at)
@@ -145,12 +142,12 @@ class TestBaseModel(unittest.TestCase):
         `storage.save`"""
         old_created_at = self.inst1.created_at
         old_updated_at = self.inst1.updated_at
+        time.sleep(2)
         self.inst1.email = "email10"
         self.inst1.name = "name"
         self.inst1.pr = 135
         self.inst1.pc = "Fever x 3/7"
         self.inst1.note = "New note"
-        time.sleep(1)
         self.inst1.save()
         obj = storage.get(type(self.inst1), 'id', self.inst1.id)
         new_created_at = obj.created_at
