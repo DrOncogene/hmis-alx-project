@@ -9,7 +9,7 @@ openBtn.addEventListener('click', (e)=>{
   mobileMenu.classList.toggle('show');
 });
 
-openBtn.addEventListener('click', (e)=>{
+closeBtn.addEventListener('click', (e)=>{
   e.preventDefault();
   closeBtn.classList.toggle('hidden');
   openBtn.classList.toggle('hidden');
