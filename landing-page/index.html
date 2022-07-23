@@ -16,11 +16,12 @@
   <nav class="w-screen fixed top-0 left-0 bg-pri mx-auto border-b-sec border-b-2 z-[500]">
     <div class="relative flex items-center justify-between px-3 py-2 container h-[60px] mx-auto">
       <a href="#" class="nav-logo h-[30px] w-[120px] bg-logo bg-contain bg-no-repeat"></a>
-      <ul class="hidden space-x-6 w-[315px] nav-links items-center justify-between h-full md:flex">
+      <ul class="hidden space-x-6 nav-links items-center justify-between h-full md:flex">
         <li><a href="#" class="p-2 font-medium hover:font-extrabold transition-all duration-300 hover:text-lg hover:text-sec">Home</a></li>
-        <li><a href="#" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Features</a></li>
-        <li><a href="#" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Services</a></li>
-        <li><a href="#" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Contact</a></li>
+        <li><a href="#features" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Features</a></li>
+        <li><a href="#services" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Services</a></li>
+        <li><a href="#why-us" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">About Us</a></li>
+        <li><a href="#footer" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Contact</a></li>
       </ul>
       <div class="contact-links justify-between items-center space-x-4 mr-4 hidden md:flex">
         <a href="https://github.com/DrOncogene/hmis-alx-project/" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
@@ -41,9 +42,10 @@
     <div class="responsive-menu w-[50vw] h-screen fixed top-[62px] -right-[50vw] backdrop-blur-sm bg-semiPri transition-all duration-500 md:hidden">
       <div class="font-extrabold flex flex-col w-full nav-links items-start justify-start h-full">
         <a href="#" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Home</a>
-        <a href="#" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Features</a>
-        <a href="#" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Services</a>
-        <a href="#" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Contact</a>
+        <a href="#features" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Features</a>
+        <a href="#services" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Services</a>
+        <a href="#why-us" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">About Us</a>
+        <a href="#footer" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Contact</a>
         <div class="contact-links flex flex-col justify-between items-center space-y-4 self-center mt-16">
           <div class="flex space-x-6 mb-4">
             <a href="https://github.com/DrOncogene/hmis-alx-project/" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
@@ -205,7 +207,7 @@
       </div>
     </section>
   </main>
-  <footer class="bg-darkPri w-full opacity-90">
+  <footer id="footer" class="bg-darkPri w-full opacity-90">
     <div class="footer-top p-10 grid grid-cols-2 justify-center items-start justify-items-end gap-y-4 container mx-auto md:flex md:flex-row md:space-x-32 md:items-start">
       <div class="flex flex-col justify-between items-start w-[120px] mb-6">
         <h1 class="text-sm font-bold mb-3">About Us</h1>
