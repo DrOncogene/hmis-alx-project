@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Raleway', sans-serif;
+}
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #005B64;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00BBD6;
+}
+.noscroll {
+  overflow: hidden;
+}
+.btn-open {
+  transform: rotate(90deg);
+  /* transform: translateY(0deg); */
+}
+.btn-open .btn-middle {
+  display: none;
+}
+.btn-open .btn-top {
+  transform: rotate(45deg) translateY(10px) translate(10px);
+}
+.btn-open .btn-bottom {
+  transform: rotate(-45deg) translateY(10px) translate(-10px);
+}
+.show {
+  right: 50vw;
+}
+.show-blur{
+  left: 50vw;
+}
+@media screen and (min-width: 640px) and
+ (max-width: 987px) {
+  #features {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-items: center;
+    align-items: center;
+    gap: 64px;
+  }
+}
