@@ -1,17 +1,11 @@
-const openBtn = document.querySelector(".menu-open");
-const closeBtn = document.querySelector(".menu-close");
+const menuBtn = document.querySelector(".menu-btn");
 const mobileMenu = document.querySelector(".responsive-menu");
+const bodyBlur = document.querySelector(".body-blur")
+const body = document.body
 
-openBtn.addEventListener('click', (e)=>{
-  e.preventDefault();
-  openBtn.classList.toggle('hidden');
-  closeBtn.classList.toggle('hidden');
+menuBtn.addEventListener('click', (e)=>{
+  menuBtn.classList.toggle('btn-open');
   mobileMenu.classList.toggle('show');
-});
-
-closeBtn.addEventListener('click', (e)=>{
-  e.preventDefault();
-  closeBtn.classList.toggle('hidden');
-  openBtn.classList.toggle('hidden');
-  mobileMenu.classList.toggle('show');
+  bodyBlur.classList.toggle('show-blur')
+  body.classList.toggle('noscroll')
 });
