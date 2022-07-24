@@ -13,22 +13,22 @@
   <link rel="stylesheet" href="./css/main.css">
 </head>
 <body class="text-white">
-  <nav class="w-screen fixed top-0 left-0 bg-pri mx-auto border-b-sec border-b-2 z-[500]">
-    <div class="relative flex items-center justify-between px-3 py-2 container h-[60px] mx-auto">
+  <nav class="w-screen fixed top-0 left-0 bg-veryLightPri mx-auto border-b-sec border-b-2 z-[500] backdrop-blur-md">
+    <div class="relative flex items-center justify-between px-3 py-2 h-[60px] mx-auto">
       <a href="#" class="nav-logo h-[30px] w-[120px] bg-logo bg-contain bg-no-repeat"></a>
       <ul class="hidden space-x-6 nav-links items-center justify-between h-full md:flex">
         <li><a href="#" class="p-2 font-medium hover:font-extrabold transition-all duration-300 hover:text-lg hover:text-sec">Home</a></li>
         <li><a href="#features" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Features</a></li>
         <li><a href="#services" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Services</a></li>
-        <li><a href="#why-us" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">About Us</a></li>
+        <li><a href="#about" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">About Us</a></li>
         <li><a href="#footer" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Contact</a></li>
       </ul>
       <div class="contact-links justify-between items-center space-x-4 mr-4 hidden md:flex">
         <a href="https://github.com/DrOncogene/hmis-alx-project/" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
         <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin fa-xl "></i></a>
-        <a href="https://youtube.com" target="_blank"><i class="fa-brands fa-youtube-square fa-xl"></i></a>
-        <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter-square fa-xl"></i></a>
-        <div class="bg-sec font-semibold px-3 py-1 text-xs shadow-lg rounded-[5px] cursor-pointer hover:animate-btn hidden md:block">
+        <a href="https://youtube.com" target="_blank"><i class="fa-brands fa-youtube fa-xl"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a>
+        <div class="bg-sec font-semibold px-3 py-1 text-xs shadow-lg rounded-[5px] cursor-pointer hover:animate-btn hidden lg:block">
           <a href="#">SIGN UP</a>
           <i class="ml-2 fa-solid fa-angle-right"></i>
         </div>
@@ -44,14 +44,14 @@
         <a href="#" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Home</a>
         <a href="#features" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Features</a>
         <a href="#services" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Services</a>
-        <a href="#why-us" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">About Us</a>
+        <a href="#about" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">About Us</a>
         <a href="#footer" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Contact</a>
-        <div class="contact-links flex flex-col justify-between items-center space-y-4 self-center mt-16">
+        <div class="contact-links flex flex-col justify-between items-center space-y-4 self-center mt-[20vh]">
           <div class="flex space-x-6 mb-4">
             <a href="https://github.com/DrOncogene/hmis-alx-project/" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
             <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin fa-xl "></i></a>
-            <a href="https://youtube.com" target="_blank"><i class="fa-brands fa-youtube-square fa-xl"></i></a>
-            <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter-square fa-xl"></i></a>
+            <a href="https://youtube.com" target="_blank"><i class="fa-brands fa-youtube fa-xl"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a>
           </div>
           <div class="bg-sec font-semibold px-3 py-1 text-xs shadow-lg rounded-[5px] cursor-pointer hover:animate-btn">
             <a href="#">SIGN UP</a>
@@ -64,7 +64,7 @@
   </nav>
   <main class="">
     <section class="hero h-[500px] bg-hero bg-no-repeat bg-cover flex flex-col justify-center items-start">
-      <div class="hero-text h-full w-full bg-veryLightPri text-center flex flex-col justify-center items-center p-4 md:pl-28 md:pt-10 md:text-left md:items-start">
+      <div class="hero-text h-full w-full bg-lightPri text-center flex flex-col justify-center items-center p-4 md:pl-28 md:pt-10 md:text-left md:items-start">
         <span class="text-base font-semibold block md:inline md:text-xl bg-sec px-3 py-1 mb-2 rounded-t-md">BEST IN CLASS</span>
         <h1 class="text-2xl font-extrabold leading-tight max-w-[450px] mb-10 md:text-4xl">
            HOSPITAL MANAGEMENT INFORMATION SYSTEM 
@@ -127,7 +127,7 @@
     </section>
     <section id="services" class="bg-services w-full bg-no-repeat bg-cover">
       <div class="bg-veryLightPri w-full h-full py-8 md:p-10 flex flex-col backdrop-blur-sm">
-        <h1 class="text-4xl text-center font-bold mb-6 md:text-left md:mb-10">Our Services</h1>
+        <h1 class="text-4xl text-center font-bold mb-10 md:text-left">Our Services</h1>
         <div class="flex flex-col justify-between items-center container mx-auto md:flex-row">
           <div class="w-[350px] h-[200px] flex justify-center items-center md:flex-col md:justify-start">
             <span class="font-black text-pri text-6xl text-center py-1 mb-4 mr-6 block w-[70px] h-[70px] bg-white rounded-[5px] shadow-[0_3px_5px_black] md:self-start md:w-[35px] md:h-auto md:text-xl">
@@ -169,7 +169,7 @@
     </section>
     <section id="why-us" class="w-full bg-why-us bg-cover bg-center">
       <div class="bg-veryLightPri py-8 md:p-16 flex flex-col min-h-[400px]">
-        <h1 class="text-4xl text-center font-bold mb-6 md:text-left md:mb-10">Why HMIS?</h1>
+        <h1 class="text-4xl text-center font-bold mb-10 md:text-left">Why HMIS?</h1>
         <div class="flex flex-col justify-center items-center container mx-auto md:flex-row md:justify-between">
           <div class="w-[300px] h-[200px] md:w-[250px]">
             <span class="flex justify-center items-center font-black text-4xl text-center mb-4 mx-auto w-[85px] h-[85px] bg-pri rounded-[50%] shadow-[0_2px_5px_black] md:text-2xl md:w-[70px] md:h-[70px]">
@@ -198,9 +198,45 @@
         </div>
       </div>
     </section>
+    <section id="about" class=" w-full bg-dev">
+      <div class="h-full w-full bg-veryLightPri p-8 md:p-16">
+        <h1 class="text-4xl text-center font-bold mb-10 md:text-left">The Team</h1>
+        <div class="w-full flex flex-col justify-center items-center space-y-20 md:space-y-0 md:space-x-20 md:flex-row">
+          <div class="profile h-[350px] w-[250px] bg-transparent rounded-lg shadow-md flex flex-col justify-start items-center backdrop-blur-md">
+            <div class="profile-img bg-nasir h-[80%] w-full bg-cover rounded-t-lg"></div>
+            <div class="profile-bottom flex flex-col justify-center items-center space-y-2 w-full p-6">
+              <h4 class="profile-desc text-center font-bold">
+                NASIR ABDULRASHEED<br>
+                <span class="italic font-normal text-sm">Team Lead</span>
+              </h4>
+              <div class="profile-links flex justify-between items-center space-x-4 text-sec">
+                <a href="https://github.com/DrOncogene" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
+                <a href="https://www.linkedin.com/in/nasir-abdulrasheed-106b2a175/" target="_blank"><i class="fa-brands fa-linkedin fa-xl "></i></a>
+                <a href="https://mobile.twitter.com/DrOncogene" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="profile h-[350px] w-[250px] bg-transparent rounded-lg shadow-md flex flex-col justify-start items-center backdrop-blur-md">
+            <div class="profile-img bg-joseph h-[80%] w-full bg-cover rounded-t-lg"></div>
+            <div class="profile-bottom flex flex-col justify-center items-center space-y-2 w-full p-6">
+              <h4 class="profile-desc text-center font-bold">
+                JOSEPH OLOGUNJA<br>
+                <span class="italic font-normal text-sm">Team Member</span>
+              </h4>
+              <div class="profile-links flex justify-between items-center space-x-4 text-sec">
+                <a href="https://github.com/Joseun" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
+                <a href="https://www.linkedin.com/m/in/josephologunja/" target="_blank"><i class="fa-brands fa-linkedin fa-xl "></i></a>
+                <a href="https://mobile.twitter.com/JOloganj" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="font-bold text-xs italic text-center mt-10">IF YOU WOULD LIKE TO JOIN THE TEAM, CONTACT ANY TEAM MEMBER</p>
+      </div>
+    </section>
     <section id="mission">
       <div class="p-8 flex flex-col justify-center align-center mx-auto text-darkPri min-h-[400px] md:p-16">
-        <h1 class="text-4xl text-center font-bold mb-6 md:text-left">Our Mission</h1>
+        <h1 class="text-4xl text-center font-bold mb-10 md:text-left">Our Mission</h1>
         <p class="text-2xl text-center font-bold italic mx-auto md:w-[60%]">
           <i class="fa-solid fa-quote-left fa-3x mr-4"></i>To interconnect all hospitals in Nigeria and provide an easy and reliable information interchange within and between them
         </p>
@@ -208,7 +244,7 @@
     </section>
   </main>
   <footer id="footer" class="bg-darkPri w-full opacity-90">
-    <div class="footer-top p-10 grid grid-cols-2 justify-center items-start justify-items-end gap-y-4 container mx-auto md:flex md:flex-row md:space-x-32 md:items-start">
+    <div class="footer-top p-10 grid grid-cols-2 justify-center items-start justify-items-center gap-y-4 container mx-auto md:flex md:flex-row md:space-x-32 md:items-start">
       <div class="flex flex-col justify-between items-start w-[120px] mb-6">
         <h1 class="text-sm font-bold mb-3">About Us</h1>
         <ul class="text-xs font-light">

@@ -25,6 +25,9 @@ module.exports = {
         'hero': "url('../img/hero-bg.jpg')",
         'services': "url('../img/services-bg.jpg')",
         'why-us': "url('../img/why-bg.webp')",
+        'dev': "url('../img/dev_bg.jpg')",
+        'nasir': "url('../img/nasir.jpg')",
+        'joseph': "url('../img/joseph.jpeg')",
       }
     },
   },
