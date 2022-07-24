@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to HMIS</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" href="img/hmis-logo.svg" type="image/x-icon">
+  <link rel="stylesheet" href="./css/main.css">
+</head>
+<body class="text-white">
+  <nav class="w-screen fixed top-0 left-0 bg-veryLightPri mx-auto border-b-sec border-b-2 z-[500] backdrop-blur-md">
+    <div class="relative flex items-center justify-between px-3 py-2 h-[60px] mx-auto">
+      <a href="#" class="nav-logo h-[30px] w-[120px] bg-logo bg-contain bg-no-repeat"></a>
+      <ul class="hidden space-x-6 nav-links items-center justify-between h-full md:flex">
+        <li><a href="#" class="p-2 font-medium hover:font-extrabold transition-all duration-300 hover:text-lg hover:text-sec">Home</a></li>
+        <li><a href="#features" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Features</a></li>
+        <li><a href="#services" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Services</a></li>
+        <li><a href="#about" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">About Us</a></li>
+        <li><a href="#footer" class="p-1 font-medium transition-all duration-300 hover:font-extrabold hover:text-lg hover:text-sec">Contact</a></li>
+      </ul>
+      <div class="contact-links justify-between items-center space-x-4 mr-4 hidden md:flex">
+        <a href="https://github.com/DrOncogene/hmis-alx-project/" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
+        <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin fa-xl "></i></a>
+        <a href="https://youtube.com" target="_blank"><i class="fa-brands fa-youtube fa-xl"></i></a>
+        <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a>
+        <div class="bg-sec font-semibold px-3 py-1 text-xs shadow-lg rounded-[5px] cursor-pointer hover:animate-btn hidden lg:block">
+          <a href="#">SIGN UP</a>
+          <i class="ml-2 fa-solid fa-angle-right"></i>
+        </div>
+      </div>
+      <div class="menu-btn cursor-pointer w-[30px] h-[20px] relative md:hidden">
+        <span class="btn-top w-[30px] h-[3px] rounded-[3px] bg-white absolute top-0 left-0 transition-all duration-500"></span>
+        <span class="btn-middle w-[30px] h-[3px] rounded-[3px] bg-white absolute top-0 left-0 translate-y-2 transition-all duration-500"></span>
+        <span class="btn-bottom w-[30px] h-[3px] rounded-[3px] bg-white absolute top-0 left-0 translate-y-4 transition-all duration-500"></span>
+      </div>
+    </div>
+    <div class="responsive-menu w-[50vw] h-screen fixed top-[62px] -right-[50vw] backdrop-blur-sm bg-semiPri transition-all duration-500 md:hidden">
+      <div class="font-extrabold flex flex-col w-full nav-links items-start justify-start h-full">
+        <a href="#" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Home</a>
+        <a href="#features" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Features</a>
+        <a href="#services" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Services</a>
+        <a href="#about" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">About Us</a>
+        <a href="#footer" class="w-full px-6 py-3 transition-all duration-300 border-b-2 border-b-sec hover:bg-sec">Contact</a>
+        <div class="contact-links flex flex-col justify-between items-center space-y-4 self-center mt-[20vh]">
+          <div class="flex space-x-6 mb-4">
+            <a href="https://github.com/DrOncogene/hmis-alx-project/" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
+            <a href="https://linkedin.com" target="_blank"><i class="fa-brands fa-linkedin fa-xl "></i></a>
+            <a href="https://youtube.com" target="_blank"><i class="fa-brands fa-youtube fa-xl"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a>
+          </div>
+          <div class="bg-sec font-semibold px-3 py-1 text-xs shadow-lg rounded-[5px] cursor-pointer hover:animate-btn">
+            <a href="#">SIGN UP</a>
+            <i class="ml-2 fa-solid fa-angle-right"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="body-blur w-[50vw] h-screen fixed top-[62px] -left-[50vw] backdrop-blur-sm bg-veryLightPri transition-all duration-200 md:hidden"></div>
+  </nav>
+  <main class="">
+    <section class="hero h-[500px] bg-hero bg-no-repeat bg-cover flex flex-col justify-center items-start">
+      <div class="hero-text h-full w-full bg-lightPri text-center flex flex-col justify-center items-center p-4 md:pl-28 md:pt-10 md:text-left md:items-start">
+        <span class="text-base font-semibold block md:inline md:text-xl bg-sec px-3 py-1 mb-2 rounded-t-md">BEST IN CLASS</span>
+        <h1 class="text-2xl font-extrabold leading-tight max-w-[450px] mb-10 md:text-4xl">
+           HOSPITAL MANAGEMENT INFORMATION SYSTEM 
+        </h1>
+        <div class="hero-subtitle mb-5">
+          <p class="font-semibold text-sm md:text-lg">Built for all levels and sizes:</p>
+          <p class="italic font-normal text-xs md:text-sm">Primary<i class="fa-solid fa-circle text-[4px] text-sec mx-1 align-middle"></i> Secondary<i class="fa-solid fa-circle text-[4px] text-sec mx-1 align-middle"></i>Tertiary</p>
+        </div>
+        <div class="">
+          <a href="#features" class="bg-sec font-bold px-3 py-2 mr-5 text-xs shadow-lg rounded-[5px] md:text-sm hover:animate-btn">FEATURES</a>
+          <a href="#" class="text-xs text-center font-semibold underline transition-all duration-300 md:text-sm hover:text-base">SIGN UP</a>
+        </div>
+      </div>
+    </section>
+    <section id="features" class="bg-gray-100 py-20 px-5 flex flex-col gap-y-16 space-x-2 items-center justify-between md:flex md:flex-row">
+      <div class="w-[250px] h-[200px] border-pri text-pri p-6 ml-2 border-2 relative flex flex-col space-x-2 items-start justify-between shadow-[0_10px_10px_gray] transition-all duration-100 hover:shadow-none">
+        <div class="flex justify-center items-center py-3 px-4 bg-white rounded-[5px] shadow-[0_3px_5px_gray] absolute -top-[30px] left-[25px]">
+          <i class="fa-solid fa-bolt-lightning fa-2x text-pri"></i>
+        </div>
+        <h4 class="font-extrabold mt-3 mr-0">Fast</h4>
+        <p class="font-normal text-sm">
+          Built with <span class="font-semibold italic">speed</span> in mind<br>
+          Impeccable <span class="font-semibold italic">performance</span>
+        </p>
+        <a href="#" class="text-sec font-semibold self-end hover:underline">Read More</a>
+      </div>
+      <div class="w-[250px] h-[200px] border-pri text-pri p-6 m-0 border-2 relative flex flex-col space-x-2 items-start justify-between shadow-[0_10px_10px_gray] transition-all duration-100 hover:shadow-none">
+        <div class="flex justify-center items-center py-3 px-4 bg-white rounded-[5px] shadow-[0_3px_5px_gray] absolute -top-[30px] left-[25px] shadow-[0_10px_10px_gray] transition-all duration-100 hover:shadow-none">
+          <i class="fa-solid fa-puzzle-piece fa-2x text-pri"></i>
+        </div>
+        <h4 class="font-extrabold mt-3 mr-0">Modular</h4>
+        <p class="font-normal text-sm">
+          Independent parts able to deploy separately<br>
+          We provide <span class="font-semibold italic">only</span> what you need
+        </p>
+        <a href="#" class="text-sec font-semibold self-end hover:underline">Read More</a>
+      </div>
+      <div class="w-[250px] h-[200px] border-pri text-pri p-6 m-0 border-2 relative flex flex-col space-x-2 items-start justify-between shadow-[0_10px_10px_gray] transition-all duration-100 hover:shadow-none">
+        <div class="flex justify-center items-center py-3 px-4 bg-white rounded-[5px] shadow-[0_3px_5px_gray] absolute -top-[30px] left-[25px]">
+          <i class="fa-solid fa-shield-halved fa-2x text-pri"></i>
+        </div>
+        <h4 class="font-extrabold mt-3 mr-0">Secure</h4>
+        <p class="font-normal text-sm">
+          Your <span class="font-semibold italic">data</span> by top of the line security solutions
+        </p>
+        <a href="#" class="text-sec font-semibold self-end hover:underline">Read More</a>
+      </div>
+      <div class="w-[250px] h-[200px] border-pri text-pri p-6 m-0 border-2 relative flex flex-col space-x-2 items-start justify-between shadow-[0_10px_10px_gray] transition-all duration-100 hover:shadow-none">
+        <div class="flex flex-col justify-between items-center py-3 px-4 bg-white rounded-[5px] shadow-[0_3px_5px_gray] absolute -top-[30px] left-[25px]">
+          <i class="fa-solid fa-cloud-bolt text-pri mr-4"></i>
+          <i class="fa-solid fa-location-dot text-pri ml-4"></i>
+        </div>
+        <h4 class="font-extrabold mt-3 mr-0">Choice</h4>
+        <p class="font-normal text-sm">
+          Deploy locally or in the cloud<br>
+          Your facility, your <span class="font-semibold italic">choice</span>
+        </p>
+        <a href="#" class="text-sec font-semibold self-end hover:underline">Read More</a>
+      </div>
+    </section>
+    <section id="services" class="bg-services w-full bg-no-repeat bg-cover">
+      <div class="bg-veryLightPri w-full h-full py-8 md:p-10 flex flex-col backdrop-blur-sm">
+        <h1 class="text-4xl text-center font-bold mb-10 md:text-left">Our Services</h1>
+        <div class="flex flex-col justify-between items-center container mx-auto md:flex-row">
+          <div class="w-[350px] h-[200px] flex justify-center items-center md:flex-col md:justify-start">
+            <span class="font-black text-pri text-6xl text-center py-1 mb-4 mr-6 block w-[70px] h-[70px] bg-white rounded-[5px] shadow-[0_3px_5px_black] md:self-start md:w-[35px] md:h-auto md:text-xl">
+              1
+            </span>
+            <div class="w-[250px] md:w-auto">
+              <h4 class="font-extrabold mb-3 ml-4">Hardware Infrastructure</h4>
+              <p class="font-normal text-sm mb-3 ml-4">
+                We help setup all necessary on premise and cloud infrastructure necessary to get HMIS running in your facility
+              </p>
+            </div>
+          </div>
+          <div class="w-[350px] h-[200px] flex justify-center items-center md:flex-col md:justify-start">
+            <span class="font-black text-pri text-6xl text-center py-1 mb-4 mr-6 block w-[70px] h-[70px] bg-white rounded-[5px] shadow-[0_3px_5px_black] md:self-start md:w-[35px] md:h-auto md:text-xl">
+              2
+            </span>
+            <div class="w-[250px] md:w-auto">
+              <h4 class="font-extrabold mb-3 ml-4">Data Analysis</h4>
+              <p class="font-normal text-sm mb-3 ml-4">
+                We can help collect and  analyse your data to provide recommendations for service improvements
+              </p>
+            </div>
+          </div>
+          <div class="w-[350px] h-[200px] flex justify-center items-center md:flex-col md:justify-start">
+            <span class="font-black text-pri text-6xl text-center py-1 mb-4 mr-6 block w-[70px] h-[70px] bg-white rounded-[5px] shadow-[0_3px_5px_black] md:self-start md:w-[35px] md:h-auto md:text-xl">
+              3
+            </span>
+            <div class="w-[250px] md:w-auto">
+              <h4 class="font-extrabold mb-3 ml-4">IT Support</h4>
+              <p class="font-normal text-sm mb-3 ml-4">
+                On-site and off-site IT support including training of staffs at affordable rates
+              </p>
+            </div>
+          </div>
+          
+        </div>
+        <a href="#features" class="bg-sec font-bold px-3 py-2 self-center text-sm shadow-lg rounded-[5px] hover:animate-btn md:self-end">Read More</a>
+      </div>
+    </section>
+    <section id="why-us" class="w-full bg-why-us bg-cover bg-center">
+      <div class="bg-veryLightPri py-8 md:p-16 flex flex-col min-h-[400px]">
+        <h1 class="text-4xl text-center font-bold mb-10 md:text-left">Why HMIS?</h1>
+        <div class="flex flex-col justify-center items-center container mx-auto md:flex-row md:justify-between">
+          <div class="w-[300px] h-[200px] md:w-[250px]">
+            <span class="flex justify-center items-center font-black text-4xl text-center mb-4 mx-auto w-[85px] h-[85px] bg-pri rounded-[50%] shadow-[0_2px_5px_black] md:text-2xl md:w-[70px] md:h-[70px]">
+              50+
+            </span>
+            <p class="font-semibold text-sm text-center mb-3 ml-4">
+              Trusted by more than 50 top class hospitals in the space of 6 months
+            </p>
+          </div>
+          <div class="w-[300px] h-[200px] md:w-[250px]">
+            <span class="flex justify-center items-center font-black text-4xl text-center mb-4 mx-auto w-[85px] h-[85px] bg-pri rounded-[50%] shadow-[0_2px_5px_black] md:text-2xl md:w-[70px] md:h-[70px]">
+              5
+            </span>
+            <p class="font-semibold text-sm text-center mb-3 ml-4">
+              Nominated at 5 awards for most impactful start-up software in the country, winning twice
+            </p>
+          </div>
+          <div class="w-[300px] h-[200px] md:w-[250px]">
+            <span class="flex justify-center items-center font-black text-4xl text-center mb-4 mx-auto w-[85px] h-[85px] bg-pri rounded-[50%] shadow-[0_2px_5px_black] md:text-2xl md:w-[70px] md:h-[70px]">
+              1
+            </span>
+            <p class="font-semibold text-sm text-center mb-3 ml-4">
+              Best in class value for money. We provide impeccable performance at the lowest cost
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="about" class=" w-full bg-dev">
+      <div class="h-full w-full bg-veryLightPri p-8 md:p-16">
+        <h1 class="text-4xl text-center font-bold mb-10 md:text-left">The Team</h1>
+        <div class="w-full flex flex-col justify-center items-center space-y-20 md:space-y-0 md:space-x-20 md:flex-row">
+          <div class="profile h-[350px] w-[250px] bg-transparent rounded-lg shadow-md flex flex-col justify-start items-center backdrop-blur-md">
+            <div class="profile-img bg-nasir h-[80%] w-full bg-cover rounded-t-lg"></div>
+            <div class="profile-bottom flex flex-col justify-center items-center space-y-2 w-full p-6">
+              <h4 class="profile-desc text-center font-bold">
+                NASIR ABDULRASHEED<br>
+                <span class="italic font-normal text-sm">Team Lead</span>
+              </h4>
+              <div class="profile-links flex justify-between items-center space-x-4 text-sec">
+                <a href="https://github.com/DrOncogene" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
+                <a href="https://www.linkedin.com/in/nasir-abdulrasheed-106b2a175/" target="_blank"><i class="fa-brands fa-linkedin fa-xl "></i></a>
+                <a href="https://mobile.twitter.com/DrOncogene" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a>
+              </div>
+            </div>
+          </div>
+          <div class="profile h-[350px] w-[250px] bg-transparent rounded-lg shadow-md flex flex-col justify-start items-center backdrop-blur-md">
+            <div class="profile-img bg-joseph h-[80%] w-full bg-cover rounded-t-lg"></div>
+            <div class="profile-bottom flex flex-col justify-center items-center space-y-2 w-full p-6">
+              <h4 class="profile-desc text-center font-bold">
+                JOSEPH OLOGUNJA<br>
+                <span class="italic font-normal text-sm">Team Member</span>
+              </h4>
+              <div class="profile-links flex justify-between items-center space-x-4 text-sec">
+                <a href="https://github.com/Joseun" target="_blank"><i class="fa-brands fa-github fa-xl "></i></a>
+                <a href="https://www.linkedin.com/m/in/josephologunja/" target="_blank"><i class="fa-brands fa-linkedin fa-xl "></i></a>
+                <a href="https://mobile.twitter.com/JOloganj" target="_blank"><i class="fa-brands fa-twitter fa-xl"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="font-bold text-xs italic text-center mt-10">IF YOU WOULD LIKE TO JOIN THE TEAM, CONTACT ANY TEAM MEMBER</p>
+      </div>
+    </section>
+    <section id="mission">
+      <div class="p-8 flex flex-col justify-center align-center mx-auto text-darkPri min-h-[400px] md:p-16">
+        <h1 class="text-4xl text-center font-bold mb-10 md:text-left">Our Mission</h1>
+        <p class="text-2xl text-center font-bold italic mx-auto md:w-[60%]">
+          <i class="fa-solid fa-quote-left fa-3x mr-4"></i>To interconnect all hospitals in Nigeria and provide an easy and reliable information interchange within and between them
+        </p>
+      </div>
+    </section>
+  </main>
+  <footer id="footer" class="bg-darkPri w-full opacity-90">
+    <div class="footer-top p-10 grid grid-cols-2 justify-center items-start justify-items-center gap-y-4 container mx-auto md:flex md:flex-row md:space-x-32 md:items-start">
+      <div class="flex flex-col justify-between items-start w-[120px] mb-6">
+        <h1 class="text-sm font-bold mb-3">About Us</h1>
+        <ul class="text-xs font-light">
+          <li class="mb-1 hover:underline"><a href="#">Mission</a></li>
+          <li class="mb-1 hover:underline"><a href="#">Pricing</a></li>
+          <li class="mb-1 hover:underline"><a href="#">Board Members</a></li>
+          <li class="mb-1 hover:underline"><a href="#">Pioneers</a></li>
+        </ul>
+      </div>
+      <div class="flex flex-col justify-between items-start w-[120px] mb-6">
+        <h1 class="text-sm font-bold mb-3">Services</h1>
+        <ul class="text-xs font-light">
+          <li class="mb-1 hover:underline"><a href="#">HMIS</a></li>
+          <li class="mb-1 hover:underline"><a href="#">IT Training</a></li>
+          <li class="mb-1 hover:underline"><a href="#">Data Analysis</a></li>
+          <li class="mb-1 hover:underline"><a href="#">Infrastructure</a></li>
+        </ul>
+      </div>
+      <div class="flex flex-col justify-between items-start w-[120px] mb-6">
+        <h1 class="text-sm font-bold mb-3">Components</h1>
+        <ul class="text-xs font-light">
+          <li class="mb-1 hover:underline"><a href="#">CMS</a></li>
+          <li class="mb-1 hover:underline"><a href="#">E-prescriptions</a></li>
+          <li class="mb-1 hover:underline"><a href="#">PMS</a></li>
+          <li class="mb-1 hover:underline"><a href="#">IPMS</a></li>
+          <li class="mb-1 hover:underline"><a href="#">Online Consultations</a></li>
+        </ul>
+      </div>
+      <div class="flex flex-col justify-between items-start w-[120px] mb-6">
+        <h1 class="text-sm font-bold mb-3">Contacts</h1>
+        <ul class="text-xs font-light">
+          <li class="mb-1 hover:underline"><a href="#">LinkedIn</a></li>
+          <li class="mb-1 hover:underline"><a href="#">Twitter</a></li>
+          <li class="mb-1 hover:underline"><a href="https://github.com/DrOncogene/hmis-alx-project/" target="_blank">GitHub</a></li>
+          <li class="mb-1 hover:underline"><a href="#">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom border-t-[1px] border-gray-50 text-center px-10 py-5 text-xs font-thin">
+      copyright &copy; 2022 Oncogene Studios Inc.
+    </div>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>
