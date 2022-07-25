@@ -5,7 +5,7 @@ Project landing page deployed [here](http://hmis-alx.netlify.app)
 Sample project to be deployed to (yet to be determined)
 
 ## Overview
-Portfolio project done as part of the [ALX SE](www.alxafrica.com) foundation programme.  
+Portfolio project done as part of the [ALX SE](https://www.alxafrica.com) foundation programme.  
 
 The software, in the long term, is aimed at near total management of a hospital's activity ranging from patient consultation and nursing activities to pharmacy drug management.  
 
