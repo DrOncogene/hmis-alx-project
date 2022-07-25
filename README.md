@@ -1,7 +1,7 @@
 # HOSPITAL MANAGEMENT SOFTWARE (HMIS) PROJECT
 
 MVP Specifications available at [Google Document](https://docs.google.com/document/d/1sZ9LaJosq4_ykBt08-fWQ58337GblLefScGzUmMjH0U/edit#heading=h.z6ne0og04bp5)  
-Project landing page deployed [here](http://hmis-alx.netlify.app)
+Project landing page deployed [here](http://hmis-alx.netlify.app)  
 Sample project to be deployed to (yet to be determined)
 
 ## Overview
