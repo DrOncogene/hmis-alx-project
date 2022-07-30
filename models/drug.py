@@ -28,4 +28,4 @@ class Drug(BaseModel, Base):
         if self.created_by is not None:
             from storage import storage
             pharm = storage.get("Pharmacist", 'staff_id', self.created_by)
-            self.pharmacist = f"{pharm.first_name} {pharm.last_name}"
+            self.pharmacist = f"Phm {pharm.get_full_name()}"

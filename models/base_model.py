@@ -56,6 +56,7 @@ class BaseModel:
         if hasattr(self, 'staff_id'):
             obj_dict['staff_id'] = self.format_staff_id()
         obj_dict.pop('_sa_instance_state', None)
+        obj_dict.pop('password', None)
         return "[{}] {}".\
             format(type(self).__name__, obj_dict)
 
