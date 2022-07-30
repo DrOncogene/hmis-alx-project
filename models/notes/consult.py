@@ -36,4 +36,4 @@ class Consultation(BaseModel, Base):
         if self.created_by is not None:
             from storage import storage
             doc = storage.get('Doctor', 'staff_id', self.created_by)
-            self.doctor_name = f"Dr {doc.first_name} {doc.last_name}"
+            self.doctor_name = f"Dr {doc.get_full_name()}"

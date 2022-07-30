@@ -46,7 +46,7 @@ class DBStorage:
         host = osgetenv('DB_HOST')
         db = osgetenv('DB')
         self.__engine = create_engine(
-            "mysql+mysqldb://{}:{}@{}:3306/{}".format(user, passwd, host, db),
+            f"mysql+mysqldb://{user}:{passwd}@{host}:3306/{db}",
             pool_pre_ping=True
         )
         if osgetenv('ENV') == 'test':

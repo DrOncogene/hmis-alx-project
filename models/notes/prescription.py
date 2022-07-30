@@ -34,8 +34,8 @@ class Prescription(BaseModel, Base):
         super().__init__(*args, **kwargs)
         if self.created_by:
             from storage import storage
-            creator = storage.get('Doctor', 'staff_id', self.created_by)
-            self.prescriber = f"{creator.first_name} {creator.last_name}"
+            doctor = storage.get('Doctor', 'staff_id', self.created_by)
+            self.prescriber = f"{doctor.get_full_name()}"
 
 
 class DrugPrescription(BaseModel, Base):
