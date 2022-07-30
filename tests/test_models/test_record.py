@@ -102,7 +102,6 @@ class TestRecordOfficer(TestBaseModel, TestBaseUser, TestStaff):
         self.user.delete()
         self.inst1.delete()
         self.inst2.delete()
-        self.staff.delete()
         storage.save()
 
     def test_obj_has_attr(self):
@@ -111,7 +110,7 @@ class TestRecordOfficer(TestBaseModel, TestBaseUser, TestStaff):
         self.assertIsInstance(record, Staff)
         self.assertTrue(hasattr(record, 'job_title'))
         self.assertEqual(record.job_title, 'RecordOfficer')
-        self.assertTrue(hasattr(record, 'permissions'))
+        self.assertTrue(hasattr(record, 'roles'))
 
 
 if __name__ == '__main__':
