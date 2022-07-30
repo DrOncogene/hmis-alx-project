@@ -149,10 +149,11 @@ def create_staff(job_title):
     if 'kin_address' not in request.get_json():
         abort(400, description="Missing next of kin address")
 
-    data = request.get_json()
+    data: dict = request.get_json()
     data['dob'] = datetime.strptime(data['dob'], '%d/%m/%Y')
     data['created_by'] = current_user.staff_id
     password = data.pop('password')
+    data.pop('role', None)
     staff = titles[job_title](**data)
     staff.set_password(password)
 
@@ -185,7 +186,7 @@ def put_staff(job_title, staff_id):
     if not staff:
         abort(404, description="Staff does not exist")
 
-    ignore = ['id', 'job_title', 'staff_id', 'created_at', 'created_by']
+    ignore = ['id', 'job_title', 'staff_id', 'created_at', 'created_by', 'role']
 
     data = request.get_json()
     for key, value in data.items():
