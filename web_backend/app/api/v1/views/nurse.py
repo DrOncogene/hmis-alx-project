@@ -2,15 +2,19 @@
 """ objects that handle all default RestFul API actions for Nurses """
 from flask import jsonify, abort
 from flasgger.utils import swag_from
+from flask_login import login_required
 
 from models.nurse import Nurse
 from storage import storage
-from api.v1.views import app_views
+from web_backend.app.roles import RBAC
+from .import api_views
 
 
-@app_views.route('/staffs/nurses/<string:staff_id>/vitals',
+@api_views.route('/staffs/nurses/<string:staff_id>/vitals',
                  methods=['GET'], strict_slashes=False)
 @swag_from('documentation/staffs/nurses/staff_id/get_vitals.yml')
+@RBAC.allow(['nurse'], methods=['GET'])
+@login_required
 def get_nurse_vitals(staff_id):
     """ Retrieves the list of a nurses vitals sign record """
 
@@ -23,9 +27,11 @@ def get_nurse_vitals(staff_id):
     return jsonify(nurse_vitals)
 
 
-@app_views.route('/staffs/nurses/<string:staff_id>/notes',
+@api_views.route('/staffs/nurses/<string:staff_id>/notes',
                  methods=['GET'], strict_slashes=False)
 @swag_from('documentation/staffs/nurses/staff_id/get_nursenotes.yml')
+@RBAC.allow(['nurse'], methods=['GET'])
+@login_required
 def get_nurse_nursenotes(staff_id):
     """ Retrieves the list of a nurses nursenotes """
 

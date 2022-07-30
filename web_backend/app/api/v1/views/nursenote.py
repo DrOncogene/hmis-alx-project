@@ -1,16 +1,20 @@
 #!/usr/bin/python3
 """ objects that handle all default RestFul API actions for NurseNote """
 from flasgger.utils import swag_from
-from flask import abort, jsonify, make_response, request
+from flask import abort, jsonify, request
+from flask_login import login_required, current_user
 
-from api.v1.views import app_views
 from models.notes.nursenote import NurseNote
 from storage import storage
+from web_backend.app.roles import RBAC
+from . import api_views
 
 
-@app_views.route('/patients/<int:pid>/nursenotes',
+@api_views.route('/patients/<int:pid>/nursenotes',
                  methods=['GET'], strict_slashes=False)
 @swag_from('documentation/patients/patient_id/get_nursenotes.yml')
+@RBAC.allow(['doctor', 'nurse'], methods=['GET'])
+@login_required
 def get_patient_nursenotes(pid):
     """
     Retrieves the all nursenote object for a specific patient
@@ -23,22 +27,12 @@ def get_patient_nursenotes(pid):
     return jsonify(notes)
 
 
-# @app_views.route('/patients/<pid>/consultations/<consultation_id>/nursenotes',
-#                  methods=['GET'], strict_slashes=False)
-# @swag_from('documentation/patient/patient_id/consultations/consultation_id/get_nursenote.yml')
-# def get_consult_nursenotes(consultation_id):
-#     """ Retrieves the all nursenote object for a specific consultation """
-#     all_nursenotes = storage.all(NurseNote).values()
-#     list_nursenotes = []
-#     for nursenote in all_nursenotes:
-#         if nursenote.consultation_id == consultation_id:
-#             list_nursenotes.append(nursenote.to_dict())
-#     return jsonify(list_nursenotes)
-
-@app_views.route('/patients/<int:pid>/nursenotes/<notes_id>',
+@api_views.route('/patients/<int:pid>/nursenotes/<notes_id>',
                  methods=['GET'], strict_slashes=False)
-@swag_from('documentation/patients/patient_id/consultations/consultation_id/nursenotes/get_nursenote.yml')
-def get_nursenote(pid, notes_id):
+@swag_from('documentation/nursenotes/get_nursenote.yml')
+@RBAC.allow(['doctor', 'nurse'], methods=['GET'])
+@login_required
+def get_patient_nursenote(pid, notes_id):
     """
     Retrieves the a specific nursenote object for a patient
     """
@@ -53,11 +47,13 @@ def get_nursenote(pid, notes_id):
     return jsonify(notes.to_dict())
 
 
-@app_views.route('/patients/<int:pid>/nursenotes/<notes_id>',
+@api_views.route('/patients/<int:pid>/nursenotes/<note_id>',
                  methods=['DELETE'], strict_slashes=False)
-@swag_from('documentation/patients/patient_id/consultations/consultation_id>/nursenotes/delete_nursenote.yml',
+@swag_from('documentation/nursenotes/delete_nursenote.yml',
            methods=['DELETE'])
-def delete_nursenote(pid, notes_id):
+@RBAC.allow(['nurse'], methods=['DELETE'])
+@login_required
+def delete_nursenote(pid, note_id):
     """
     Deletes a NurseNote Object for a patient
     """
@@ -65,20 +61,25 @@ def delete_nursenote(pid, notes_id):
     if not patient:
         abort(404, description="Patient not found")
 
-    notes = storage.get('NurseNote', 'id', notes_id)
-    if (not notes) or (notes.pid != pid):
+    note = storage.get('NurseNote', 'id', note_id)
+    if (not note) or (note.pid != pid):
         abort(404, description='No such nursenote')
 
-    storage.delete(notes)
+    if note.created_by != current_user.staff_id:
+        abort(403)
+
+    storage.delete(note)
     storage.save()
 
-    return make_response(jsonify({}), 200)
+    return jsonify({}), 200
 
 
-@app_views.route('/patients/<int:pid>/nursenotes',
+@api_views.route('/patients/<int:pid>/nursenotes',
                  methods=['POST'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/consultation_id/post_nursenote.yml', methods=['POST'])
-def post_nursenote(pid, notes_id):
+@swag_from('documentation/nursenotes/post_nursenote.yml', methods=['POST'])
+@RBAC.allow(['nurse'], methods=['POST'])
+@login_required
+def post_nursenote(pid):
     """
     Creates a new nursenote for a specific consultation
     """
@@ -94,17 +95,19 @@ def post_nursenote(pid, notes_id):
 
     data = request.get_json()
     data['pid'] = pid
+    data['created_by'] = current_user.staff_id
     instance = NurseNote(**data)
     instance.save()
     instance = storage.get('NurseNote', 'id', instance.id)
-    return make_response(jsonify(instance.to_dict()), 201)
+    return jsonify(instance.to_dict()), 201
 
 
-@app_views.route('/patients/<int:pid>/nursenotes/<notes_id>', methods=['PUT'],
+@api_views.route('/patients/<int:pid>/nursenotes/<note_id>', methods=['PUT'],
                  strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/consultation_id/nursenotes/put_nursenote.yml',
-           methods=['PUT'])
-def put_nursenote(pid, notes_id):
+@swag_from('documentation/nursenotes/put_nursenote.yml', methods=['PUT'])
+@RBAC.allow(['nurse'], methods=['PUT'])
+@login_required
+def put_nursenote(pid, note_id):
     """
     Updates a nursenote for a patient
     """
@@ -112,9 +115,12 @@ def put_nursenote(pid, notes_id):
     if not patient:
         abort(404, description="Patient not found")
 
-    notes = storage.get('NurseNote', 'id', notes_id)
-    if not notes:
+    note = storage.get('NurseNote', 'id', note_id)
+    if not note:
         abort(404)
+
+    if note.created_by != current_user.staff_id:
+        abort(403)
 
     if not request.get_json():
         abort(400, description="Not a JSON")
@@ -124,7 +130,7 @@ def put_nursenote(pid, notes_id):
     data = request.get_json()
     for key, value in data.items():
         if key not in ignore:
-            setattr(notes, key, value)
+            setattr(note, key, value)
     storage.save()
-    notes = storage.get('NurseNote', 'id', notes_id)
-    return make_response(jsonify(notes.to_dict()), 200)
+    note = storage.get('NurseNote', 'id', note_id)
+    return jsonify(note.to_dict()), 200

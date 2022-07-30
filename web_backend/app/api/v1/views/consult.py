@@ -2,16 +2,20 @@
 """ objects that handle all default RestFul API actions for Consultations """
 from flask import abort, jsonify, make_response, request
 from flasgger.utils import swag_from
+from flask_login import login_required, current_user
 
 from models.patient import Patient
 from models.notes.consult import Consultation
 from storage import storage
-from api.v1.views import app_views
+from web_backend.app.roles import RBAC
+from . import api_views
 
 
-@app_views.route('/patients/<int:pid>/consultations', methods=['GET'],
+@api_views.route('/patients/<int:pid>/consultations', methods=['GET'],
                  strict_slashes=False)
 @swag_from('documentation/patient/patient_id/get_consultations.yml')
+@RBAC.allow(['doctor', 'nurse'], methods=['GET'])
+@login_required
 def get_consultations(pid):
     """
     Retrieves the all consultation object for a specific patient
@@ -24,9 +28,11 @@ def get_consultations(pid):
     return jsonify(consultations)
 
 
-@app_views.route('/patients/<int:pid>/consultations/<string:consultation_id>',
+@api_views.route('/patients/<int:pid>/consultations/<string:consultation_id>',
                  methods=['GET'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/get_consultation.yml')
+@swag_from('documentation/consultations/get_consultation.yml')
+@RBAC.allow(['doctor', 'nurse'], methods=['GET'])
+@login_required
 def get_consultation(pid, consultation_id):
     """
     Retrieves the a specific consultation object for a specific patient
@@ -42,10 +48,12 @@ def get_consultation(pid, consultation_id):
     return jsonify(consultation.to_dict())
 
 
-@app_views.route('/patients/<int:pid>/consultations/<string:consultation_id>',
+@api_views.route('/patients/<int:pid>/consultations/<string:consultation_id>',
                  methods=['DELETE'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/delete_consulation.yml',
+@swag_from('documentation/consultations/delete_consulation.yml',
            methods=['DELETE'])
+@RBAC.allow(['doctor'], methods=['DELETE'])
+@login_required
 def delete_consulation(pid, consultation_id):
     """
     Deletes a Consulation Object for a specific patient
@@ -54,15 +62,21 @@ def delete_consulation(pid, consultation_id):
     if (not consultation) or (consultation.pid != pid):
         abort(404, description='Consultation does not exist')
 
+    if current_user.staff_id != consultation.created_by:
+        abort(403)
+
     storage.delete(consultation)
     storage.save()
 
-    return make_response(jsonify({}), 200)
+    return jsonify({}), 200
 
 
-@app_views.route('/patients/<int:pid>/consultations',
+@api_views.route('/patients/<int:pid>/consultations',
                  methods=['POST'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/post_consultation.yml', methods=['POST'])
+@swag_from('documentation/consultations/post_consultation.yml',
+           methods=['POST'])
+@RBAC.allow(['doctor'], methods=['POST'])
+@login_required
 def post_consultation(pid):
     """
     Creates a new consultation for a specific patient
@@ -79,15 +93,18 @@ def post_consultation(pid):
 
     data = request.get_json()
     data['pid'] = pid
+    data['created_by'] = current_user.staff_id
     instance = Consultation(**data)
     instance.save()
     instance = storage.get('Consultation', 'id', instance.id)
     return make_response(jsonify(instance.to_dict()), 201)
 
 
-@app_views.route('/patients/<int:pid>/consultations/<string:consultation_id>',
+@api_views.route('/patients/<int:pid>/consultations/<string:consultation_id>',
                  methods=['PUT'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/put_consultation.yml', methods=['PUT'])
+@swag_from('documentation/consultations/put_consultation.yml', methods=['PUT'])
+@RBAC.allow(['doctor'], methods=['PUT'])
+@login_required
 def put_consultation(pid, consultation_id):
     """
     Updates a consultation for a specific patient
@@ -100,6 +117,9 @@ def put_consultation(pid, consultation_id):
     if (not consultation) or (consultation.pid != pid):
         abort(404, description='Consultation does not exist')
 
+    if current_user.staff_id != consultation.created_by:
+        abort(403)
+
     if not request.get_json():
         abort(400, description="Not a JSON")
 
@@ -111,4 +131,4 @@ def put_consultation(pid, consultation_id):
             setattr(consultation, key, value)
     storage.save()
     consultation = storage.get('Consultation', 'id', consultation.id)
-    return make_response(jsonify(consultation.to_dict()), 200)
+    return jsonify(consultation.to_dict())

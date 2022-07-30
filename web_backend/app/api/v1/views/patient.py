@@ -1,16 +1,19 @@
 #!/usr/bin/python3
 """ objects that handle all default RestFul API actions for Patients """
 from datetime import datetime
-from flask import abort, jsonify, make_response, request
+from flask import abort, jsonify, request
 from flasgger.utils import swag_from
+from flask_login import current_user, login_required
 
 from models.patient import Patient
 from storage import storage
-from api.v1.views import app_views
+from web_backend.app.roles import RBAC
+from . import api_views
 
 
-@app_views.route('/patients', methods=['GET'], strict_slashes=False)
+@api_views.route('/patients', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/patients/all_patients.yml')
+@login_required
 def get_patients():
     """
     Retrieves the list of all patient object or a specific patient
@@ -20,8 +23,9 @@ def get_patients():
     return jsonify(all_patients)
 
 
-@app_views.route('/patients/<int:pid>', methods=['GET'], strict_slashes=False)
+@api_views.route('/patients/<int:pid>', methods=['GET'], strict_slashes=False)
 @swag_from('documentation/patients/get_patients.yml', methods=['GET'])
+@login_required
 def get_patient(pid):
     """
     Retrieves an patient
@@ -33,8 +37,11 @@ def get_patient(pid):
     return jsonify(patient.to_dict())
 
 
-@app_views.route('/patients/<int:pid>', methods=['DELETE'], strict_slashes=False)
+@api_views.route('/patients/<int:pid>', methods=['DELETE'],
+                 strict_slashes=False)
 @swag_from('documentation/patients/delete_patient.yml', methods=['DELETE'])
+@RBAC.allow(['recordofficer'], methods=['DELETE'])
+@login_required
 def delete_patient(pid):
     """
     Deletes a patient Object
@@ -46,11 +53,13 @@ def delete_patient(pid):
     storage.delete(patient)
     storage.save()
 
-    return make_response(jsonify({}), 200)
+    return jsonify({}), 200
 
 
-@app_views.route('/patients', methods=['POST'], strict_slashes=False)
+@api_views.route('/patients', methods=['POST'], strict_slashes=False)
 @swag_from('documentation/patients/post_patient.yml', methods=['POST'])
+@RBAC.allow(['recordofficer'], methods=['POST'])
+@login_required
 def post_patient():
     """
     Creates a patient
@@ -79,14 +88,17 @@ def post_patient():
 
     data = request.get_json()
     data['dob'] = datetime.strptime(data['dob'], '%Y/%m/%d')
+    data['created_by'] = current_user.staff_id
     patient = Patient(**data)
     patient.save()
 
-    return make_response(jsonify(patient.to_dict()), 201)
+    return jsonify(patient.to_dict()), 201
 
 
-@app_views.route('/patients/<int:pid>', methods=['PUT'], strict_slashes=False)
+@api_views.route('/patients/<int:pid>', methods=['PUT'], strict_slashes=False)
 @swag_from('documentation/patients/put_patient.yml', methods=['PUT'])
+@RBAC.allow(['recordofficer'], methods=['PUT'])
+@login_required
 def put_patient(pid):
     """
     Updates a patient
@@ -105,5 +117,6 @@ def put_patient(pid):
     for key, value in data.items():
         if key not in ignore:
             setattr(patient, key, value)
+    patient.updated_by = current_user.staff_id
     storage.save()
-    return make_response(jsonify(patient.to_dict()), 200)
+    return jsonify(patient.to_dict()), 200

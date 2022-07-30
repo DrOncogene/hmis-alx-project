@@ -2,28 +2,24 @@
 """ Index """
 from flask import jsonify
 
-from api.v1.views import app_views
 from models.admin import Admin
 from models.doctor import Doctor
 from models.nurse import Nurse
 from models.patient import Patient
 from models.pharmacist import Pharmacist
 from models.record import RecordOfficer
-from models.drug import Drug
-from models.notes.consult import Consultation
-from models.notes.prescription import Prescription
-from models.notes.vitals import VitalSign
-from models.notes.nursenote import NurseNote
 from storage import storage
+from . import api_views
 
 
-@app_views.route('/status', methods=['GET'], strict_slashes=False)
+@api_views.route('/status', methods=['GET'], strict_slashes=False)
 def status():
     """ Status of API """
     return jsonify({"status": "OK"})
 
-@app_views.route('/stats', methods=['GET'], strict_slashes=False)
-def number_objects():
+
+@api_views.route('/stats', methods=['GET'], strict_slashes=False)
+def stats_by_type():
     """ Retrieves the number of each objects by type """
     classes = {
        "patient": Patient,
@@ -32,11 +28,6 @@ def number_objects():
        "pharmacist": Pharmacist,
        "recordofficer": RecordOfficer,
        "admin": Admin,
-       "drug": Drug,
-       "consultation": Consultation,
-       "prescription": Prescription,
-       "vital": VitalSign,
-       "nursenote": NurseNote
     }
 
     num_objs = {}
