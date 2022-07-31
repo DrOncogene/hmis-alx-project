@@ -53,7 +53,6 @@ def create_csrf():
 @auth_views.route('/isauthenticated')
 def is_authenticated():
     """checks whether a user is already authenticated"""
-    print(request.headers)
     if current_user.is_authenticated:
         return jsonify({'login': True})
 
