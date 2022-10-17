@@ -37,4 +37,4 @@ class VitalSign(BaseModel, Base):
         if self.created_by is not None:
             from storage import storage
             nurse = storage.get("Nurse", 'staff_id', self.created_by)
-            self.nurse_name = f"Nrs {nurse.first_name} {nurse.last_name}"
+            self.nurse_name = f"Nrs {nurse.get_full_name()}"

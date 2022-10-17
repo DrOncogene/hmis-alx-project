@@ -2,11 +2,13 @@
 """ A class Staff that inherits from BaseUser """
 from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import Column, Integer, String
+from flask_login import UserMixin
+
 from models.base_user import BaseUser
 from models.base_model import Base
 
 
-class Staff(BaseUser, Base):
+class Staff(UserMixin, BaseUser, Base):
     """ Simple Staff class model """
     __tablename__ = 'staffs'
 
@@ -41,3 +43,7 @@ class Staff(BaseUser, Base):
             }
         title = title = titles[self.__class__.__name__]
         return f'{title}{self.staff_id:04d}'
+
+    def get_id(self):
+        """override the get_id from UserMixin"""
+        return self.id

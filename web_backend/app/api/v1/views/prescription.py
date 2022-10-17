@@ -3,16 +3,20 @@
 objects that handle all default RestFul API actions for Prescriptions
 """
 from flasgger.utils import swag_from
-from flask import abort, jsonify, make_response, request
+from flask import abort, jsonify, request
+from flask_login import current_user, login_required
 
-from api.v1.views import app_views
 from models.notes.prescription import Prescription, DrugPrescription
 from storage import storage
+from web_backend.app.roles import RBAC
+from . import api_views
 
 
-@app_views.route('/patients/<int:pid>/prescriptions',
+@api_views.route('/patients/<int:pid>/prescriptions',
                  methods=['GET'], strict_slashes=False)
 @swag_from('documentation/patients/patient_id/get_prescriptions.yml')
+@RBAC.allow(['doctor', 'nurse', 'pharmacist'], methods=['GET'])
+@login_required
 def get_patient_prescriptions(pid):
     """
     Retrieves the all prescription object for a specific patient
@@ -27,9 +31,11 @@ def get_patient_prescriptions(pid):
     return jsonify(prescriptions)
 
 
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription',
+@api_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription',
                  methods=['GET'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/consultat_id/get_prescription.yml')
+@swag_from('documentation/prescriptions/get_prescription.yml')
+@RBAC.allow(['doctor', 'nurse', 'pharmacist'], methods=['GET'])
+@login_required
 def get_consult_prescriptions(pid, consult_id):
     """
     Retrieves the prescription object for a specific consultation
@@ -50,12 +56,15 @@ def get_consult_prescriptions(pid, consult_id):
     return jsonify(prescription)
 
 
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription/drugs/<drugpresc_id>',
+@api_views.route(('/patients/<int:pid>/consultations/<consult_id>/'
+                  'prescription/drugs/<drugpresc_id>'),
                  methods=['DELETE'], strict_slashes=False)
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription',
+@api_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription',
                  methods=['DELETE'], strict_slashes=False)
-@swag_from('documentation/patients/patient_id/consultations/consultation_id>/prescriptions/delete_prescription.yml',
+@swag_from('documentation/patients/prescriptions/delete_prescription.yml',
            methods=['DELETE'])
+@RBAC.allow(['doctor'], methods=['DELETE'])
+@login_required
 def delete_prescription(pid, consult_id, drugpresc_id=None):
     """
     Deletes the prescription for a consultation
@@ -81,17 +90,24 @@ def delete_prescription(pid, consult_id, drugpresc_id=None):
     if not prescription:
         abort(404, description='No such prescription')
 
+    if prescription.created_by != current_user.staff_id:
+        abort(403)
+
     storage.delete(prescription)
     storage.save()
 
-    return make_response(jsonify({}), 200)
+    return jsonify({})
 
 
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription/drugs',
-                 methods=['POST'], defaults={'drugs': 'drugs'}, strict_slashes=False)
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription',
+@api_views.route(('/patients/<int:pid>/consultations/'
+                  '<consult_id>/prescription/drugs'), methods=['POST'],
+                 defaults={'drugs': 'drugs'}, strict_slashes=False)
+@api_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription',
                  methods=['POST'], strict_slashes=False)
-@swag_from('documentation/patient/patient_id/consultations/consultation_id/post_prescription.yml', methods=['POST'])
+@swag_from('documentation/patients/prescriptions/post_prescription.yml',
+           methods=['POST'])
+@RBAC.allow(['doctor'], methods=['POST'])
+@login_required
 def post_prescription(pid, consult_id, drugs=None):
     """
     Creates a new prescription for a specific consultation
@@ -124,20 +140,24 @@ def post_prescription(pid, consult_id, drugs=None):
         data['pid'] = pid
         data['consultation_id'] = consult_id
         data['prescription_id'] = consultation.prescription.id
+        data['created_by'] = current_user.staff_id
         instance = DrugPrescription(**data)
         instance.save()
         instance = storage.get('DrugPrescription', 'id', instance.id)
-        return make_response(jsonify(instance.to_dict()), 201)
+        return jsonify(instance.to_dict()), 201
 
     presc = Prescription(pid=pid, consultation_id=consult_id)
     presc.save()
-    return make_response(jsonify(presc.to_dict()), 201)
+    return jsonify(presc.to_dict()), 201
 
 
-@app_views.route('/patients/<int:pid>/consultations/<consult_id>/prescription/drugs/<drugpresc_id>',
+@api_views.route(('/patients/<int:pid>/consultations/'
+                  '<consult_id>/prescription/drugs/<drugpresc_id>'),
                  methods=['PUT'], strict_slashes=False)
 @swag_from('documentation/prescription/put_prescription.yml',
            methods=['PUT'])
+@RBAC.allow(['doctor', 'pharmacist'], methods=['PUT'])
+@login_required
 def put_prescription(pid, consult_id, drugpresc_id):
     """
     Updates a prescription for a specific consultation
@@ -155,6 +175,9 @@ def put_prescription(pid, consult_id, drugpresc_id):
 
     drug_presc = storage.get(DrugPrescription, 'id', drugpresc_id)
     presc = consultation.prescription
+    if presc.created_by != current_user.staff_id:
+        abort(403)
+
     if not (drug_presc or (drug_presc in presc.drugs)):
         abort(404, description="No such drug prescription")
 
@@ -166,4 +189,4 @@ def put_prescription(pid, consult_id, drugpresc_id):
         if key not in ignore:
             setattr(drug_presc, key, value)
     storage.save()
-    return make_response(jsonify(drug_presc.to_dict()), 200)
+    return jsonify(drug_presc.to_dict()), 200

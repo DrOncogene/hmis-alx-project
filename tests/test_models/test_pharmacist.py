@@ -102,7 +102,6 @@ class TestPharmacist(TestBaseModel, TestBaseUser, TestStaff):
         self.user.delete()
         self.inst1.delete()
         self.inst2.delete()
-        self.staff.delete()
         storage.save()
 
     def test_obj_has_attr(self):
@@ -111,7 +110,7 @@ class TestPharmacist(TestBaseModel, TestBaseUser, TestStaff):
         self.assertIsInstance(pharmacist, Staff)
         self.assertTrue(hasattr(pharmacist, 'job_title'))
         self.assertEqual(pharmacist.job_title, 'Pharmacist')
-        self.assertTrue(hasattr(pharmacist, 'permissions'))
+        self.assertTrue(hasattr(pharmacist, 'roles'))
 
 
 if __name__ == '__main__':

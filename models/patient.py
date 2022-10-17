@@ -29,4 +29,4 @@ class Patient(BaseUser, Base):
         if self.created_by is not None:
             from storage import storage
             record = storage.get("RecordOfficer", 'staff_id', self.created_by)
-            self.record_officer = f"{record.first_name} {record.last_name}"
+            self.record_officer = f"{record.get_full_name()}"

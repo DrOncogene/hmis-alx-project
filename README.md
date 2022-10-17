@@ -13,6 +13,9 @@ Technologies used in this project includes:
 
 Back-end:
   - Flask
+  - Flask-Login
+  - Flask-CORS
+  - Flask-WTF
   - Flasgger
   - SQLAlchemy
   - MySQL
@@ -20,7 +23,7 @@ Back-end:
 Front-end:
   - HTML
   - CSS
-  - ReactJS
+  - Svelte.js
   - etc.
 
 ## Components
@@ -28,9 +31,11 @@ Front-end:
 2. Database storage using ORM (sqlalchemy) and MySQL database backend
 3. HMIS Console: command line utility written in python to manipulate objects
 4. API using flask and flasgger
-5. Front-end with HTML, CSS and ReactJS
-6. Connect frontend to the backend
-7. Deployment pipline with fabric, nginx and gunicorn on AWS EC2 ubuntu 22.04 instance
+5. Authentication backend with Flask-Login, with simple RBAC on top
+6. Front-end with HTML, CSS and Svelte.js
+7. Connect frontend to the backend
+8. Dockerize both frontend and backend
+9. Deployment pipline with fabric, nginx and gunicorn on AWS EC2 ubuntu 22.04 instance
 
 ## The HMIS Console
 Written with python's cmd module. Mainly for testing the models. Available commands are
@@ -144,5 +149,21 @@ POST: create a new drug object
 GET: return the specified drug object  
 PUT: modify the given drug object
 
+## Auth Endpoints
+The auth system uses session-based auth (may change in the future)  
+
+/auth/login  
+POST: login with username/email  
+
+/auth/isauthenticated  
+GET: checks whether a user is authenticated  
+
+/auth/getcsrf  
+GET: get a csrf token for CSRF protection on the frontend  
+
+/auth/logout  
+GET: logout the current user
+
 ## Front-end static
-In progress
+- Landing page built with [Tailwind CSS](https://tailwindcss.com) and vanillaJS. Deployed [here](http://hmis-alx.netlify.app) on [Netlify](https://netlify.com)  
+- 

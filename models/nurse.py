@@ -13,9 +13,9 @@ class Nurse(Staff):
     staff_id = Column(Integer, ForeignKey("staffs.staff_id"),
                       primary_key=True)
     job_title = Column(String(16), nullable=False, default="Nurse")
-    permissions = Column(String(60), ForeignKey('permissions.id'))
     nursenotes = relationship("NurseNote", backref="nurse")
     vitals = relationship("VitalSign", backref="nurse")
+    role = 'nurse'
 
     __mapper_args__ = {
         "polymorphic_identity": "nurse"

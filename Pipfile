@@ -8,6 +8,10 @@ flasgger = "==0.9.5"
 flask = "==2.1.1"
 sqlalchemy = "==1.4.37"
 mysqlclient = "==2.1.0"
+flask-login = "==0.6.2"
+python-dotenv = "*"
+flask-wtf = "*"
+flask-cors = "*"
 
 [dev-packages]
 

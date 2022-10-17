@@ -2,14 +2,19 @@
 """ objects that handle all default RestFul API actions for Pharmacist """
 from flask import jsonify, abort
 from flasgger.utils import swag_from
+from flask_login import login_required
 
 from models.pharmacist import Pharmacist
 from storage import storage
-from api.v1.views import app_views
+from web_backend.app.roles import RBAC
+from . import api_views
 
 
-@app_views.route('/staffs/pharmacists/<string:staff_id>/prescriptions', methods=['GET'], strict_slashes=False)
+@api_views.route('/staffs/pharmacists/<string:staff_id>/prescriptions',
+                 methods=['GET'], strict_slashes=False)
 @swag_from('documentation/staffs/pharmacist/staff_id/get_prescriptions.yml')
+@RBAC.allow(['pharmacist'], methods=['GET'])
+@login_required
 def get_pharmacist_prescriptions(staff_id):
     """ Retrieves the list of a pharmacist dispensed prescriptions """
 

@@ -11,7 +11,7 @@ class RecordOfficer(Staff):
     staff_id = Column(Integer, ForeignKey("staffs.staff_id"),
                       primary_key=True)
     job_title = Column(String(16), nullable=False, default="RecordOfficer")
-    permissions = Column(String(60), ForeignKey('permissions.id'))
+    role = 'recordofficer'
 
     __mapper_args__ = {
         "polymorphic_identity": "recordofficer"

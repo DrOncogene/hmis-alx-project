@@ -2,8 +2,9 @@
 """ objects that handle all default RestFul API actions for Prescriptions """
 from datetime import datetime
 
-from flask import jsonify, abort, make_response, request
+from flask import jsonify, abort, request
 from flasgger.utils import swag_from
+from flask_login import current_user, login_required
 
 from models.doctor import Doctor
 from models.nurse import Nurse
@@ -11,10 +12,11 @@ from models.pharmacist import Pharmacist
 from models.record import RecordOfficer
 from models.admin import Admin
 from storage import storage
-from api.v1.views import app_views
+from web_backend.app.roles import RBAC
+from . import api_views
 
 
-@app_views.route('/staffs', methods=['GET'], strict_slashes=False)
+@api_views.route('/staffs', methods=['GET'], strict_slashes=False)
 def staff_count():
     """ Retrieves the number of each objects by type """
     classes = [Doctor, Nurse, Pharmacist, RecordOfficer, Admin]
@@ -27,7 +29,8 @@ def staff_count():
     return jsonify(num_objs)
 
 
-@app_views.route('/staffs/<string:job_title>', methods=['GET'], strict_slashes=False)
+@api_views.route('/staffs/<string:job_title>',
+                 methods=['GET'], strict_slashes=False)
 def staff_by_type(job_title: str):
     """ Retrieves the number of a specific objects by type """
     titles = {
@@ -38,21 +41,22 @@ def staff_by_type(job_title: str):
         "recordofficers": RecordOfficer
     }
 
-    if not job_title in titles:
+    if job_title not in titles:
         abort(404, description=f"{job_title} is not valid job title")
 
-    all_staff_obj = storage.all(titles[job_title])
-    all_staff_type = [staff.to_dict() for staff in all_staff_obj]
+    staffs = storage.all(titles[job_title])
+    staffs_of_type = [staff.to_dict() for staff in staffs]
 
-    return jsonify(all_staff_type)
+    return jsonify(staffs_of_type)
 
 
-@app_views.route('/staffs/<string:job_title>/<string:staff_id>', methods=['GET'],
-                 strict_slashes=False)
+@api_views.route('/staffs/<string:job_title>/<string:staff_id>',
+                 methods=['GET'], strict_slashes=False)
 @swag_from('documentation/staff/<job_title>/get_staff.yml', methods=['GET'])
+@RBAC.allow(['admin'], methods=['GET'])
+@login_required
 def get_staff(job_title, staff_id):
-    """ Retrieves an staff """
-
+    """ Retrieves a staff """
     titles = {
         "admins": Admin,
         "doctors": Doctor,
@@ -69,9 +73,12 @@ def get_staff(job_title, staff_id):
     return jsonify(staff.to_dict())
 
 
-@app_views.route('/staffs/<string:job_title>/<string:staff_id>', methods=['DELETE'],
-                 strict_slashes=False)
-@swag_from('documentation/staff/<job_title>/delete_staff.yml', methods=['DELETE'])
+@api_views.route('/staffs/<string:job_title>/<string:staff_id>',
+                 methods=['DELETE'], strict_slashes=False)
+@swag_from('documentation/staff/<job_title>/delete_staff.yml',
+           methods=['DELETE'])
+@RBAC.allow(['admin'], methods=['DELETE'])
+@login_required
 def delete_staff(job_title, staff_id):
     """
     Deletes a staff Object
@@ -93,13 +100,15 @@ def delete_staff(job_title, staff_id):
     staff.delete()
     storage.save()
 
-    return make_response(jsonify({}), 200)
+    return jsonify({})
 
 
-@app_views.route('/staffs/<string:job_title>', methods=['POST'],
+@api_views.route('/staffs/<string:job_title>', methods=['POST'],
                  strict_slashes=False)
 @swag_from('documentation/staffs/<job_title>/create_staff.yml',
            methods=['POST'])
+@RBAC.allow(['admin'], methods=['POST'])
+@login_required
 def create_staff(job_title):
     """
     Creates a staff
@@ -118,7 +127,7 @@ def create_staff(job_title):
     if 'username' not in request.get_json():
         abort(400, description="Missing username")
     if 'password' not in request.get_json():
-        abort(400, description="Missing password")    
+        abort(400, description="Missing password")
     if 'first_name' not in request.get_json():
         abort(400, description="Missing first name")
     if 'last_name' not in request.get_json():
@@ -140,19 +149,22 @@ def create_staff(job_title):
     if 'kin_address' not in request.get_json():
         abort(400, description="Missing next of kin address")
 
-    data = request.get_json()
-    data['dob'] = datetime.strptime(data['dob'], '%Y/%m/%d')
+    data: dict = request.get_json()
+    data['dob'] = datetime.strptime(data['dob'], '%d/%m/%Y')
+    data['created_by'] = current_user.staff_id
     password = data.pop('password')
+    data.pop('role', None)
     staff = titles[job_title](**data)
     staff.set_password(password)
 
     storage.save()
 
-    return make_response(jsonify(staff.to_dict()), 201)
+    return jsonify(staff.to_dict()), 201
 
-@app_views.route('/staffs/<string:job_title>/<string:staff_id>', methods=['PUT'],
-                 strict_slashes=False)
+@api_views.route('/staffs/<string:job_title>/<string:staff_id>',
+                 methods=['PUT'], strict_slashes=False)
 @swag_from('documentation/staff/staff_id/put_staff.yml', methods=['PUT'])
+@RBAC.allow(['admin'], methods=['PUT'])
 def put_staff(job_title, staff_id):
     """
     Updates a staff
@@ -174,12 +186,13 @@ def put_staff(job_title, staff_id):
     if not staff:
         abort(404, description="Staff does not exist")
 
-    ignore = ['id', 'job_title', 'staff_id', 'created_at', 'created_by']
+    ignore = ['id', 'job_title', 'staff_id', 'created_at', 'created_by', 'role']
 
     data = request.get_json()
     for key, value in data.items():
         if key not in ignore and hasattr(staff, key):
             setattr(staff, key, value)
+    staff.updated_by = current_user.staff_id
     storage.save()
 
-    return make_response(jsonify(staff.to_dict()), 200)
+    return jsonify(staff.to_dict()), 200
