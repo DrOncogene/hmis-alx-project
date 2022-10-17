@@ -17,7 +17,7 @@ class RBAC:
                 method_valid = request.method in methods if methods else True
                 role_valid = current_user and current_user.role in roles
                 if not (method_valid and role_valid):
-                    abort(401, description="Not priviledged")
+                    abort(403, description="Restricted access")
                 return view_func(*args, **kwargs)
             return wrapper
         return allow_decorator
