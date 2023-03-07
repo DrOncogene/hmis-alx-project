@@ -41,12 +41,13 @@ class DBStorage:
     }
 
     def __init__(self):
-        user = osgetenv('DB_USER')
-        passwd = osgetenv('DB_PWD')
-        host = osgetenv('DB_HOST')
-        db = osgetenv('DB')
+        user = osgetenv('DB_USER') or 'hmis_dev'
+        passwd = osgetenv('DB_PWD') or 'hmis_pwd'
+        host = osgetenv('DB_HOST') or 'localhost'
+        db = osgetenv('DB') or 'hmis_dev_db'
+        port = osgetenv('DB_PORT') or 3306
         self.__engine = create_engine(
-            f"mysql+mysqldb://{user}:{passwd}@{host}:3306/{db}",
+            f"mysql+mysqldb://{user}:{passwd}@{host}:{port}/{db}",
             pool_pre_ping=True
         )
         if osgetenv('ENV') == 'test':
@@ -64,11 +65,12 @@ class DBStorage:
 
         return obj_list
 
-    def get(self, cls, attr: str, val: str):
+    def get(self, cls, attr: str, val: str) -> object:
         """returns a single obj of cls with id"""
         if isinstance(cls, str):
             cls = self._classes[cls]
 
+        obj = None
         if attr == 'staff_id':
             obj = self.__session.query(cls).filter_by(staff_id=val).first()
         elif attr == 'pid':

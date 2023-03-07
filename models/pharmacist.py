@@ -11,6 +11,7 @@ class Pharmacist(Staff):
     staff_id = Column(Integer, ForeignKey("staffs.staff_id"),
                       primary_key=True)
     job_title = Column(String(16), nullable=False, default="Pharmacist")
+    title = 'Phm'
     role = 'pharmacist'
 
     __mapper_args__ = {

@@ -133,6 +133,7 @@ class TestBaseModel(unittest.TestCase):
         obj_dict["created_at"] = obj_dict["created_at"].isoformat()
         obj_dict["updated_at"] = obj_dict["updated_at"].isoformat()
         obj_dict.pop('_sa_instance_state', None)
+        obj_dict.pop('password', None)
         string = f"[{type(self.inst1).__name__}] {obj_dict}"
         self.assertEqual(string, str(self.inst1))
 

@@ -15,6 +15,7 @@ class Nurse(Staff):
     job_title = Column(String(16), nullable=False, default="Nurse")
     nursenotes = relationship("NurseNote", backref="nurse")
     vitals = relationship("VitalSign", backref="nurse")
+    title = 'Nrs'
     role = 'nurse'
 
     __mapper_args__ = {

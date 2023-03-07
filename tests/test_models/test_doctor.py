@@ -109,7 +109,7 @@ class TestDoctor(TestBaseModel, TestBaseUser, TestStaff):
         self.assertIsInstance(doctor, Staff)
         self.assertTrue(hasattr(doctor, 'job_title'))
         self.assertEqual(doctor.job_title, 'Doctor')
-        self.assertTrue(hasattr(doctor, 'roles'))
+        self.assertTrue(hasattr(doctor, 'role'))
 
 
 if __name__ == '__main__':

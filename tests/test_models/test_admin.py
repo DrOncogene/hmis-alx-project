@@ -111,7 +111,7 @@ class TestAdmin(TestBaseModel, TestBaseUser, TestStaff):
         self.assertIsInstance(admin, Staff)
         self.assertTrue(hasattr(admin, 'job_title'))
         self.assertEqual(admin.job_title, 'Admin')
-        self.assertTrue(hasattr(admin, 'roles'))
+        self.assertTrue(hasattr(admin, 'role'))
 
 
 if __name__ == '__main__':

@@ -15,7 +15,8 @@ class Doctor(Staff):
     job_title = Column(String(16), nullable=False, default="Doctor")
     consultations = relationship("Consultation", backref="doctor")
     prescriptions = relationship("Prescription", backref="doctor")
-    role = 'doctor'
+    title = Column(String(8), default="Dr")
+    role = Column(String(8), default="doctor")
 
     __mapper_args__ = {
         "polymorphic_identity": "doctor"

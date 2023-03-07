@@ -17,6 +17,7 @@ from . import api_views
 
 
 @api_views.route('/staffs', methods=['GET'], strict_slashes=False)
+@login_required
 def staff_count():
     """ Retrieves the number of each objects by type """
     classes = [Doctor, Nurse, Pharmacist, RecordOfficer, Admin]
@@ -31,6 +32,7 @@ def staff_count():
 
 @api_views.route('/staffs/<string:job_title>',
                  methods=['GET'], strict_slashes=False)
+@login_required
 def staff_by_type(job_title: str):
     """ Retrieves the number of a specific objects by type """
     titles = {

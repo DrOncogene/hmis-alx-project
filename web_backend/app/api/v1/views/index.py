@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """ Index """
 from flask import jsonify
+from flask_login import login_required
 
 from models.admin import Admin
 from models.doctor import Doctor
@@ -13,12 +14,14 @@ from . import api_views
 
 
 @api_views.route('/status', methods=['GET'], strict_slashes=False)
+@login_required
 def status():
     """ Status of API """
     return jsonify({"status": "OK"})
 
 
 @api_views.route('/stats', methods=['GET'], strict_slashes=False)
+@login_required
 def stats_by_type():
     """ Retrieves the number of each objects by type """
     classes = {

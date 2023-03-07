@@ -110,7 +110,7 @@ class TestRecordOfficer(TestBaseModel, TestBaseUser, TestStaff):
         self.assertIsInstance(record, Staff)
         self.assertTrue(hasattr(record, 'job_title'))
         self.assertEqual(record.job_title, 'RecordOfficer')
-        self.assertTrue(hasattr(record, 'roles'))
+        self.assertTrue(hasattr(record, 'role'))
 
 
 if __name__ == '__main__':

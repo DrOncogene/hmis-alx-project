@@ -110,7 +110,7 @@ class TestPharmacist(TestBaseModel, TestBaseUser, TestStaff):
         self.assertIsInstance(pharmacist, Staff)
         self.assertTrue(hasattr(pharmacist, 'job_title'))
         self.assertEqual(pharmacist.job_title, 'Pharmacist')
-        self.assertTrue(hasattr(pharmacist, 'roles'))
+        self.assertTrue(hasattr(pharmacist, 'role'))
 
 
 if __name__ == '__main__':

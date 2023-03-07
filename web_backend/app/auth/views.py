@@ -21,6 +21,7 @@ def login():
 
     username = data.get('username', None)
     email = data.get('email', None)
+    user = None
     if username:
         user = storage.get("Staff", 'username', username)
     elif email:
@@ -36,8 +37,11 @@ def login():
     if not user.check_password(password):
         return jsonify({"login": False}), 404
 
-    login_user(user, remember=True)
-    return jsonify({"login": True})
+    login_user(user)
+    return jsonify({
+        "login": True,
+        "user": user.to_dict()
+        })
 
 
 @auth_views.route('/getcsrf', methods=['GET'])
@@ -59,7 +63,7 @@ def is_authenticated():
     return jsonify({'login': False}), 401
 
 
-@auth_views.route('/logout')
+@auth_views.route('/logout', methods=['POST'])
 @login_required
 def logout():
     """logout the current user"""
