@@ -1,0 +1,28 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: Flask",
+      "type": "python",
+      "request": "launch",
+      "module": "web_backend.wsgi",
+      "env": {
+        "SECRET_KEY": "f648f2f8203ac23cc4890f9736cf07fd55d6b29e4ecf721c8f99e8f9609e93c6",
+
+        "FLASK_ENV": "development",
+        "DB_USER": "hmis_test",
+        "DB_HOST": "localhost",
+        "DB": "hmis_test_db",
+        "DB_PWD": "hmis_pwd",
+      },
+      "args": [
+
+      ],
+      "jinja": true,
+      "justMyCode": true
+    }
+  ]
+}

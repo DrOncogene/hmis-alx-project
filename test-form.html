@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HMIS test form</title>
+</head>
+<body>
+  <form action="" method="post" class="test-form">
+    <label for="username">username: </label>
+    <input type="text" name="username" id="username" placeholder="username or email"><br>
+    <label for="password">password: </label>
+    <input type="password" name="password" id="password" placeholder="password"><br>
+    <input type="submit" value="sign in" id="submit">
+  </form>
+
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+  <script>
+    const username = document.querySelector("#username")
+    const password = document.querySelector("#password")
+    const submitBtn = document.querySelector("#submit")
+
+    submitBtn.addEventListener('click', async function(e) {
+      e.preventDefault()
+
+      const data = JSON.stringify({username: username.value, password: password.value})
+      fetch("http://127.0.0.1:5000/auth/login", {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: data,
+        credentials: 'include',
+        mode: 'cors'
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err))
+
+      const is_authenticated = fetch("http://127.0.0.1:5000/auth/isauthenticated", {
+        credentials: 'include',
+        mode: 'cors'
+      })
+      .then((res) => res.json())
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err))
+    })
+  </script>
+</body>
+</html>
